@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Prosody</title>
+  <meta name="description" content="Privacy Policy for Prosody, the iOS conversation practice app.">
+
+
+  <style>
+    :root {
+      --bg: #F5F3EF; --bg-alt: #EEECE7; --fg: #141414;
+      --fg-2: #4E4A46; --fg-3: #8A8580; --accent: #FF7A5C;
+      --border: #D9D6CF;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0A0A0A; --bg-alt: #1E1E1E; --fg: #F2F2F2;
+        --fg-2: #B0B0B0; --fg-3: #6A6560; --accent: #FF7A5C;
+        --border: #2A2A2A;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0A0A0A; --bg-alt: #1E1E1E; --fg: #F2F2F2;
+      --fg-2: #B0B0B0; --fg-3: #6A6560; --accent: #FF7A5C;
+      --border: #2A2A2A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 1.25rem 0;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-size: 0.875rem;
+      color: var(--fg-3);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      transition: color 0.18s;
+    }
+    .nav-back:hover { color: var(--fg-2); }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 6rem;
+    }
+
+    .page-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .page-title {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      margin-bottom: 1rem;
+    }
+
+    .page-meta {
+      font-size: 0.875rem;
+      color: var(--fg-3);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .doc-section { margin-bottom: 3rem; }
+
+    .doc-section h2 {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+      margin-bottom: 0.875rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .doc-section p {
+      font-size: 1rem;
+      color: var(--fg-2);
+      line-height: 1.75;
+      margin-bottom: 0.875rem;
+    }
+
+    .doc-section p:last-child { margin-bottom: 0; }
+
+    .doc-section ul {
+      list-style: none;
+      margin-bottom: 0.875rem;
+    }
+
+    .doc-section ul li {
+      font-size: 1rem;
+      color: var(--fg-2);
+      line-height: 1.75;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .doc-section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .doc-section a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.18s;
+    }
+    .doc-section a:hover { opacity: 0.75; }
+
+    .highlight-box {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+    }
+
+    .highlight-box p {
+      font-size: 1rem;
+      color: var(--fg-2);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .highlight-box strong { color: var(--fg); font-weight: 600; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .footer-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy { font-size: 0.8125rem; color: var(--fg-3); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8125rem; color: var(--fg-3); text-decoration: none; transition: color 0.18s; }
+    .footer-links a:hover { color: var(--fg-2); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Prosody</a>
+    <a href="/" class="nav-back">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+      Back to home
+    </a>
+  </div>
+</nav>
+
+<main class="page">
+  <p class="page-label">Legal</p>
+  <h1 class="page-title">Privacy Policy</h1>
+  <p class="page-meta">Last updated: August 2026 &nbsp;·&nbsp; Prosody iOS App</p>
+
+  <div class="highlight-box">
+    <p><strong>Short version:</strong> Prosody collects your name and email when you sign in, and syncs your in-app progress to our servers. Speech is processed on your device and is never stored. We don't sell your data. That's the gist.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>About Prosody</h2>
+    <p>Prosody is an iOS application for real-time conversation practice. This Privacy Policy explains how Prosody ("we," "us," or "our"), operated by Lucas Whittle, collects, uses, and protects information about users ("you") of the Prosody iOS application.</p>
+    <p>By using Prosody, you agree to the practices described in this policy.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Information We Collect</h2>
+    <p>We collect the following categories of information:</p>
+    <ul>
+      <li><strong>Account information:</strong> When you sign in with Google or Apple, we receive your name and email address from those services. We use this to identify your account.</li>
+      <li><strong>Usage statistics:</strong> We sync your in-app progress to our servers, including XP points, session history, conversation scores, streak counts, and level data. This is used to persist your progress across devices.</li>
+      <li><strong>Leaderboard profile:</strong> If you participate in the public leaderboard, your chosen username, level, and XP are visible to other Prosody users.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>Speech and Audio</h2>
+    <p>Prosody uses your device's microphone during conversation practice sessions. <strong>Speech audio is not stored or transmitted to our servers.</strong></p>
+    <p>Speech recognition is processed on your device using Apple's on-device speech recognition APIs. We do not receive, store, or analyze the audio from your conversations.</p>
+    <p>Conversation text generated during sessions may be temporarily processed to generate your score and feedback. This processing occurs within the session and is not retained as identifiable user data.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>How We Use Your Information</h2>
+    <ul>
+      <li>To authenticate your account and maintain your session</li>
+      <li>To sync your progress and statistics across your devices</li>
+      <li>To display your profile on the public leaderboard if you opt in</li>
+      <li>To calculate and display your scores and streaks</li>
+      <li>To improve the Prosody app and practice experience</li>
+    </ul>
+    <p>We do not use your information for advertising or sell it to third parties.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Data Storage</h2>
+    <p>Your account information and usage statistics are stored on servers provided by Supabase, a third-party database service. Supabase stores data securely and in compliance with applicable data protection standards.</p>
+    <p>Subscriptions and billing are managed through Apple's App Store and RevenueCat. We do not store payment information. Refer to <a href="https://www.apple.com/legal/privacy/">Apple's Privacy Policy</a> and <a href="https://www.revenuecat.com/privacy">RevenueCat's Privacy Policy</a> for information about how they handle billing data.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Leaderboard and Public Profiles</h2>
+    <p>If you choose to participate in the Prosody leaderboard, your username, level, and XP total will be visible to other Prosody users within the app. Your email address and full name are never displayed publicly.</p>
+    <p>You can opt out of the leaderboard in Settings at any time.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Third-Party Services</h2>
+    <p>Prosody integrates with the following third-party services:</p>
+    <ul>
+      <li><strong>Google Sign-In</strong> — for account authentication (<a href="https://policies.google.com/privacy">Google Privacy Policy</a>)</li>
+      <li><strong>Apple Sign In</strong> — for account authentication (<a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a>)</li>
+      <li><strong>Supabase</strong> — for data storage and backend services (<a href="https://supabase.com/privacy">Supabase Privacy Policy</a>)</li>
+      <li><strong>RevenueCat</strong> — for subscription management (<a href="https://www.revenuecat.com/privacy">RevenueCat Privacy Policy</a>)</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>Data Retention and Deletion</h2>
+    <p>We retain your account data for as long as your account is active. If you delete your Prosody account, your account information and associated usage data will be deleted from our servers.</p>
+    <p>To delete your account, use the Delete Account option in the Prosody app Settings, or contact us at <a href="mailto:lucaswhittlebusiness@gmail.com">lucaswhittlebusiness@gmail.com</a>.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Children's Privacy</h2>
+    <p>Prosody is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with personal information, please contact us and we will delete that information.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Your Rights</h2>
+    <p>Depending on your location, you may have certain rights regarding your personal data, including the right to access, correct, or delete your data. To exercise these rights, contact us at <a href="mailto:lucaswhittlebusiness@gmail.com">lucaswhittlebusiness@gmail.com</a>.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. If we make material changes, we will notify you through the app or by updating the date at the top of this page. Continued use of Prosody after changes constitutes your acceptance of the updated policy.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>Contact</h2>
+    <p>If you have questions about this Privacy Policy or how we handle your data, please contact us:</p>
+    <p><a href="mailto:lucaswhittlebusiness@gmail.com">lucaswhittlebusiness@gmail.com</a><br>Lucas Whittle — Developer, Prosody</p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">© 2024 Prosody by Lucas Whittle</p>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

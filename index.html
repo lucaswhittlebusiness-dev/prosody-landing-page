@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prosody — Practice Conversations Before They Happen</title>
+  <meta name="description" content="Prosody helps you practice real conversations with AI characters in real time, then gives you feedback on how you communicated.">
+  <meta property="og:title" content="Prosody — Practice Conversations Before They Happen">
+  <meta property="og:description" content="Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getprosody.com">
+  <meta name="theme-color" content="#FF7A5C">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙</text></svg>">
+
+
+  <style>
+    /* ─── Design tokens ──────────────────────────────────────────── */
+    :root {
+      --bg:             #F5F3EF;
+      --bg-alt:         #EEECE7;
+      --bg-card:        #ECEAE5;
+      --fg:             #141414;
+      --fg-2:           #4E4A46;
+      --fg-3:           #8A8580;
+      --fg-inv:         #F5F3EF;
+      --accent:         #FF7A5C;
+      --accent-muted:   rgba(255,122,92,0.1);
+      --border:         #D9D6CF;
+      --dark-bg:        #0A0A0A;
+      --dark-surface:   #1E1E1E;
+      --dark-border:    #2A2A2A;
+      --dark-fg:        #F2F2F2;
+      --dark-fg-2:      #B0B0B0;
+      --dark-fg-3:      #6A6560;
+
+      --rose:    #C25C6A; --rose-bg:   #FBF0F1;
+      --indigo:  #4A5BA8; --indigo-bg: #EEF0FB;
+      --plum:    #8B5A9F; --plum-bg:   #F5F0FA;
+      --sage:    #5E8C6E; --sage-bg:   #EDF4EF;
+      --clay:    #B5673E; --clay-bg:   #FAF1EC;
+      --slate:   #4E6478; --slate-bg:  #EEF1F5;
+
+      --gold:    #F0AE28;
+      --flame:   #F77440;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --radius-xl:  32px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:           #0A0A0A;
+        --bg-alt:       #1E1E1E;
+        --bg-card:      #1E1E1E;
+        --fg:           #F2F2F2;
+        --fg-2:         #B0B0B0;
+        --fg-3:         #6A6560;
+        --fg-inv:       #0A0A0A;
+        --accent:       #FF7A5C;
+        --accent-muted: rgba(255,122,92,0.1);
+        --border:       #2A2A2A;
+        --dark-bg:      #0A0A0A;
+        --dark-surface: #1E1E1E;
+        --dark-border:  #2A2A2A;
+        --dark-fg:      #F2F2F2;
+        --dark-fg-2:    #B0B0B0;
+        --dark-fg-3:    #6A6560;
+
+        --rose-bg:   #2A191C; --indigo-bg: #171A2B;
+        --plum-bg:   #21182A; --sage-bg:   #16221D;
+        --clay-bg:   #251812; --slate-bg:  #161C23;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg:           #0A0A0A;
+      --bg-alt:       #1E1E1E;
+      --bg-card:      #1E1E1E;
+      --fg:           #F2F2F2;
+      --fg-2:         #B0B0B0;
+      --fg-3:         #6A6560;
+      --fg-inv:       #0A0A0A;
+      --accent:       #FF7A5C;
+      --accent-muted: rgba(255,122,92,0.1);
+      --border:       #2A2A2A;
+      --rose-bg:   #2A191C; --indigo-bg: #171A2B;
+      --plum-bg:   #21182A; --sage-bg:   #16221D;
+      --clay-bg:   #251812; --slate-bg:  #161C23;
+    }
+
+    /* ─── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── Typography ─────────────────────────────────────────────── */
+    .t-display {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    .t-headline {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+
+    .t-subhead {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+
+    .t-overline {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    .t-body-lg {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--fg-2);
+    }
+
+    .t-body {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--fg-2);
+    }
+
+    .t-caption {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      color: var(--fg-3);
+    }
+
+    /* ─── Layout ─────────────────────────────────────────────────── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section { padding: 7rem 0; }
+    .section-dark {
+      background: var(--dark-bg);
+      color: var(--dark-fg);
+    }
+    .section-alt { background: var(--bg-alt); }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header .t-overline {
+      margin-bottom: 1rem;
+    }
+
+    /* ─── Reveal animations ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.65s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    .reveal-d5 { transition-delay: 0.40s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── Navigation ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      padding: 1.25rem 0;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      border-color: var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .nav-logo {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.375rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--fg);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .nav-links a {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--fg-2);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+      cursor: pointer;
+    }
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--fg);
+      border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      color: var(--fg);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-mobile a:hover { color: var(--accent); }
+
+    /* ─── Buttons ─────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.375rem;
+      transition: opacity 0.18s, transform 0.18s, background 0.18s, border-color 0.18s;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fg-2);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { color: var(--fg); border-color: var(--fg-3); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--fg-2);
+      padding: 0.5rem 0;
+    }
+    .btn-ghost:hover { color: var(--fg); }
+
+    .btn-ghost-inv {
+      background: transparent;
+      color: rgba(255,255,255,0.65);
+      padding: 0.5rem 0;
+    }
+    .btn-ghost-inv:hover { color: #fff; }
+
+    .btn-white {
+      background: var(--dark-fg);
+      color: var(--dark-bg);
+    }
+    .btn-white:hover { opacity: 0.88; }
+
+    /* ─── App Store badge ─────────────────────────────────────────── */
+    .app-store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      background: var(--fg);
+      color: var(--bg);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .app-store-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .app-store-btn-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .app-store-btn-sub {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      opacity: 0.65;
+      letter-spacing: 0.02em;
+    }
+    .app-store-btn-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── Phone mockup ─────────────────────────────────────────────── */
+    .phone-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      width: 248px;
+      border-radius: 46px;
+      background: #0A0908;
+      border: 9px solid #0A0908;
+      position: relative;
+      box-shadow:
+        0 0 0 1px #2A2724,
+        0 40px 100px rgba(0,0,0,0.22),
+        0 12px 30px rgba(0,0,0,0.12);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .phone-screen {
+      border-radius: 38px;
+      overflow: hidden;
+      position: relative;
+      background: #141210;
+    }
+
+    .phone-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 86px;
+      height: 26px;
+      background: #0A0908;
+      border-radius: 20px;
+      z-index: 10;
+    }
+
+    /* Phone status bar */
+    .p-statusbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .p-statusbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+    }
+
+    /* Phone app header */
+    .p-header {
+      padding: 8px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .p-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #F2F2F2;
+      letter-spacing: -0.01em;
+    }
+
+    .p-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 1px;
+    }
+
+    /* Category chips */
+    .p-chips {
+      display: flex;
+      gap: 5px;
+      padding: 8px 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .p-chips::-webkit-scrollbar { display: none; }
+
+    .p-chip {
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .p-chip-active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .p-chip-sage { background: rgba(94,140,110,0.25); color: #8CBF9C; }
+    .p-chip-rose { background: rgba(194,92,106,0.25); color: #E08898; }
+    .p-chip-indigo { background: rgba(74,91,168,0.25); color: #8C9ADF; }
+    .p-chip-slate { background: rgba(78,100,120,0.25); color: #8AAABB; }
+
+    /* Scenario cards in phone */
+    .p-cards { padding: 4px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+
+    .p-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 10px 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .p-card-dot {
+      width: 3px;
+      border-radius: 2px;
+      align-self: stretch;
+      flex-shrink: 0;
+      min-height: 28px;
+    }
+
+    .p-card-name {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #F2F2F2;
+      line-height: 1.35;
+    }
+
+    .p-card-cat {
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.38);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    .p-card-icon {
+      margin-left: auto;
+      opacity: 0.22;
+      font-size: 13px;
+    }
+
+    /* Conversation phone */
+    .p-convo-char {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .p-char-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .p-char-name { font-size: 12px; font-weight: 600; color: #F2F2F2; }
+    .p-char-desc { font-size: 9.5px; color: rgba(255,255,255,0.38); margin-top: 1px; }
+
+    .p-messages {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+    }
+
+    .p-msg {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+    }
+
+    .p-msg-right { align-self: flex-end; align-items: flex-end; }
+    .p-msg-left { align-self: flex-start; align-items: flex-start; }
+
+    .p-bubble {
+      padding: 7px 10px;
+      border-radius: 14px;
+      font-size: 10.5px;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    .p-bubble-right {
+      background: var(--accent);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .p-bubble-left {
+      background: rgba(255,255,255,0.1);
+      color: #F2F2F2;
+      border-bottom-left-radius: 4px;
+    }
+
+    .p-msg-time {
+      font-size: 8.5px;
+      color: rgba(255,255,255,0.28);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .p-mic-bar {
+      padding: 10px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .p-waveform {
+      display: flex;
+      align-items: center;
+      gap: 2.5px;
+      height: 20px;
+    }
+
+    .p-wave-bar {
+      width: 2.5px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+
+    .p-mic-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Score phone */
+    .p-score-header {
+      padding: 12px 14px 8px;
+      text-align: center;
+    }
+    .p-score-label { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .p-score-ring-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 6px 0;
+    }
+
+    .p-score-dims {
+      padding: 6px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .p-score-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p-score-row-label {
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.5);
+      width: 62px;
+      flex-shrink: 0;
+    }
+
+    .p-score-track {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .p-score-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .p-score-val {
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+      width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .p-score-actions {
+      padding: 6px 14px 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .p-score-btn {
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .p-score-btn-outline {
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+    }
+
+    .p-score-btn-fill {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ─── Hero ─────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+      padding-bottom: 4rem;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .hero-text { max-width: 540px; }
+
+    .hero-headline {
+      margin-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-body {
+      margin-bottom: 2.25rem;
+      max-width: 38ch;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-phone-shadow {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: var(--accent);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.12;
+      bottom: -20px;
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: 20px;
+      left: -20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sage);
+      box-shadow: 0 0 0 3px rgba(94,140,110,0.2);
+      flex-shrink: 0;
+    }
+
+    .hero-badge-text {
+      font-size: 0.75rem;
+      color: var(--fg-2);
+      font-weight: 500;
+    }
+
+    .hero-badge-text strong {
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* ─── Divider ─────────────────────────────────────────────────── */
+    .divider-bar {
+      display: flex;
+      gap: 4rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 0;
+      overflow: hidden;
+    }
+
+    .divider-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+      flex-shrink: 0;
+    }
+
+    .divider-stat-num {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--fg);
+    }
+
+    .divider-stat-label {
+      font-size: 0.8125rem;
+      color: var(--fg-3);
+      font-weight: 400;
+    }
+
+    /* ─── Real Conversations ──────────────────────────────────────── */
+    .convo-section {
+      background: var(--dark-bg);
+      padding: 7rem 0;
+      overflow: hidden;
+    }
+
+    .convo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .convo-text { color: var(--dark-fg); }
+    .convo-text .t-overline { color: var(--accent); }
+    .convo-text .t-headline { color: var(--dark-fg); }
+
+    .convo-body {
+      margin-top: 1.25rem;
+      color: var(--dark-fg-2);
+      max-width: 38ch;
+    }
+
+    .convo-note {
+      margin-top: 1.75rem;
+      padding: 1rem 1.25rem;
+      border-left: 2px solid var(--accent);
+      background: rgba(47,163,156,0.07);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .convo-note p {
+      font-size: 0.9375rem;
+      color: var(--dark-fg-2);
+      line-height: 1.6;
+    }
+
+    .convo-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ─── Scenarios ──────────────────────────────────────────────── */
+    .cat-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .cat-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .cat-face {
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+    .cat-face svg { width: 60px; height: 60px; display: block; }
+    .cat-card-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--fg);
+      letter-spacing: -0.01em;
+    }
+    .cat-card-desc {
+      font-size: 0.8125rem;
+      color: var(--fg-3);
+      line-height: 1.55;
+      margin-top: 0.125rem;
+    }
+
+    .scenarios-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: end;
+      margin-bottom: 3.5rem;
+    }
+
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .cat-btn {
+      padding: 0.4375rem 0.875rem;
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--fg-2);
+    }
+
+    .cat-btn:hover { border-color: var(--fg-3); color: var(--fg); }
+    .cat-btn.active {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .scenario-card {
+      background: var(--bg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: background 0.18s;
+      cursor: default;
+    }
+
+    .scenario-card:hover { background: var(--bg-alt); }
+
+    .scenario-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .scenario-cat-tag {
+      padding: 0.25rem 0.625rem;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .scenario-name {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--fg);
+      letter-spacing: -0.01em;
+    }
+
+    .scenario-dur {
+      font-size: 0.75rem;
+      color: var(--fg-3);
+    }
+
+    /* ─── Characters ─────────────────────────────────────────────── */
+    .characters-section { background: var(--bg-alt); }
+
+    .chars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .char-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+
+    .char-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .char-avatar {
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+    .char-avatar svg { width: 60px; height: 60px; display: block; }
+
+    .char-name {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      line-height: 1;
+    }
+
+    .char-role {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-top: 0.25rem;
+    }
+
+    .char-desc {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--fg-2);
+      font-style: italic;
+    }
+
+    /* ─── How it works ────────────────────────────────────────────── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+
+    .how-step {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .how-num {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--border);
+      letter-spacing: -0.04em;
+    }
+
+    .how-title {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+      line-height: 1.2;
+    }
+
+    .how-desc {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--fg-2);
+    }
+
+    .how-step-line {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── Score section ───────────────────────────────────────────── */
+    .score-section {
+      background: var(--dark-bg);
+      padding: 7rem 0;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .score-text { color: var(--dark-fg); }
+    .score-text .t-headline { color: var(--dark-fg); }
+
+    .score-desc {
+      margin-top: 1.25rem;
+      color: var(--dark-fg-2);
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      max-width: 38ch;
+    }
+
+    .score-features {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .score-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--dark-fg-2);
+    }
+
+    .score-feature-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .score-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ─── Use cases ───────────────────────────────────────────────── */
+    .usecases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .usecase-item {
+      padding: 2.5rem 2.75rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .usecase-item:hover { background: var(--bg-alt); }
+    .usecase-item:nth-child(2n) { border-right: none; }
+    .usecase-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .usecase-pre {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-bottom: 0.625rem;
+    }
+
+    .usecase-title {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.625rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .usecase-body {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--fg-2);
+    }
+
+    /* ─── App screens ─────────────────────────────────────────────── */
+    .screens-section { background: var(--bg-alt); overflow: hidden; }
+
+    .screens-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 4rem;
+    }
+
+    .screens-phones {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .screen-phone-sm {
+      width: 200px;
+      transform: translateY(24px);
+      opacity: 0.85;
+    }
+
+    .screen-phone-sm .phone {
+      width: 200px;
+      border-radius: 38px;
+      border-width: 7px;
+    }
+
+    .screen-phone-sm .phone-screen { border-radius: 32px; }
+    .screen-phone-sm .phone-island { width: 68px; height: 20px; top: 7px; }
+
+    /* ─── Final CTA ───────────────────────────────────────────────── */
+    .cta-section {
+      background: var(--dark-bg);
+      padding: 9rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-bg-text {
+      position: absolute;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: clamp(8rem, 20vw, 18rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.025);
+      letter-spacing: -0.04em;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .cta-headline {
+      color: var(--dark-fg);
+      max-width: 16ch;
+    }
+
+    .cta-sub {
+      font-size: 1.125rem;
+      color: var(--dark-fg-2);
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────────── */
+    footer {
+      padding: 4rem 0 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .footer-brand-name {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-brand-desc {
+      font-size: 0.875rem;
+      color: var(--fg-3);
+      max-width: 30ch;
+      line-height: 1.5;
+    }
+
+    .footer-links-label {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links-list a {
+      font-size: 0.9375rem;
+      color: var(--fg-2);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .footer-links-list a:hover { color: var(--fg); }
+
+    .footer-bottom {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom-copy {
+      font-size: 0.8125rem;
+      color: var(--fg-3);
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .chars-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .scenarios-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .screens-phones { gap: 1rem; }
+      .screen-phone-sm { width: 180px; }
+      .screen-phone-sm .phone { width: 180px; border-radius: 34px; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 5rem 0; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+
+      .hero-text { max-width: 100%; }
+      .hero-body { max-width: 100%; }
+      .hero-ctas { justify-content: center; }
+
+      .hero-visual { order: -1; }
+
+      .hero-badge { left: 50%; transform: translateX(-50%); white-space: nowrap; }
+
+      .phone { width: 220px; border-radius: 40px; border-width: 8px; }
+      .phone-screen { border-radius: 33px; }
+      .phone-island { width: 76px; height: 23px; }
+
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+
+      .convo-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .convo-text { order: 1; }
+      .convo-visual { order: 0; }
+
+      .score-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .score-text { order: 1; }
+      .score-visual { order: 0; }
+
+      .scenarios-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .scenarios-grid { grid-template-columns: 1fr; }
+      .cat-cards-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .chars-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .how-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+      .usecases-grid { grid-template-columns: 1fr; }
+      .usecase-item:nth-child(2n) { border-right: none; }
+      .usecase-item { border-right: none !important; }
+      .usecase-item:last-child { border-bottom: none; }
+      .usecase-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .usecase-item:last-child { border-bottom: none !important; }
+
+      .screens-intro { grid-template-columns: 1fr; gap: 2rem; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+      .divider-bar { gap: 2rem; flex-wrap: wrap; }
+
+      .screens-phones { flex-wrap: nowrap; overflow-x: auto; padding: 0 1.5rem 2rem; justify-content: flex-start; }
+      .screen-phone-sm { flex-shrink: 0; }
+
+      .cta-section { padding: 6rem 0; }
+    }
+
+    @media (max-width: 480px) {
+      .t-display { font-size: clamp(2.5rem, 11vw, 3rem); }
+      .chars-grid { grid-template-columns: 1fr; }
+      .hero-badge { display: none; }
+      .screens-phones { gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Navigation ──────────────────────────────────────────── -->
+<nav class="nav" id="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Prosody</a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#scenarios">Scenarios</a></li>
+      <li><a href="#characters">Characters</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="https://apps.apple.com/app/prosody" class="btn btn-primary" style="display:none" id="nav-download">Download</a>
+      <a href="https://apps.apple.com/app/prosody" class="btn btn-outline" id="nav-cta">Download on App Store</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Navigation menu">
+  <button style="position:absolute;top:1.5rem;right:1.5rem;font-size:1.5rem;color:var(--fg-2);cursor:pointer;" id="nav-close" aria-label="Close menu">✕</button>
+  <a href="#how-it-works">How it works</a>
+  <a href="#scenarios">Scenarios</a>
+  <a href="#characters">Characters</a>
+  <a href="https://apps.apple.com/app/prosody" class="btn btn-primary" style="margin-top:1rem;">Download on App Store</a>
+</div>
+
+<!-- ─── Hero ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="t-overline reveal">Conversation Practice</p>
+        <h1 class="t-display hero-headline reveal reveal-d1">Practice the conversation<br><em>before it happens.</em></h1>
+        <p class="t-body-lg hero-body reveal reveal-d2">Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.</p>
+        <div class="hero-ctas reveal reveal-d3">
+          <a href="https://apps.apple.com/app/prosody" class="app-store-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="app-store-btn-text">
+              <span class="app-store-btn-sub">Download on the</span>
+              <span class="app-store-btn-name">App Store</span>
+            </div>
+          </a>
+          <a href="#how-it-works" class="btn btn-ghost reveal reveal-d4">
+            See how it works
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal reveal-d2">
+        <div class="phone-wrap">
+          <div class="hero-phone-shadow"></div>
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/home-web.png" alt="Prosody home screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+
+          <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            <div class="hero-badge-text"><strong>50 scenarios</strong> · 57 characters</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Stats Divider ─────────────────────────────────────────── -->
+<div class="container">
+  <div class="divider-bar reveal">
+    <div class="divider-stat">
+      <span class="divider-stat-num">50</span>
+      <span class="divider-stat-label">Scenarios to practice</span>
+    </div>
+    <div class="divider-stat">
+      <span class="divider-stat-num">57</span>
+      <span class="divider-stat-label">Unique AI characters</span>
+    </div>
+    <div class="divider-stat">
+      <span class="divider-stat-num">9</span>
+      <span class="divider-stat-label">Practice categories</span>
+    </div>
+    <div class="divider-stat">
+      <span class="divider-stat-num">∞</span>
+      <span class="divider-stat-label">Times you can try again</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Real Conversations ────────────────────────────────────── -->
+<section class="convo-section" id="how-it-works">
+  <div class="container">
+    <div class="convo-grid">
+      <div class="convo-text">
+        <p class="t-overline reveal">Real-Time Voice</p>
+        <h2 class="t-headline reveal reveal-d1">It's not a script.<br><em>It's a conversation.</em></h2>
+        <p class="convo-body reveal reveal-d2">The AI character responds to exactly what you say. Take a pause, go off-script, say the wrong thing. It adapts. Which means you have to, too.</p>
+        <div class="convo-note reveal reveal-d3">
+          <p>Every conversation is different. You can't memorize your way through it.</p>
+        </div>
+      </div>
+
+      <div class="convo-visual reveal reveal-d2">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/conversation-web.png" alt="Live conversation with Mara" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Scenarios ─────────────────────────────────────────────── -->
+<section class="section" id="scenarios">
+  <div class="container">
+    <div class="scenarios-header">
+      <div>
+        <p class="t-overline reveal">50 Scenarios</p>
+        <h2 class="t-headline reveal reveal-d1">There's a conversation<br><em>for that.</em></h2>
+      </div>
+      <div>
+        <p class="t-body reveal reveal-d2">Nine categories, from the easy to the impossible. Every scenario is a real situation you might actually face.</p>
+      </div>
+    </div>
+
+    <div class="cat-cards-grid reveal">
+      <!-- Everyday: Coffee -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#E65D3B"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M10 2v2"/>
+              <path d="M14 2v2"/>
+              <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
+              <path d="M6 2v2"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Everyday convos</p>
+          <p class="cat-card-desc">The small exchanges that fill your week — orders, lifts, neighbours, strangers.</p>
+        </div>
+      </div>
+      <!-- Dating: Heart -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#C25C6A"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Dating</p>
+          <p class="cat-card-desc">First dates and the conversations that decide if there's a second.</p>
+        </div>
+      </div>
+      <!-- Friendships: Users -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#D4AF37"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <circle cx="9" cy="7" r="4"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Friendships</p>
+          <p class="cat-card-desc">Meeting people and turning acquaintances into people you actually know.</p>
+        </div>
+      </div>
+      <!-- Work: Briefcase -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#4A7BA8"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              <rect width="20" height="14" x="2" y="6" rx="2"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Work</p>
+          <p class="cat-card-desc">Colleagues, managers, and the conversations you can't avoid.</p>
+        </div>
+      </div>
+      <!-- Public speaking: Megaphone -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#C25C6A"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
+              <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/>
+              <path d="M8 6v8"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Public speaking</p>
+          <p class="cat-card-desc">Saying something in front of people who are all looking at you.</p>
+        </div>
+      </div>
+      <!-- Difficult convos: Handshake -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#4A8C52"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="m11 17 2 2a1 1 0 1 0 3-3"/>
+              <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/>
+              <path d="m21 3 1 11h-2"/>
+              <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/>
+              <path d="M3 4h8"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Difficult convos</p>
+          <p class="cat-card-desc">Apologies, confrontations, and the things you've been putting off.</p>
+        </div>
+      </div>
+      <!-- Social anxiety: Sprout -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#E65D3B"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/>
+              <path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/>
+              <path d="M5 21h14"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Social anxiety</p>
+          <p class="cat-card-desc">Room entries, small talk, and not knowing what to say next.</p>
+        </div>
+      </div>
+      <!-- Sales: TrendingUp -->
+      <div class="cat-card">
+        <div class="cat-face">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="30" fill="#D4AF37"/>
+            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M16 7h6v6"/>
+              <path d="m22 7-8.5 8.5-5-5L2 17"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="cat-card-name">Sales</p>
+          <p class="cat-card-desc">Pitching, negotiating, and asking for what you want.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Characters ────────────────────────────────────────────── -->
+<section class="section characters-section" id="characters">
+  <div class="container">
+    <div class="section-header">
+      <p class="t-overline reveal">57 Characters</p>
+      <h2 class="t-headline reveal reveal-d1">Everyone has a different<br><em>way of talking.</em></h2>
+    </div>
+
+    <div class="chars-grid">
+      <!-- Mara: open eyes, smile, blush — sage #5E8C6E -->
+      <div class="char-card reveal">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#5E8C6E"/>
+            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Mara</p>
+          <p class="char-role">Barista · Morning Rush</p>
+        </div>
+        <p class="char-desc">Warm, quick to joke. Six people behind you and the espresso machine is on its last nerve.</p>
+      </div>
+
+      <!-- Ingrid: open eyes, surprised — slate #4E6478 -->
+      <div class="char-card reveal reveal-d1">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#4E6478"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="50" cy="67" r="6" fill="#2B2118"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Ingrid</p>
+          <p class="char-role">Gate Agent · Delay</p>
+        </div>
+        <p class="char-desc">Brisk and unflappable. Delivered the same bad news forty times today and her face shows none of it.</p>
+      </div>
+
+      <!-- Ellis: open eyes, smile, no blush — indigo #4A5BA8 -->
+      <div class="char-card reveal reveal-d2">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#4A5BA8"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Ellis</p>
+          <p class="char-role">Investor · Meeting Room</p>
+        </div>
+        <p class="char-desc">Has heard this pitch before. Probably seven versions of it. Gets to the hard question before you're ready.</p>
+      </div>
+
+      <!-- Vera: wink, smile, blush — rose #C25C6A -->
+      <div class="char-card reveal reveal-d3">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#C25C6A"/>
+            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <path d="M 29 46 Q 36 40 43 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Vera</p>
+          <p class="char-role">Housemate · Living Room</p>
+        </div>
+        <p class="char-desc">About the dishes, again. Not angry exactly. More like tired. She wants this resolved today.</p>
+      </div>
+
+      <!-- Rosalind: open eyes, smile — plum #8B5A9F -->
+      <div class="char-card reveal reveal-d1">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#8B5A9F"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Rosalind</p>
+          <p class="char-role">Manager · Open Door</p>
+        </div>
+        <p class="char-desc">Fair, direct, and slightly overscheduled. Her feedback is useful if you can handle hearing it.</p>
+      </div>
+
+      <!-- Otis: open eyes, surprised — clay #B5673E -->
+      <div class="char-card reveal reveal-d2">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#B5673E"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
+            <circle cx="50" cy="67" r="6" fill="#2B2118"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Otis</p>
+          <p class="char-role">Friend · You let him down</p>
+        </div>
+        <p class="char-desc">Not looking for an explanation. Looking to see if you mean it this time. You'll know when it lands.</p>
+      </div>
+
+      <!-- Noor: wink, smile, blush — rose #C25C6A -->
+      <div class="char-card reveal reveal-d3">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#C25C6A"/>
+            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
+            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
+            <path d="M 57 46 Q 64 40 71 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Noor</p>
+          <p class="char-role">First Date</p>
+        </div>
+        <p class="char-desc">Warm but not easy. Asking real questions, listening to the answers, deciding what she thinks of you.</p>
+      </div>
+
+      <!-- Wildcard: happy eyes, laugh — neutral #8A8580 -->
+      <div class="char-card reveal reveal-d4">
+        <div class="char-avatar">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="52" r="40" fill="#8A8580"/>
+            <path d="M 29 46 Q 36 40 43 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <path d="M 57 46 Q 64 40 71 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="50" cy="67" rx="13" ry="9" fill="#2B2118"/>
+          </svg>
+        </div>
+        <div>
+          <p class="char-name">Wildcard</p>
+          <p class="char-role">Unknown · Random</p>
+        </div>
+        <p class="char-desc">A stranger you haven't met yet. Different every time. You won't know what you're walking into.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How it works ──────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header" style="max-width:480px;">
+      <p class="t-overline reveal">The Experience</p>
+      <h2 class="t-headline reveal reveal-d1">Choose. Speak. Score.<br><em>Try again.</em></h2>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-step reveal">
+        <div class="how-step-line"></div>
+        <p class="how-num">01</p>
+        <p class="how-title">Choose a situation</p>
+        <p class="how-desc">Pick a conversation you want to practice. Interview nerves, first date jitters, a difficult talk you've been putting off.</p>
+      </div>
+      <div class="how-step reveal reveal-d1">
+        <div class="how-step-line"></div>
+        <p class="how-num">02</p>
+        <p class="how-title">Have the conversation</p>
+        <p class="how-desc">Speak naturally with an AI character in real time. They respond to what you actually say, not a script.</p>
+      </div>
+      <div class="how-step reveal reveal-d2">
+        <div class="how-step-line"></div>
+        <p class="how-num">03</p>
+        <p class="how-title">Get your score</p>
+        <p class="how-desc">See how you communicated. Specific feedback on what worked and what to improve next time.</p>
+      </div>
+      <div class="how-step reveal reveal-d3">
+        <div class="how-step-line"></div>
+        <p class="how-num">04</p>
+        <p class="how-title">Try again</p>
+        <p class="how-desc">Each conversation is different. Practice until it feels natural, then take the real one with confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Score ─────────────────────────────────────────────────── -->
+<section class="score-section">
+  <div class="container">
+    <div class="score-grid">
+      <div class="score-text">
+        <p class="t-overline reveal" style="color:var(--accent);">Feedback</p>
+        <h2 class="t-headline reveal reveal-d1">Then see<br><em>how you did.</em></h2>
+        <p class="score-desc reveal reveal-d2">Every session ends with a score and specific feedback — not a grade, but a map of where the conversation went and how to navigate it better.</p>
+        <div class="score-features reveal reveal-d3">
+          <div class="score-feature"><div class="score-feature-dot"></div>Scored immediately after every session</div>
+          <div class="score-feature"><div class="score-feature-dot"></div>Specific, actionable feedback on what happened</div>
+          <div class="score-feature"><div class="score-feature-dot"></div>Track your progress as you improve over time</div>
+          <div class="score-feature"><div class="score-feature-dot"></div>Try the same scenario again with new insights</div>
+        </div>
+      </div>
+
+      <div class="score-visual reveal reveal-d2">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/results-score.png" alt="Prosody results screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Use Cases ─────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" style="max-width:560px; margin-bottom:3rem;">
+      <p class="t-overline reveal">For conversations that matter</p>
+      <h2 class="t-headline reveal reveal-d1">Practice it<br><em>before it counts.</em></h2>
+    </div>
+
+    <div class="usecases-grid reveal">
+      <div class="usecase-item">
+        <p class="usecase-pre">Before the interview</p>
+        <h3 class="usecase-title">Difficult questions don't have to catch you off guard.</h3>
+        <p class="usecase-body">Practice your answers without the stakes. Figure out what you actually want to say before you're sitting across from someone who matters.</p>
+      </div>
+
+      <div class="usecase-item">
+        <p class="usecase-pre">Before the first date</p>
+        <h3 class="usecase-title">Get comfortable talking to someone new.</h3>
+        <p class="usecase-body">Conversation is a skill. Practice the early minutes — the small talk, the questions, the silences — until they feel easy.</p>
+      </div>
+
+      <div class="usecase-item">
+        <p class="usecase-pre">Before the difficult conversation</p>
+        <h3 class="usecase-title">Find the words before you need them.</h3>
+        <p class="usecase-body">The apology, the confrontation, the thing you've been putting off. Say it out loud first. Know how it sounds before it matters.</p>
+      </div>
+
+      <div class="usecase-item">
+        <p class="usecase-pre">Before the presentation</p>
+        <h3 class="usecase-title">Practice speaking clearly when everyone's listening.</h3>
+        <p class="usecase-body">Public speaking is practiced, not innate. Rehearse in a space where it's safe to go wrong until going wrong stops happening.</p>
+      </div>
+
+      <div class="usecase-item">
+        <p class="usecase-pre">Before the sales call</p>
+        <h3 class="usecase-title">Handle the objections before they happen.</h3>
+        <p class="usecase-body">Know your pitch cold. Practice the pushback, the redirect, the close. Walk in having already heard the hard questions.</p>
+      </div>
+
+      <div class="usecase-item">
+        <p class="usecase-pre">Before anything, really</p>
+        <h3 class="usecase-title">Conversation is a skill like any other.</h3>
+        <p class="usecase-body">The more you practice, the better you get. Prosody gives you the space to practice without the pressure of the real thing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── App Screens ────────────────────────────────────────────── -->
+<section class="section screens-section">
+  <div class="container">
+    <div class="screens-intro">
+      <div>
+        <p class="t-overline reveal">The App</p>
+        <h2 class="t-headline reveal reveal-d1">Everything in one place.<br><em>Nothing you don't need.</em></h2>
+      </div>
+      <p class="t-body-lg reveal reveal-d2" style="max-width:36ch;">Pick a scenario, speak naturally, read your feedback. Prosody gets out of the way so you can focus on the conversation.</p>
+    </div>
+
+    <!-- Three phones showing different screens -->
+    <div class="screens-phones">
+      <!-- Phone 1: Home screen -->
+      <div class="screen-phone-sm reveal reveal-d1">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/home-web.png" alt="Prosody home screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 2: Progress / Journey (center, larger) -->
+      <div class="reveal reveal-d2">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/progress-web.png" alt="Prosody progress screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 3: Practice / Categories -->
+      <div class="screen-phone-sm reveal reveal-d3">
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
+              <img src="screenshots/practice-web.png" alt="Prosody practice screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Final CTA ─────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-bg-text" aria-hidden="true">Practice</div>
+  <div class="container">
+    <div class="cta-inner">
+      <p class="t-overline reveal" style="color:var(--accent);">Download Free</p>
+      <h2 class="t-headline cta-headline reveal reveal-d1" style="color:var(--dark-fg);">The next conversation doesn't have to be your first try.</h2>
+      <p class="cta-sub reveal reveal-d2">Practice it with Prosody.</p>
+      <div class="cta-actions reveal reveal-d3">
+        <a href="https://apps.apple.com/app/prosody" class="app-store-btn" style="background:var(--dark-fg);color:var(--dark-bg);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div class="app-store-btn-text">
+            <span class="app-store-btn-sub">Download on the</span>
+            <span class="app-store-btn-name">App Store</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-brand-name">Prosody</p>
+        <p class="footer-brand-desc">Practice conversations before they happen. Real-time AI conversation practice for iOS.</p>
+      </div>
+
+      <div>
+        <p class="footer-links-label">Navigate</p>
+        <ul class="footer-links-list" role="list">
+          <li><a href="/">Home</a></li>
+          <li><a href="#scenarios">Scenarios</a></li>
+          <li><a href="#characters">Characters</a></li>
+          <li><a href="https://apps.apple.com/app/prosody">App Store</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="footer-links-label">Legal</p>
+        <ul class="footer-links-list" role="list">
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+          <li><a href="mailto:lucaswhittlebusiness@gmail.com">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-bottom-copy">© 2024 Prosody. Made by <a href="mailto:lucaswhittlebusiness@gmail.com" style="color:var(--fg-2);text-decoration:underline;text-underline-offset:3px;">Lucas Whittle</a>.</p>
+      <p class="footer-bottom-copy">iOS app for conversation practice.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ─── Scroll reveal ──────────────────────────────────────────
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+    // Immediately show elements already in the viewport
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) el.classList.add('in');
+  });
+
+  // ─── Nav scroll state ────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  const navCta = document.getElementById('nav-cta');
+  const navDownload = document.getElementById('nav-download');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      nav.classList.add('scrolled');
+      navCta.style.display = 'none';
+      navDownload.style.display = 'inline-flex';
+    } else {
+      nav.classList.remove('scrolled');
+      navCta.style.display = '';
+      navDownload.style.display = 'none';
+    }
+  }, { passive: true });
+
+  // ─── Mobile nav ─────────────────────────────────────────────
+  const burger = document.getElementById('nav-burger');
+  const mobileNav = document.getElementById('nav-mobile');
+  const closeBtn = document.getElementById('nav-close');
+
+  function openMobileNav() {
+    mobileNav.classList.add('open');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  burger.addEventListener('click', openMobileNav);
+  closeBtn.addEventListener('click', closeMobileNav);
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+
+  // ─── Scenario filter ─────────────────────────────────────────
+  const catBtns = document.querySelectorAll('.cat-btn');
+  const scenarioCards = document.querySelectorAll('.scenario-card');
+
+  catBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cat = btn.dataset.cat;
+      scenarioCards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ─── Smooth anchor scroll with offset ───────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
