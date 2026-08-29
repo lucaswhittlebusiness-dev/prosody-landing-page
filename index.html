@@ -293,13 +293,16 @@
     .nav-mobile.open { display: flex; }
     .nav-mobile a {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 2.25rem;
-      font-weight: 400;
+      font-size: 2rem;
+      font-weight: 500;
       color: var(--fg);
       text-decoration: none;
       letter-spacing: -0.02em;
     }
     .nav-mobile a:hover { color: var(--accent); }
+    .nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
     /* ─── Buttons ─────────────────────────────────────────────────── */
     .btn {
@@ -351,36 +354,51 @@
     }
     .btn-white:hover { opacity: 0.88; }
 
-    /* ─── App Store badge ─────────────────────────────────────────── */
-    .app-store-btn {
+    /* ─── Store badges ────────────────────────────────────────────── */
+    .store-badges {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .store-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.625rem;
-      background: var(--fg);
-      color: var(--bg);
-      padding: 0.75rem 1.25rem;
-      border-radius: var(--radius-sm);
+      gap: 0.75rem;
+      background: #000;
+      color: #fff;
+      padding: 0.6rem 1.125rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
       text-decoration: none;
-      transition: opacity 0.18s, transform 0.18s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.28), 0 1px 2px rgba(0,0,0,0.18);
+      transition: opacity 0.18s, transform 0.18s, box-shadow 0.18s;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
     }
-    .app-store-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-
-    .app-store-btn-text {
+    .store-badge:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.32), 0 2px 4px rgba(0,0,0,0.18);
+    }
+    .store-badge-text {
       display: flex;
       flex-direction: column;
-      gap: 0.1rem;
+      line-height: 1;
     }
-    .app-store-btn-sub {
-      font-size: 0.6875rem;
+    .store-badge-sub {
+      font-size: 0.625rem;
       font-weight: 400;
-      opacity: 0.65;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
+      opacity: 0.8;
+      margin-bottom: 0.2rem;
     }
-    .app-store-btn-name {
-      font-size: 0.9375rem;
+    .store-badge-name {
+      font-size: 1.0625rem;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
+    /* keep old class working for any missed instances */
+    .app-store-btn { display: none; }
 
     /* ─── Phone mockup ─────────────────────────────────────────────── */
     .phone-wrap {
@@ -1438,7 +1456,13 @@
 
     <div class="nav-right">
       <a href="https://apps.apple.com/app/prosody" class="btn btn-primary" style="display:none" id="nav-download">Download</a>
-      <a href="https://apps.apple.com/app/prosody" class="btn btn-outline" id="nav-cta">Download on App Store</a>
+      <a href="https://apps.apple.com/app/prosody" class="store-badge" id="nav-cta" style="padding:0.45rem 0.875rem;" aria-label="Download on the App Store">
+        <svg width="16" height="19" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+        <div class="store-badge-text">
+          <span class="store-badge-sub" style="font-size:0.55rem;">Download on the</span>
+          <span class="store-badge-name" style="font-size:0.875rem;">App Store</span>
+        </div>
+      </a>
       <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -1448,11 +1472,30 @@
 
 <!-- Mobile nav overlay -->
 <div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Navigation menu">
-  <button style="position:absolute;top:1.5rem;right:1.5rem;font-size:1.5rem;color:var(--fg-2);cursor:pointer;" id="nav-close" aria-label="Close menu">✕</button>
   <a href="#how-it-works">How it works</a>
   <a href="#scenarios">Scenarios</a>
   <a href="#characters">Characters</a>
-  <a href="https://apps.apple.com/app/prosody" class="btn btn-primary" style="margin-top:1rem;">Download on App Store</a>
+  <div class="store-badges" style="margin-top:1rem;flex-direction:column;align-items:center;">
+    <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
+      <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+      <div class="store-badge-text">
+        <span class="store-badge-sub">Download on the</span>
+        <span class="store-badge-name">App Store</span>
+      </div>
+    </a>
+    <a href="https://play.google.com/store" class="store-badge" aria-label="Get it on Google Play">
+      <svg width="20" height="22" viewBox="0 0 20 22" fill="none" aria-hidden="true">
+        <path d="M1 0.5L12 11L1 21.5V0.5Z" fill="#00C1FF"/>
+        <path d="M1 0.5L12 11L16.5 6.5L3.5 0.5H1Z" fill="#00E676"/>
+        <path d="M1 21.5L12 11L16.5 15.5L3.5 21.5H1Z" fill="#FF3D00"/>
+        <path d="M12 11L19.5 7L19.5 15L12 11Z" fill="#FFCD00"/>
+      </svg>
+      <div class="store-badge-text">
+        <span class="store-badge-sub">GET IT ON</span>
+        <span class="store-badge-name">Google Play</span>
+      </div>
+    </a>
+  </div>
 </div>
 
 <!-- ─── Hero ─────────────────────────────────────────────────── -->
@@ -1464,13 +1507,27 @@
         <h1 class="t-display hero-headline reveal reveal-d1">Practice the conversation<br><em>before it happens.</em></h1>
         <p class="t-body-lg hero-body reveal reveal-d2">Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.</p>
         <div class="hero-ctas reveal reveal-d3">
-          <a href="https://apps.apple.com/app/prosody" class="app-store-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            <div class="app-store-btn-text">
-              <span class="app-store-btn-sub">Download on the</span>
-              <span class="app-store-btn-name">App Store</span>
-            </div>
-          </a>
+          <div class="store-badges">
+            <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
+              <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">Download on the</span>
+                <span class="store-badge-name">App Store</span>
+              </div>
+            </a>
+            <a href="https://play.google.com/store" class="store-badge" aria-label="Get it on Google Play">
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" aria-hidden="true">
+                <path d="M1 0.5L12 11L1 21.5V0.5Z" fill="#00C1FF"/>
+                <path d="M1 0.5L12 11L16.5 6.5L3.5 0.5H1Z" fill="#00E676"/>
+                <path d="M1 21.5L12 11L16.5 15.5L3.5 21.5H1Z" fill="#FF3D00"/>
+                <path d="M12 11L19.5 7L19.5 15L12 11Z" fill="#FFCD00"/>
+              </svg>
+              <div class="store-badge-text">
+                <span class="store-badge-sub">GET IT ON</span>
+                <span class="store-badge-name">Google Play</span>
+              </div>
+            </a>
+          </div>
           <a href="#how-it-works" class="btn btn-ghost reveal reveal-d4">
             See how it works
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
@@ -2025,13 +2082,27 @@
       <h2 class="t-headline cta-headline reveal reveal-d1" style="color:var(--dark-fg);">The next conversation doesn't have to be your first try.</h2>
       <p class="cta-sub reveal reveal-d2">Practice it with Prosody.</p>
       <div class="cta-actions reveal reveal-d3">
-        <a href="https://apps.apple.com/app/prosody" class="app-store-btn" style="background:var(--dark-fg);color:var(--dark-bg);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          <div class="app-store-btn-text">
-            <span class="app-store-btn-sub">Download on the</span>
-            <span class="app-store-btn-name">App Store</span>
-          </div>
-        </a>
+        <div class="store-badges">
+          <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
+            <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+            <div class="store-badge-text">
+              <span class="store-badge-sub">Download on the</span>
+              <span class="store-badge-name">App Store</span>
+            </div>
+          </a>
+          <a href="https://play.google.com/store" class="store-badge" aria-label="Get it on Google Play">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" aria-hidden="true">
+              <path d="M1 0.5L12 11L1 21.5V0.5Z" fill="#00C1FF"/>
+              <path d="M1 0.5L12 11L16.5 6.5L3.5 0.5H1Z" fill="#00E676"/>
+              <path d="M1 21.5L12 11L16.5 15.5L3.5 21.5H1Z" fill="#FF3D00"/>
+              <path d="M12 11L19.5 7L19.5 15L12 11Z" fill="#FFCD00"/>
+            </svg>
+            <div class="store-badge-text">
+              <span class="store-badge-sub">GET IT ON</span>
+              <span class="store-badge-name">Google Play</span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -2111,22 +2182,26 @@
   // ─── Mobile nav ─────────────────────────────────────────────
   const burger = document.getElementById('nav-burger');
   const mobileNav = document.getElementById('nav-mobile');
-  const closeBtn = document.getElementById('nav-close');
 
   function openMobileNav() {
     mobileNav.classList.add('open');
+    burger.classList.add('open');
     burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Close menu');
     document.body.style.overflow = 'hidden';
   }
 
   function closeMobileNav() {
     mobileNav.classList.remove('open');
+    burger.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open menu');
     document.body.style.overflow = '';
   }
 
-  burger.addEventListener('click', openMobileNav);
-  closeBtn.addEventListener('click', closeMobileNav);
+  burger.addEventListener('click', () => {
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
   mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
 
   // ─── Scenario filter ─────────────────────────────────────────
