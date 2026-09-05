@@ -1291,7 +1291,9 @@
     }
 
     @media (max-width: 768px) {
-      .habit-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .habit-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+      .habit-features { align-items: center; }
+      .habit-feature { text-align: left; }
     }
 
     /* ─── Use cases ───────────────────────────────────────────────── */
@@ -1516,6 +1518,8 @@
     @media (max-width: 768px) {
       .section { padding: 5rem 0; }
 
+      #nav-cta, #nav-download { display: none !important; }
+
       .hero-grid {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -1525,6 +1529,7 @@
       .hero-text { max-width: 100%; }
       .hero-body { max-width: 100%; }
       .hero-ctas { justify-content: center; }
+      .store-badges { justify-content: center; }
 
       .hero-visual { order: -1; }
 
