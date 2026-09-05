@@ -1176,6 +1176,124 @@
       justify-content: center;
     }
 
+    /* ─── Habit section ──────────────────────────────────────────── */
+    .habit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .habit-features {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .habit-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--fg-2);
+    }
+
+    .habit-feature-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .habit-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .notif-card {
+      background: color-mix(in srgb, var(--bg-card) 95%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .notif-card {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+      }
+    }
+    :root[data-theme="dark"] .notif-card {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .notif-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.125rem;
+    }
+
+    .notif-app {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg-3);
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+    }
+
+    .notif-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin-top: 0.125rem;
+    }
+
+    .notif-body {
+      font-size: 0.875rem;
+      color: var(--fg-2);
+      line-height: 1.4;
+      margin-top: 0.125rem;
+    }
+
+    .notif-time {
+      font-size: 0.75rem;
+      color: var(--fg-3);
+      margin-top: 0.5rem;
+    }
+
+    .notif-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .notif-card-muted {
+      opacity: 0.45;
+      transform: scale(0.96);
+      transform-origin: top center;
+    }
+
+    @media (max-width: 768px) {
+      .habit-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
     /* ─── Use cases ───────────────────────────────────────────────── */
     .usecases-grid {
       display: grid;
@@ -1305,6 +1423,15 @@
       gap: 1rem;
       justify-content: center;
       margin-top: 0.5rem;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-pricing {
+      font-size: 0.8125rem;
+      color: var(--dark-fg-3);
+      margin-top: 0.75rem;
+      letter-spacing: 0.01em;
     }
 
     /* ─── Footer ──────────────────────────────────────────────────── */
@@ -1571,9 +1698,9 @@
       <div class="convo-text">
         <p class="t-overline reveal">Real-Time Voice</p>
         <h2 class="t-headline reveal reveal-d1">It's not a script.<br><em>It's a conversation.</em></h2>
-        <p class="convo-body reveal reveal-d2">The AI character responds to exactly what you say. Take a pause, go off-script, say the wrong thing. It adapts. Which means you have to, too.</p>
+        <p class="convo-body reveal reveal-d2">The AI character responds to exactly what you say — and sounds like it. Their tone shifts with the conversation. Warmer when things are going well. More guarded when they're not. Take a pause, go off-script, push back. It adapts.</p>
         <div class="convo-note reveal reveal-d3">
-          <p>Every conversation is different. You can't memorize your way through it.</p>
+          <p>Every conversation sounds different. You can't rehearse for that.</p>
         </div>
       </div>
 
@@ -1964,6 +2091,47 @@
   </div>
 </section>
 
+<!-- ─── Habit ───────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="habit-grid">
+      <div>
+        <p class="t-overline reveal">Build the Habit</p>
+        <h2 class="t-headline reveal reveal-d1">Once a week<br><em>isn't enough.</em></h2>
+        <p class="t-body reveal reveal-d2" style="margin-top:1.25rem;max-width:38ch;">The conversations that matter most are the ones you haven't practiced enough. Daily reminders make sure you don't let that slide. Pick a time. Show up. Get better.</p>
+        <div class="habit-features reveal reveal-d3">
+          <div class="habit-feature"><div class="habit-feature-dot"></div>Set a reminder during onboarding — morning, afternoon, or evening</div>
+          <div class="habit-feature"><div class="habit-feature-dot"></div>A daily nudge to practice before the real thing</div>
+          <div class="habit-feature"><div class="habit-feature-dot"></div>Streak tracking keeps your momentum visible</div>
+        </div>
+      </div>
+
+      <div class="habit-visual reveal reveal-d2">
+        <div class="notif-wrap">
+          <div class="notif-card">
+            <div class="notif-icon">🎙</div>
+            <div style="flex:1;min-width:0;">
+              <p class="notif-app">Prosody</p>
+              <p class="notif-title">Time to practice.</p>
+              <p class="notif-body">Your daily conversation is ready.</p>
+              <p class="notif-time">now</p>
+            </div>
+          </div>
+          <div class="notif-card notif-card-muted">
+            <div class="notif-icon" style="background:var(--bg-alt);">📅</div>
+            <div style="flex:1;min-width:0;">
+              <p class="notif-app">Prosody</p>
+              <p class="notif-title">3-day streak.</p>
+              <p class="notif-body">Keep it going — practice today.</p>
+              <p class="notif-time">yesterday</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ─── Use Cases ─────────────────────────────────────────────── -->
 <section class="section">
   <div class="container">
@@ -2066,7 +2234,7 @@
   <div class="cta-bg-text" aria-hidden="true">Practice</div>
   <div class="container">
     <div class="cta-inner">
-      <p class="t-overline reveal" style="color:var(--accent);">Download Free</p>
+      <p class="t-overline reveal" style="color:var(--accent);">Try Free</p>
       <h2 class="t-headline cta-headline reveal reveal-d1" style="color:var(--dark-fg);">The next conversation doesn't have to be your first try.</h2>
       <p class="cta-sub reveal reveal-d2">Practice it with Prosody.</p>
       <div class="cta-actions reveal reveal-d3">
@@ -2081,6 +2249,7 @@
           </a>
           <span class="android-soon">Android coming soon</span>
         </div>
+        <p class="cta-pricing reveal reveal-d4">7-day free trial on annual plan &middot; $7.99/month or $59.99/year &middot; cancel anytime</p>
       </div>
     </div>
   </div>
