@@ -15,7 +15,7 @@
   <meta name="twitter:description" content="Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.">
   <meta name="twitter:image" content="https://getprosody.com/screenshots/home-web.png">
   <meta name="theme-color" content="#FF7A5C">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙</text></svg>">
+  <link rel="icon" type="image/png" href="favicon-64.png">
 
 
   <style>
@@ -48,10 +48,10 @@
       --gold:    #F0AE28;
       --flame:   #F77440;
 
-      --radius-sm:  6px;
-      --radius-md:  12px;
-      --radius-lg:  20px;
-      --radius-xl:  32px;
+      --radius-sm:  10px;
+      --radius-md:  16px;
+      --radius-lg:  24px;
+      --radius-xl:  36px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -235,6 +235,9 @@
     }
 
     .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
       font-size: 1.375rem;
       font-weight: 500;
@@ -242,6 +245,12 @@
       text-decoration: none;
       color: var(--fg);
       flex-shrink: 0;
+    }
+    .nav-logo-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: block;
     }
 
     .nav-links {
@@ -1589,7 +1598,10 @@
 <!-- ─── Navigation ──────────────────────────────────────────── -->
 <nav class="nav" id="nav" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="/" class="nav-logo">Prosody</a>
+    <a href="/" class="nav-logo">
+      <img src="logo.png" alt="" class="nav-logo-img" aria-hidden="true">
+      Prosody
+    </a>
 
     <ul class="nav-links" role="list">
       <li><a href="#how-it-works">How it works</a></li>
@@ -2265,7 +2277,10 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <p class="footer-brand-name">Prosody</p>
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+          <img src="logo.png" alt="Prosody logo" style="width:32px;height:32px;border-radius:9px;display:block;">
+          <p class="footer-brand-name" style="margin-bottom:0;">Prosody</p>
+        </div>
         <p class="footer-brand-desc">Practice conversations before they happen. Real-time AI conversation practice for iOS.</p>
       </div>
 
