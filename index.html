@@ -243,7 +243,8 @@
 
 
     /* ─── Characters carousel ────────────────────────────────────── */
-    .chars-ui { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+    .chars-hint { margin-bottom: 1.25rem; }
+    .chars-foot { display: flex; justify-content: center; margin-top: 0.5rem; }
     .chars-hint { color: var(--ink); font-weight: 600; }
     .chars-nav { display: flex; gap: 0.75rem; }
     .chars-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-bottom-width: 6px; display: flex; align-items: center; justify-content: center; transition: transform 0.12s; }
@@ -556,17 +557,18 @@
       <p class="rv">Each one has their own voice and personality, and they don't just praise everything you say. They reply in short, reactive lines like a real call, and you can hold the mic to jump in and interrupt.</p>
     </div>
 
-    <div class="chars-ui">
-      <p class="chars-hint rv">Swipe to meet them</p>
-      <div class="chars-nav">
-        <button class="chars-btn" id="chars-prev" type="button" aria-label="Previous characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button class="chars-btn" id="chars-next" type="button" aria-label="Next characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-    </div>
+    <p class="chars-hint rv">Swipe to meet them</p>
   </div>
 
   <div class="chars-track" id="chars-track" role="region" aria-label="Prosody characters" tabindex="0"></div>
   <script type="application/json" id="chars-data">[{"id":"mara","n":"Mara","r":"Barista on the morning rush","p":"Genuinely warm, but there are six people behind you and you both know it.","t":"#FAE8E2","c":"#E65D3B","k":"#B73D1D"},{"id":"noor","n":"Noor","r":"Your first date","p":"Nervous in the way that shows up as talking slightly too fast.","t":"#FCDDE9","c":"#F0508B","k":"#B71F5C"},{"id":"sam","n":"Sam","r":"New coworker eating lunch alone","p":"Open to company but will not make the first move.","t":"#D6EAFB","c":"#3B9AE8","k":"#1B6AB3"},{"id":"rosalind","n":"Rosalind","r":"Your manager, door open","p":"Direct and genuinely supportive, provided you get to the point.","t":"#EBDDF2","c":"#8B5A9F","k":"#6A3B7E"},{"id":"bram","n":"Bram","r":"Best man watching you give a toast","p":"Rooting for you completely. The room takes its cue from him.","t":"#FDEFC4","c":"#F0AE28","k":"#8A5F00"},{"id":"otis","n":"Otis","r":"Friend you let down","p":"Hurt, and covering it with a lightness that is not convincing.","t":"#DFF0CC","c":"#5BA544","k":"#38751F"},{"id":"nell","n":"Nell","r":"Stranger at the bus stop","p":"Neutral. Might talk, might look at her phone. Genuinely up to you.","t":"#D2F1EC","c":"#27B3A3","k":"#127A6D"},{"id":"duncan","n":"Duncan","r":"Prospect who did not ask to be called","p":"Guarded and short. You have about fifteen seconds.","t":"#F3DCCD","c":"#B5673E","k":"#8A4521"},{"id":"wildcard","n":"Someone new","r":"A stranger you have not met yet","p":"Generated fresh each time. You will not know who until you begin.","t":"#DDE1F5","c":"#4A5BA8","k":"#34428A"}]</script>
+
+  <div class="wrap chars-foot">
+    <div class="chars-nav">
+        <button class="chars-btn" id="chars-prev" type="button" aria-label="Previous characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="chars-btn" id="chars-next" type="button" aria-label="Next characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+  </div>
 </section>
 
 <!-- ─── More ways to practice ─────────────────────────────────── -->
@@ -804,10 +806,17 @@
     });
     track.append(frag);
 
-    const step = () => Math.max(track.clientWidth * 0.8, 280);
-    const by = dir => track.scrollBy({ left: dir * step(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    document.getElementById('chars-prev').addEventListener('click', () => by(-1));
-    document.getElementById('chars-next').addEventListener('click', () => by(1));
+    const cards = Array.from(track.children);
+    const pad = () => parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    const go = dir => {
+      const pitch = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : track.clientWidth;
+      const visible = Math.max(1, Math.floor((track.clientWidth - pad()) / pitch));
+      const cur = Math.round((track.scrollLeft) / pitch);
+      const next = Math.min(Math.max(cur + dir * visible, 0), cards.length - 1);
+      track.scrollTo({ left: Math.max(cards[next].offsetLeft - pad(), 0), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    };
+    document.getElementById('chars-prev').addEventListener('click', () => go(-1));
+    document.getElementById('chars-next').addEventListener('click', () => go(1));
 
     // Drag to scroll with a mouse; touch uses native swiping.
     let down = false, startX = 0, startLeft = 0, moved = false;
