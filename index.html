@@ -19,7 +19,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,500..700,100,1;1,9..144,500..700,100,1&display=swap" rel="stylesheet">
 
   <script>document.documentElement.classList.add('js');</script>
 
@@ -37,7 +37,7 @@
       --verm-dk: #C4431D;
       --line:    rgba(28,22,18,0.16);
 
-      --display: "Fredoka", "Nunito", "Arial Rounded MT Bold", system-ui, sans-serif;
+      --display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
       --sans:  "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
       --r: 20px;
@@ -73,8 +73,8 @@
 
     .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
-    h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
-    em { font-style: normal; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 650; letter-spacing: -0.015em; text-wrap: balance; }
+    em { font-style: italic; }
 
     /* Reveal — content is always visible without JS */
     .js .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
@@ -138,7 +138,7 @@
     .hero { padding: 8.5rem 0 5.5rem; }
     .hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr); gap: clamp(2.5rem, 5vw, 5rem); align-items: end; }
 
-    .hero h1 { font-size: clamp(2.9rem, 6.2vw, 6rem); line-height: 1.02; letter-spacing: -0.02em; font-weight: 600; }
+    .hero h1 { font-size: clamp(2.9rem, 6.2vw, 6rem); line-height: 1.02; letter-spacing: -0.02em; font-weight: 700; }
     .hero h1 em { color: var(--verm); }
     .hero-lede { margin-top: 2rem; max-width: 34rem; font-size: 1.3125rem; line-height: 1.55; color: var(--ink-2); }
     .hero-cta { margin-top: 2.25rem; display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.5rem; }
@@ -158,7 +158,7 @@
     /* ─── Launch film ────────────────────────────────────────────── */
     .film { background: var(--ink); color: var(--paper); padding: clamp(4.5rem, 9vw, 8rem) 0 clamp(4.5rem, 9vw, 8rem); }
     .film-head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(2rem, 5vw, 3.75rem); }
-    .film-title { font-size: clamp(3.25rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -0.02em; font-weight: 600; }
+    .film-title { font-size: clamp(3.25rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -0.02em; font-weight: 700; }
     .film-title em { color: var(--verm); }
     .film-sub { font-size: 1.1875rem; line-height: 1.6; color: rgba(244,238,228,0.78); max-width: 30rem; padding-bottom: 0.6rem; }
 
@@ -188,7 +188,7 @@
 
     .sit { padding: 2.25rem 0 2.5rem; border-top: 1px solid var(--line); }
     .sit h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.12; }
-    .sit-line { margin-top: 1rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.2rem, 1.9vw, 1.45rem); line-height: 1.35; color: var(--verm-dk); max-width: 34rem; }
+    .sit-line { margin-top: 1rem; font-family: var(--display); font-style: italic; font-weight: 500; font-size: clamp(1.2rem, 1.9vw, 1.45rem); line-height: 1.35; color: var(--verm-dk); max-width: 34rem; }
     .sit-meta { margin-top: 0.9rem; font-size: 0.9875rem; color: var(--ink-3); }
     .sit-more { padding-top: 2rem; border-top: 1px solid var(--line); font-size: 1.0625rem; color: var(--ink-2); max-width: 30rem; }
 
@@ -205,18 +205,18 @@
     .shot:nth-child(3) { grid-column: 9 / 13; margin-top: 8rem; }
     .shot img { width: 100%; border-radius: 30px; border: 1px solid rgba(28,22,18,0.1); box-shadow: 0 24px 50px rgba(120,50,20,0.22); background: #F7F5F1; }
     .shot figcaption { margin-top: 1.4rem; font-size: 1.0625rem; color: var(--ink); max-width: 20rem; }
-    .shot figcaption strong { display: block; font-family: var(--display); font-weight: 500; font-size: 1.4rem; line-height: 1.15; margin-bottom: 0.3rem; }
+    .shot figcaption strong { display: block; font-family: var(--display); font-weight: 650; font-size: 1.4rem; line-height: 1.15; margin-bottom: 0.3rem; }
 
     /* ─── Characters ─────────────────────────────────────────────── */
     .chars { background: var(--verm); color: var(--paper); padding: clamp(5rem, 10vw, 9rem) 0; }
     .chars-head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(3rem, 7vw, 6rem); }
-    .chars-head h2 { font-size: clamp(2.4rem, 5.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; font-weight: 600; }
+    .chars-head h2 { font-size: clamp(2.4rem, 5.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; font-weight: 700; }
     .chars-head p { color: var(--ink); font-size: 1.1875rem; max-width: 28rem; padding-bottom: 0.5rem; font-weight: 500; }
 
     .chars-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(2rem, 7vw, 7rem); }
     .chars-col:nth-child(2) { padding-top: clamp(2.5rem, 7vw, 6rem); }
     .char { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
-    .char h3 { font-size: clamp(2.75rem, 5vw, 4.5rem); line-height: 1.02; letter-spacing: -0.01em; font-weight: 600; }
+    .char h3 { font-size: clamp(2.75rem, 5vw, 4.5rem); line-height: 1.02; letter-spacing: -0.01em; font-weight: 700; }
     .char-role { margin-top: 0.5rem; font-weight: 600; color: var(--ink); }
     .char-desc { margin-top: 0.25rem; color: var(--ink); max-width: 24rem; }
 
@@ -232,7 +232,7 @@
 
     /* ─── Download ───────────────────────────────────────────────── */
     .download { background: var(--ink); color: var(--paper); padding: clamp(5.5rem, 12vw, 11rem) 0 clamp(4.5rem, 9vw, 8rem); }
-    .download h2 { font-size: clamp(2.6rem, 7vw, 6.25rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 16ch; font-weight: 600; }
+    .download h2 { font-size: clamp(2.6rem, 7vw, 6.25rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 16ch; font-weight: 700; }
     .download h2 em { color: var(--verm); }
     .download-row { margin-top: clamp(2.25rem, 5vw, 3.5rem); display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.75rem; }
     .download .soon { color: rgba(244,238,228,0.65); }
