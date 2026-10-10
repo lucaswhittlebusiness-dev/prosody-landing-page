@@ -224,6 +224,14 @@
     .char-role { margin-top: 0.5rem; font-weight: 600; color: var(--ink); }
     .char-desc { margin-top: 0.25rem; color: var(--ink); max-width: 24rem; }
 
+    /* ─── More ways to practice ──────────────────────────────────── */
+    .more { padding: clamp(4rem, 8vw, 7rem) 0 0; }
+    .more-title { font-size: clamp(1.9rem, 3.8vw, 3.25rem); line-height: 1.06; text-transform: uppercase; max-width: 16ch; }
+    .more-list { margin-top: clamp(2rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(1.5rem, 4vw, 3.5rem); }
+    .more-item { padding: 1.5rem 0 2rem; border-top: 2px solid var(--ink); }
+    .more-item h3 { font-size: clamp(1.25rem, 1.8vw, 1.5rem); line-height: 1.15; text-transform: uppercase; letter-spacing: 0.02em; }
+    .more-item p { margin-top: 0.6rem; color: var(--ink-2); max-width: 24rem; }
+
     /* ─── Feedback ───────────────────────────────────────────────── */
     .feedback { padding: clamp(5rem, 10vw, 9rem) 0; }
     .fb-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2.5rem, 8vw, 8rem); align-items: center; }
@@ -231,6 +239,11 @@
     .fb-text h2 { font-size: clamp(1.9rem, 3.8vw, 3.25rem); line-height: 1.06; }
     .fb-text h2 em { color: var(--verm); }
     .fb-text p { margin-top: 1.5rem; font-size: 1.1875rem; line-height: 1.6; color: var(--ink-2); max-width: 32rem; }
+    .fb-scores { display: flex; flex-direction: column; }
+    .fb-scores li { font-family: var(--display); text-transform: uppercase; font-size: clamp(2.4rem, 5vw, 4.25rem); line-height: 1.05; padding: 1rem 0; border-top: 2px solid var(--ink); letter-spacing: 0.01em; }
+    .fb-scores li:nth-child(2) { color: var(--verm); }
+    .fb-scores li:last-child { border-bottom: 2px solid var(--ink); }
+    .habit { padding: clamp(5rem, 10vw, 9rem) 0; background: var(--paper-2); }
     .fb-text h3 { margin-top: 3rem; font-size: clamp(1.3rem, 2.1vw, 1.75rem); line-height: 1.12; }
     .fb-text h3 + p { margin-top: 0.75rem; }
 
@@ -270,9 +283,10 @@
 
       .sit-grid { grid-template-columns: 1fr; }
       .sit-intro { position: static; }
+      .more-list { grid-template-columns: 1fr 1fr; }
 
       .fb-grid { grid-template-columns: 1fr; }
-      .fb-shot { order: 2; }
+      .habit .fb-shot { order: 2; }
       .fb-shot img { max-width: 300px; }
 
       .dock {
@@ -296,7 +310,7 @@
       .hero-art { padding-top: 1.75rem; }
       .hero-peek { padding-top: 1.5rem; }
 
-      .film, .situations, .app, .chars, .feedback { padding-top: 4rem; padding-bottom: 4rem; }
+      .film, .situations, .app, .chars, .feedback, .habit { padding-top: 4rem; padding-bottom: 4rem; }
       .download { padding-top: 4.5rem; padding-bottom: 3.5rem; }
       .sit { padding: 1.75rem 0 2rem; }
       .char { padding-bottom: 2.25rem; }
@@ -317,6 +331,8 @@
       .shot, .shot:nth-child(n) { flex: 0 0 74%; margin-top: 0; scroll-snap-align: start; }
       .shot:nth-child(2) { margin-top: 1.5rem; }
 
+      .more-list { grid-template-columns: 1fr; }
+      .more { padding-top: 4rem; }
       .chars-cols { grid-template-columns: 1fr; }
       .chars-col:nth-child(2) { padding-top: 0; }
 
@@ -373,7 +389,7 @@
   <div class="wrap hero-grid">
     <div>
       <h1 class="rv">Have the conversation <em>here first.</em></h1>
-      <p class="hero-lede rv">Prosody lets you talk out loud, in real time, to someone who answers back: a barista in a rush, a manager with ten minutes, a stranger at a bus stop. Afterwards it tells you how it went.</p>
+      <p class="hero-lede rv">Prosody is a voice-first app for rehearsing the conversations that make you nervous: job interviews, first dates, asking for a raise, difficult talks. You talk to a character who sounds and reacts like a real person on a phone call, then get clear feedback on how you did.</p>
       <div class="hero-cta rv">
         <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
         <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
@@ -422,7 +438,7 @@
   <div class="wrap sit-grid">
     <div class="sit-intro">
       <h2 class="rv">Which conversation is on your mind?</h2>
-      <p class="rv">Fifty situations across nine categories. Each one puts a specific person on the other side, and they speak first.</p>
+      <p class="rv">Fifty situations across nine categories. Each one puts a specific person on the other side, and they speak first. Harder, higher-pressure ones unlock as you progress.</p>
     </div>
 
     <div>
@@ -497,7 +513,7 @@
   <div class="wrap">
     <div class="chars-head">
       <h2 class="rv">Fifty-seven people. None of them talk the same way.</h2>
-      <p class="rv">Their tone shifts as the conversation does: warmer when it's going well, more guarded when it isn't. Pause, go off-script, push back. They adapt.</p>
+      <p class="rv">Each one has their own voice and personality, and they don't just praise everything you say. They reply in short, reactive lines like a real call, and you can hold the mic to jump in and interrupt.</p>
     </div>
 
     <div class="chars-cols">
@@ -517,19 +533,45 @@
   </div>
 </section>
 
-<!-- ─── Feedback & habit ──────────────────────────────────────── -->
+<!-- ─── More ways to practice ─────────────────────────────────── -->
+<section class="more" id="more">
+  <div class="wrap">
+    <h2 class="more-title rv">Practice it your way.</h2>
+    <div class="more-list">
+      <div class="more-item rv"><h3>Custom practice</h3><p>Describe any situation, like &ldquo;asking my manager for a pay rise,&rdquo; and pick a practice partner to play it out.</p></div>
+      <div class="more-item rv"><h3>Solo practice</h3><p>Work on your delivery on your own, with no one on the other end.</p></div>
+      <div class="more-item rv"><h3>Drills</h3><p>Short, focused exercises for clarity and pronunciation.</p></div>
+      <div class="more-item rv"><h3>Lessons</h3><p>Short lessons with practice built in, from beginner to advanced.</p></div>
+      <div class="more-item rv"><h3>7-day programs</h3><p>Guided paths for real improvement, one day at a time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Feedback ──────────────────────────────────────────────── -->
 <section class="feedback" id="feedback">
+  <div class="wrap fb-grid">
+    <div class="fb-text">
+      <h2 class="rv">Not a grade. <em>A map of how it went.</em></h2>
+      <p class="rv">After every conversation you get scores for the things that matter, what you did well, what to improve with a concrete rewrite, and one thing to try next time. Run the same scenario again and it won't go the same way, because nobody on the other end is following a script.</p>
+    </div>
+    <ul class="fb-scores">
+      <li class="rv">Pace</li>
+      <li class="rv">Clarity</li>
+      <li class="rv">Confidence</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─── Motivation ────────────────────────────────────────────── -->
+<section class="habit" id="habit">
   <div class="wrap fb-grid">
     <div class="fb-shot rv">
       <img src="screenshots/progress-web.jpg" alt="Prosody progress screen: the Meadow map, level 1 of 50, with XP to the next level" width="359" height="780" loading="lazy">
     </div>
-
     <div class="fb-text">
-      <h2 class="rv">Not a grade. <em>A map of how it went.</em></h2>
-      <p class="rv">Every session ends with a score and specific feedback on where the conversation went and how to handle it better. Run the same scenario again and it won't go the same way, because nobody on the other end is following a script.</p>
-
-      <h3 class="rv">Once a week isn't enough.</h3>
-      <p class="rv">Pick a reminder time while you set up (morning, afternoon, or evening) and Prosody nudges you once a day. Streaks keep count of how many days in a row you've shown up, and every session earns XP that moves you along the map.</p>
+      <h2 class="rv">Once a week isn't enough.</h2>
+      <p class="rv">Earn XP, build daily streaks, finish daily quests and level up along the map, unlocking new areas as you go. Compete with friends on the leaderboard if you like.</p>
+      <p class="rv">Pick a reminder time while you set up (morning, afternoon, or evening) and Prosody nudges you once a day.</p>
     </div>
   </div>
 </section>
