@@ -1513,6 +1513,97 @@
       color: var(--fg-3);
     }
 
+    /* ─── Launch film ─────────────────────────────────────────────── */
+    .film {
+      background: #100F0E;
+      color: var(--dark-fg);
+      padding: 7rem 0 8rem;
+    }
+
+    .film-head {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 1.5rem 4rem;
+      align-items: end;
+      margin-bottom: 3.5rem;
+    }
+    .film-head .t-overline { grid-column: 1 / -1; }
+    .film-title { color: var(--dark-fg); font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.98; }
+    .film-title em { color: var(--accent); }
+    .film-sub {
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--dark-fg-2);
+      max-width: 36ch;
+      padding-bottom: 0.5rem;
+    }
+
+    .film-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: #E8603F;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .film-poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: pointer;
+      color: inherit;
+    }
+    .film-poster[aria-disabled="true"] { cursor: default; }
+    .film-poster-img { width: 100%; height: 100%; object-fit: cover; object-position: center 52%; }
+
+    .film-play {
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      width: 96px;
+      height: 96px;
+      margin: -48px 0 0 -48px;
+      border-radius: 50%;
+      background: #fff;
+      color: #1A1210;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(60,20,10,0.35);
+      transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+    }
+    .film-play svg { margin-left: 6px; }
+    .film-poster:not([aria-disabled="true"]):hover .film-play { transform: scale(1.07); }
+    .film-poster:focus-visible { outline: 3px solid #fff; outline-offset: -6px; border-radius: var(--radius-xl); }
+
+    .film-caption {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      margin-top: 1.25rem;
+      color: var(--dark-fg-2);
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+    }
+    .film-caption-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+    .film-frame video,
+    .film-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .film-play { transition: none; }
+    }
+
     /* ─── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 960px) {
       .chars-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1526,6 +1617,13 @@
 
     @media (max-width: 768px) {
       .section { padding: 5rem 0; }
+
+      .film { padding: 4.5rem 0 5rem; }
+      .film-head { grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2.25rem; }
+      .film-sub { max-width: 100%; padding-bottom: 0; }
+      .film-frame { border-radius: var(--radius-lg); }
+      .film-play { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
+      .film-play svg { width: 26px; height: 26px; margin-left: 4px; }
 
       #nav-cta, #nav-download { display: none !important; }
 
@@ -1683,6 +1781,28 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ─── Launch film ───────────────────────────────────────────── -->
+<!-- Set the video URL in LAUNCH_VIDEO_URL in the script at the bottom of this file. -->
+<section class="film" id="film" aria-labelledby="film-title">
+  <div class="container">
+    <div class="film-head">
+      <p class="t-overline reveal">Launch Film</p>
+      <h2 class="t-headline film-title reveal reveal-d1" id="film-title">Meet<br><em>Prosody.</em></h2>
+      <p class="film-sub reveal reveal-d2">A closer look at how you can practice real conversations, build confidence, and find your voice.</p>
+    </div>
+
+    <div class="film-frame reveal reveal-d2" id="film-frame">
+      <button class="film-poster" id="film-play" type="button" aria-label="Play the Prosody launch film">
+        <img class="film-poster-img" src="logo.webp" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+        <span class="film-play" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.52.85l12-7.5a1 1 0 0 0 0-1.7l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>
+        </span>
+      </button>
+    </div>
+    <p class="film-caption"><span class="film-caption-dot"></span><span id="film-caption-text">Launch film</span></p>
   </div>
 </section>
 
@@ -2313,6 +2433,71 @@
 </footer>
 
 <script>
+  // ─── Launch film ────────────────────────────────────────────
+  // Paste your video URL here. Accepts a hosted file (.mp4 / .webm / .mov),
+  // a YouTube or Vimeo link, or any other https embed URL.
+  // Leave empty to show the "coming soon" poster.
+  const LAUNCH_VIDEO_URL = '';
+
+  (function () {
+    const btn = document.getElementById('film-play');
+    const frame = document.getElementById('film-frame');
+    const caption = document.getElementById('film-caption-text');
+    if (!btn || !frame) return;
+
+    function resolve(raw) {
+      if (!raw) return null;
+      let u;
+      try { u = new URL(raw, location.href); } catch (e) { return null; }
+      if (u.protocol !== 'https:' && u.origin !== location.origin) return null;
+      if (/\.(mp4|webm|mov)$/i.test(u.pathname)) return { kind: 'file', src: u.href };
+      const host = u.hostname.replace(/^www\./, '');
+      let id = '';
+      if (host === 'youtu.be') id = u.pathname.slice(1);
+      else if (host.endsWith('youtube.com')) id = u.searchParams.get('v') || u.pathname.split('/').filter(Boolean).pop();
+      if (id) return { kind: 'embed', src: 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1' };
+      if (host.endsWith('vimeo.com')) {
+        id = u.pathname.split('/').filter(Boolean).filter(s => /^\d+$/.test(s)).pop();
+        if (id) return { kind: 'embed', src: 'https://player.vimeo.com/video/' + id + '?autoplay=1' };
+      }
+      return { kind: 'embed', src: u.href };
+    }
+
+    const source = resolve(LAUNCH_VIDEO_URL);
+
+    if (!source) {
+      btn.setAttribute('aria-disabled', 'true');
+      btn.setAttribute('aria-label', 'Launch film coming soon');
+      caption.textContent = 'Launch film · Coming soon';
+      btn.addEventListener('click', e => e.preventDefault());
+      return;
+    }
+
+    // Nothing is fetched until the visitor presses play.
+    btn.addEventListener('click', function () {
+      let el;
+      if (source.kind === 'file') {
+        el = document.createElement('video');
+        el.controls = true;
+        el.autoplay = true;
+        el.playsInline = true;
+        el.preload = 'auto';
+        el.src = source.src;
+      } else {
+        el = document.createElement('iframe');
+        el.src = source.src;
+        el.allow = 'autoplay; fullscreen; picture-in-picture';
+        el.allowFullscreen = true;
+        el.referrerPolicy = 'strict-origin-when-cross-origin';
+      }
+      el.setAttribute('aria-label', 'Prosody launch film');
+      el.title = 'Prosody launch film';
+      btn.remove();
+      frame.appendChild(el);
+      if (el.focus) el.focus();
+    });
+  })();
+
   // ─── Scroll reveal ──────────────────────────────────────────
   const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
