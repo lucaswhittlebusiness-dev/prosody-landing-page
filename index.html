@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prosody — Practice Conversations Before They Happen</title>
-  <meta name="description" content="Prosody helps you practice real conversations with AI characters in real time, then gives you feedback on how you communicated.">
+  <meta name="description" content="Prosody helps you practice real conversations out loud with AI characters in real time, then shows you how it went.">
   <meta property="og:title" content="Prosody — Practice Conversations Before They Happen">
   <meta property="og:description" content="Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.">
   <meta property="og:type" content="website">
@@ -14,1770 +14,348 @@
   <meta name="twitter:title" content="Prosody — Practice Conversations Before They Happen">
   <meta name="twitter:description" content="Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.">
   <meta name="twitter:image" content="https://getprosody.com/screenshots/home-web.png">
-  <meta name="theme-color" content="#FF7A5C">
+  <meta name="theme-color" content="#F4EEE4">
   <link rel="icon" type="image/png" href="favicon-64.png">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
 
   <style>
-    /* ─── Design tokens ──────────────────────────────────────────── */
+    /* ─── Tokens ─────────────────────────────────────────────────── */
     :root {
-      --bg:             #F5F3EF;
-      --bg-alt:         #EEECE7;
-      --bg-card:        #ECEAE5;
-      --fg:             #141414;
-      --fg-2:           #4E4A46;
-      --fg-3:           #8A8580;
-      --fg-inv:         #F5F3EF;
-      --accent:         #FF7A5C;
-      --accent-muted:   rgba(255,122,92,0.1);
-      --border:         #D9D6CF;
-      --dark-bg:        #0A0A0A;
-      --dark-surface:   #1E1E1E;
-      --dark-border:    #2A2A2A;
-      --dark-fg:        #F2F2F2;
-      --dark-fg-2:      #B0B0B0;
-      --dark-fg-3:      #6A6560;
+      color-scheme: light;
+      --paper:   #F4EEE4;
+      --paper-2: #EAE1D3;
+      --blush:   #F5D6C8;
+      --ink:     #1C1612;
+      --ink-2:   #473C33;
+      --ink-3:   #6E6157;
+      --verm:    #E4572E;
+      --verm-dk: #C4431D;
+      --line:    rgba(28,22,18,0.16);
 
-      --rose:    #C25C6A; --rose-bg:   #FBF0F1;
-      --indigo:  #4A5BA8; --indigo-bg: #EEF0FB;
-      --plum:    #8B5A9F; --plum-bg:   #F5F0FA;
-      --sage:    #5E8C6E; --sage-bg:   #EDF4EF;
-      --clay:    #B5673E; --clay-bg:   #FAF1EC;
-      --slate:   #4E6478; --slate-bg:  #EEF1F5;
+      --serif: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+      --sans:  "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
-      --gold:    #F0AE28;
-      --flame:   #F77440;
-
-      --radius-sm:  10px;
-      --radius-md:  16px;
-      --radius-lg:  24px;
-      --radius-xl:  36px;
+      --r: 20px;
+      --wrap: 1240px;
+      --gutter: clamp(1.25rem, 4vw, 2.5rem);
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg:           #0A0A0A;
-        --bg-alt:       #1E1E1E;
-        --bg-card:      #1E1E1E;
-        --fg:           #F2F2F2;
-        --fg-2:         #B0B0B0;
-        --fg-3:         #6A6560;
-        --fg-inv:       #0A0A0A;
-        --accent:       #FF7A5C;
-        --accent-muted: rgba(255,122,92,0.1);
-        --border:       #2A2A2A;
-        --dark-bg:      #0A0A0A;
-        --dark-surface: #1E1E1E;
-        --dark-border:  #2A2A2A;
-        --dark-fg:      #F2F2F2;
-        --dark-fg-2:    #B0B0B0;
-        --dark-fg-3:    #6A6560;
-
-        --rose-bg:   #2A191C; --indigo-bg: #171A2B;
-        --plum-bg:   #21182A; --sage-bg:   #16221D;
-        --clay-bg:   #251812; --slate-bg:  #161C23;
-      }
-    }
-
-    :root[data-theme="dark"] {
-      --bg:           #0A0A0A;
-      --bg-alt:       #1E1E1E;
-      --bg-card:      #1E1E1E;
-      --fg:           #F2F2F2;
-      --fg-2:         #B0B0B0;
-      --fg-3:         #6A6560;
-      --fg-inv:       #0A0A0A;
-      --accent:       #FF7A5C;
-      --accent-muted: rgba(255,122,92,0.1);
-      --border:       #2A2A2A;
-      --rose-bg:   #2A191C; --indigo-bg: #171A2B;
-      --plum-bg:   #21182A; --sage-bg:   #16221D;
-      --clay-bg:   #251812; --slate-bg:  #161C23;
-    }
-
-    /* ─── Reset ──────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    img, svg { display: block; max-width: 100%; }
+    html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; -webkit-text-size-adjust: 100%; }
+    img { display: block; max-width: 100%; height: auto; }
     a { color: inherit; }
-    button { font: inherit; cursor: pointer; border: none; background: none; }
+    button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
     ul { list-style: none; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
+      font-family: var(--sans);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--paper);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ─── Typography ─────────────────────────────────────────────── */
-    .t-display {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -0.03em;
-      text-wrap: balance;
-    }
+    :focus-visible { outline: 2px solid var(--verm); outline-offset: 3px; }
 
-    .t-headline {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: clamp(2.25rem, 5vw, 3.75rem);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.025em;
-      text-wrap: balance;
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 200;
+      background: var(--ink); color: var(--paper); padding: 0.6rem 1rem; border-radius: 8px;
+      text-decoration: none; transition: top 0.15s;
     }
+    .skip:focus { top: 1rem; }
 
-    .t-subhead {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      text-wrap: balance;
-    }
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
-    .t-overline {
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.015em; text-wrap: balance; }
+    em { font-style: italic; }
 
-    .t-body-lg {
-      font-size: 1.125rem;
-      line-height: 1.7;
-      color: var(--fg-2);
-    }
-
-    .t-body {
-      font-size: 1rem;
-      line-height: 1.65;
-      color: var(--fg-2);
-    }
-
-    .t-caption {
-      font-size: 0.8125rem;
-      line-height: 1.5;
-      color: var(--fg-3);
-    }
-
-    /* ─── Layout ─────────────────────────────────────────────────── */
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .section { padding: 7rem 0; }
-    .section-dark {
-      background: var(--dark-bg);
-      color: var(--dark-fg);
-    }
-    .section-alt { background: var(--bg-alt); }
-
-    .section-header {
-      margin-bottom: 3.5rem;
-    }
-
-    .section-header .t-overline {
-      margin-bottom: 1rem;
-    }
-
-    /* ─── Reveal animations ──────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
-                  transform 0.65s cubic-bezier(0.22,1,0.36,1);
-    }
-    .reveal.in { opacity: 1; transform: none; }
-    .reveal-d1 { transition-delay: 0.08s; }
-    .reveal-d2 { transition-delay: 0.16s; }
-    .reveal-d3 { transition-delay: 0.24s; }
-    .reveal-d4 { transition-delay: 0.32s; }
-    .reveal-d5 { transition-delay: 0.40s; }
-
+    /* Reveal — content is always visible without JS */
+    .js .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
+    .js .rv.in { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+      .js .rv { opacity: 1; transform: none; transition: none; }
     }
+
+    /* ─── Store badge ────────────────────────────────────────────── */
+    .store-badge {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      background: #000; color: #fff; text-decoration: none;
+      padding: 0.65rem 1.25rem; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.18);
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .store-badge:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.18); }
+    .store-badge-text { display: flex; flex-direction: column; line-height: 1; }
+    .store-badge-sub { font-size: 0.625rem; letter-spacing: 0.03em; opacity: 0.85; margin-bottom: 0.2rem; }
+    .store-badge-name { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+    .store-badge.sm { padding: 0.45rem 0.9rem; border-radius: 10px; gap: 0.55rem; }
+    .store-badge.sm .store-badge-sub { font-size: 0.5rem; }
+    .store-badge.sm .store-badge-name { font-size: 0.9rem; }
+
+    .soon { font-size: 0.9375rem; color: var(--ink-3); }
 
     /* ─── Navigation ─────────────────────────────────────────────── */
     .nav {
-      position: fixed;
-      inset: 0 0 auto;
-      z-index: 100;
-      padding: 1.25rem 0;
-      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+      position: fixed; inset: 0 0 auto; z-index: 100;
+      padding: 1rem 0;
       border-bottom: 1px solid transparent;
+      transition: background 0.25s, border-color 0.25s, padding 0.25s;
     }
+    .nav.scrolled { background: var(--paper); border-color: var(--line); padding: 0.7rem 0; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 
-    .nav.scrolled {
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
-      backdrop-filter: saturate(180%) blur(16px);
-      -webkit-backdrop-filter: saturate(180%) blur(16px);
-      border-color: var(--border);
-    }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; font-family: var(--serif); font-size: 1.75rem; line-height: 1; letter-spacing: -0.01em; }
+    .nav-logo img { width: 34px; height: 34px; border-radius: 10px; }
 
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
+    .nav-links { display: flex; align-items: center; gap: 2.25rem; margin-left: auto; margin-right: 2rem; }
+    .nav-links a { text-decoration: none; font-size: 1rem; color: var(--ink-2); background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 0.25s, color 0.2s; }
+    .nav-links a:hover { color: var(--ink); background-size: 100% 1px; }
 
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.375rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      text-decoration: none;
-      color: var(--fg);
-      flex-shrink: 0;
-    }
-    .nav-logo-img {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.75rem;
-    }
-
-    .nav-links a {
-      font-size: 0.9375rem;
-      font-weight: 400;
-      color: var(--fg-2);
-      text-decoration: none;
-      transition: color 0.18s;
-    }
-    .nav-links a:hover { color: var(--fg); }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-shrink: 0;
-    }
-
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      padding: 4px;
-      cursor: pointer;
-    }
-    .nav-burger span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: var(--fg);
-      border-radius: 2px;
-      transition: transform 0.2s, opacity 0.2s;
-    }
+    .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 6px; width: 44px; height: 44px; align-items: center; margin-right: -10px; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+    .nav-burger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
     .nav-mobile {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 99;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2rem;
+      display: none; position: fixed; inset: 0; z-index: 99; background: var(--paper);
+      flex-direction: column; justify-content: center; gap: 1.25rem; padding: 6rem var(--gutter) 3rem;
     }
-
     .nav-mobile.open { display: flex; }
-    .nav-mobile a {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 2rem;
-      font-weight: 500;
-      color: var(--fg);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-    .nav-mobile a:hover { color: var(--accent); }
-    .nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-    /* ─── Buttons ─────────────────────────────────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9375rem;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: var(--radius-sm);
-      padding: 0.75rem 1.375rem;
-      transition: opacity 0.18s, transform 0.18s, background 0.18s, border-color 0.18s;
-      white-space: nowrap;
-      line-height: 1;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover { opacity: 0.88; }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--fg-2);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { color: var(--fg); border-color: var(--fg-3); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--fg-2);
-      padding: 0.5rem 0;
-    }
-    .btn-ghost:hover { color: var(--fg); }
-
-    .btn-ghost-inv {
-      background: transparent;
-      color: rgba(255,255,255,0.65);
-      padding: 0.5rem 0;
-    }
-    .btn-ghost-inv:hover { color: #fff; }
-
-    .btn-white {
-      background: var(--dark-fg);
-      color: var(--dark-bg);
-    }
-    .btn-white:hover { opacity: 0.88; }
-
-    /* ─── Store badges ────────────────────────────────────────────── */
-    .store-badges {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .store-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: #000;
-      color: #fff;
-      padding: 0.6rem 1.125rem;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.18);
-      text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.28), 0 1px 2px rgba(0,0,0,0.18);
-      transition: opacity 0.18s, transform 0.18s, box-shadow 0.18s;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-    }
-    .store-badge:hover {
-      opacity: 0.88;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.32), 0 2px 4px rgba(0,0,0,0.18);
-    }
-    .store-badge-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
-    .store-badge-sub {
-      font-size: 0.625rem;
-      font-weight: 400;
-      letter-spacing: 0.03em;
-      opacity: 0.8;
-      margin-bottom: 0.2rem;
-    }
-    .store-badge-name {
-      font-size: 1.0625rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    /* keep old class working for any missed instances */
-    .app-store-btn { display: none; }
-    .android-soon {
-      font-size: 0.8125rem;
-      color: var(--fg-3);
-      letter-spacing: 0.01em;
-      align-self: center;
-    }
-
-    /* ─── Phone mockup ─────────────────────────────────────────────── */
-    .phone-wrap {
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-
-    .phone {
-      width: 248px;
-      border-radius: 46px;
-      background: #0A0908;
-      border: 9px solid #0A0908;
-      position: relative;
-      box-shadow:
-        0 0 0 1px #2A2724,
-        0 40px 100px rgba(0,0,0,0.22),
-        0 12px 30px rgba(0,0,0,0.12);
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .phone-screen {
-      border-radius: 38px;
-      overflow: hidden;
-      position: relative;
-      background: #141210;
-    }
-
-    .phone-island {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 86px;
-      height: 26px;
-      background: #0A0908;
-      border-radius: 20px;
-      z-index: 10;
-    }
-
-    /* Phone status bar */
-    .p-statusbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px 4px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.01em;
-    }
-
-    .p-statusbar-icons {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-    }
-
-    /* Phone app header */
-    .p-header {
-      padding: 8px 14px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .p-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: #F2F2F2;
-      letter-spacing: -0.01em;
-    }
-
-    .p-sub {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      margin-top: 1px;
-    }
-
-    /* Category chips */
-    .p-chips {
-      display: flex;
-      gap: 5px;
-      padding: 8px 14px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .p-chips::-webkit-scrollbar { display: none; }
-
-    .p-chip {
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 500;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .p-chip-active {
-      background: var(--accent);
-      color: #fff;
-    }
-    .p-chip-sage { background: rgba(94,140,110,0.25); color: #8CBF9C; }
-    .p-chip-rose { background: rgba(194,92,106,0.25); color: #E08898; }
-    .p-chip-indigo { background: rgba(74,91,168,0.25); color: #8C9ADF; }
-    .p-chip-slate { background: rgba(78,100,120,0.25); color: #8AAABB; }
-
-    /* Scenario cards in phone */
-    .p-cards { padding: 4px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
-
-    .p-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 10px 10px 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .p-card-dot {
-      width: 3px;
-      border-radius: 2px;
-      align-self: stretch;
-      flex-shrink: 0;
-      min-height: 28px;
-    }
-
-    .p-card-name {
-      font-size: 11.5px;
-      font-weight: 500;
-      color: #F2F2F2;
-      line-height: 1.35;
-    }
-
-    .p-card-cat {
-      font-size: 9.5px;
-      color: rgba(255,255,255,0.38);
-      margin-top: 2px;
-      font-weight: 400;
-    }
-
-    .p-card-icon {
-      margin-left: auto;
-      opacity: 0.22;
-      font-size: 13px;
-    }
-
-    /* Conversation phone */
-    .p-convo-char {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 14px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .p-char-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: #fff;
-      flex-shrink: 0;
-      letter-spacing: -0.01em;
-    }
-
-    .p-char-name { font-size: 12px; font-weight: 600; color: #F2F2F2; }
-    .p-char-desc { font-size: 9.5px; color: rgba(255,255,255,0.38); margin-top: 1px; }
-
-    .p-messages {
-      padding: 10px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      flex: 1;
-    }
-
-    .p-msg {
-      display: flex;
-      flex-direction: column;
-      max-width: 80%;
-    }
-
-    .p-msg-right { align-self: flex-end; align-items: flex-end; }
-    .p-msg-left { align-self: flex-start; align-items: flex-start; }
-
-    .p-bubble {
-      padding: 7px 10px;
-      border-radius: 14px;
-      font-size: 10.5px;
-      line-height: 1.45;
-      font-weight: 400;
-    }
-
-    .p-bubble-right {
-      background: var(--accent);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-
-    .p-bubble-left {
-      background: rgba(255,255,255,0.1);
-      color: #F2F2F2;
-      border-bottom-left-radius: 4px;
-    }
-
-    .p-msg-time {
-      font-size: 8.5px;
-      color: rgba(255,255,255,0.28);
-      margin-top: 3px;
-      font-weight: 400;
-    }
-
-    .p-mic-bar {
-      padding: 10px 14px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .p-waveform {
-      display: flex;
-      align-items: center;
-      gap: 2.5px;
-      height: 20px;
-    }
-
-    .p-wave-bar {
-      width: 2.5px;
-      border-radius: 2px;
-      background: var(--accent);
-      opacity: 0.7;
-    }
-
-    .p-mic-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Score phone */
-    .p-score-header {
-      padding: 12px 14px 8px;
-      text-align: center;
-    }
-    .p-score-label { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
-
-    .p-score-ring-wrap {
-      display: flex;
-      justify-content: center;
-      padding: 6px 0;
-    }
-
-    .p-score-dims {
-      padding: 6px 14px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .p-score-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .p-score-row-label {
-      font-size: 9.5px;
-      color: rgba(255,255,255,0.5);
-      width: 62px;
-      flex-shrink: 0;
-    }
-
-    .p-score-track {
-      flex: 1;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .p-score-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: var(--accent);
-    }
-
-    .p-score-val {
-      font-size: 9.5px;
-      color: rgba(255,255,255,0.55);
-      font-weight: 500;
-      width: 22px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .p-score-actions {
-      padding: 6px 14px 14px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-
-    .p-score-btn {
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 500;
-      text-align: center;
-    }
-
-    .p-score-btn-outline {
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.6);
-    }
-
-    .p-score-btn-fill {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* ─── Hero ─────────────────────────────────────────────────────── */
-    .hero {
-      min-height: 100svh;
-      display: flex;
-      align-items: center;
-      padding-top: 5rem;
-      padding-bottom: 4rem;
-      overflow: hidden;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .hero-text { max-width: 540px; }
-
-    .hero-headline {
-      margin-top: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-body {
-      margin-bottom: 2.25rem;
-      max-width: 38ch;
-    }
-
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .hero-visual {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-
-    .hero-phone-shadow {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: var(--accent);
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.12;
-      bottom: -20px;
-    }
-
-    .hero-badge {
-      position: absolute;
-      bottom: 20px;
-      left: -20px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--sage);
-      box-shadow: 0 0 0 3px rgba(94,140,110,0.2);
-      flex-shrink: 0;
-    }
-
-    .hero-badge-text {
-      font-size: 0.75rem;
-      color: var(--fg-2);
-      font-weight: 500;
-    }
-
-    .hero-badge-text strong {
-      color: var(--fg);
-      font-weight: 600;
-    }
-
-    /* ─── Divider ─────────────────────────────────────────────────── */
-    .divider-bar {
-      display: flex;
-      gap: 4rem;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 2rem 0;
-      overflow: hidden;
-    }
-
-    .divider-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.125rem;
-      flex-shrink: 0;
-    }
-
-    .divider-stat-num {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 2.5rem;
-      font-weight: 400;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      color: var(--fg);
-    }
-
-    .divider-stat-label {
-      font-size: 0.8125rem;
-      color: var(--fg-3);
-      font-weight: 400;
-    }
-
-    /* ─── Real Conversations ──────────────────────────────────────── */
-    .convo-section {
-      background: var(--dark-bg);
-      padding: 7rem 0;
-      overflow: hidden;
-    }
-
-    .convo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .convo-text { color: var(--dark-fg); }
-    .convo-text .t-overline { color: var(--accent); }
-    .convo-text .t-headline { color: var(--dark-fg); }
-
-    .convo-body {
-      margin-top: 1.25rem;
-      color: var(--dark-fg-2);
-      max-width: 38ch;
-    }
-
-    .convo-note {
-      margin-top: 1.75rem;
-      padding: 1rem 1.25rem;
-      border-left: 2px solid var(--accent);
-      background: rgba(47,163,156,0.07);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    }
-
-    .convo-note p {
-      font-size: 0.9375rem;
-      color: var(--dark-fg-2);
-      line-height: 1.6;
-    }
-
-    .convo-visual {
-      display: flex;
-      justify-content: center;
-    }
-
-    /* ─── Scenarios ──────────────────────────────────────────────── */
-    .cat-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-top: 3rem;
-    }
-    .cat-card {
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem 1.25rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .cat-face {
-      width: 60px;
-      height: 60px;
-      flex-shrink: 0;
-    }
-    .cat-face svg { width: 60px; height: 60px; display: block; }
-    .cat-card-name {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--fg);
-      letter-spacing: -0.01em;
-    }
-    .cat-card-desc {
-      font-size: 0.8125rem;
-      color: var(--fg-3);
-      line-height: 1.55;
-      margin-top: 0.125rem;
-    }
-
-    .scenarios-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: end;
-      margin-bottom: 3.5rem;
-    }
-
-    .category-filter {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .cat-btn {
-      padding: 0.4375rem 0.875rem;
-      border-radius: 20px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.18s;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--fg-2);
-    }
-
-    .cat-btn:hover { border-color: var(--fg-3); color: var(--fg); }
-    .cat-btn.active {
-      background: var(--fg);
-      color: var(--bg);
-      border-color: var(--fg);
-    }
-
-    .scenarios-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    .scenario-card {
-      background: var(--bg);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      transition: background 0.18s;
-      cursor: default;
-    }
-
-    .scenario-card:hover { background: var(--bg-alt); }
-
-    .scenario-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-
-    .scenario-cat-tag {
-      padding: 0.25rem 0.625rem;
-      border-radius: 20px;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
-    .scenario-name {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.25rem;
-      font-weight: 500;
-      line-height: 1.25;
-      color: var(--fg);
-      letter-spacing: -0.01em;
-    }
-
-    .scenario-dur {
-      font-size: 0.75rem;
-      color: var(--fg-3);
-    }
-
-    /* ─── Characters ─────────────────────────────────────────────── */
-    .characters-section { background: var(--bg-alt); }
-
-    .chars-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-
-    .char-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      transition: transform 0.22s, box-shadow 0.22s;
-    }
-
-    .char-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    }
-
-    .char-avatar {
-      width: 60px;
-      height: 60px;
-      flex-shrink: 0;
-    }
-    .char-avatar svg { width: 60px; height: 60px; display: block; }
-
-    .char-name {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.5rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--fg);
-      line-height: 1;
-    }
-
-    .char-role {
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--accent);
-      margin-top: 0.25rem;
-    }
-
-    .char-desc {
-      font-size: 0.875rem;
-      line-height: 1.55;
-      color: var(--fg-2);
-      font-style: italic;
-    }
-
-    /* ─── How it works ────────────────────────────────────────────── */
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      position: relative;
-    }
-
-    .how-step {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .how-num {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 3rem;
-      font-weight: 300;
-      line-height: 1;
-      color: var(--border);
-      letter-spacing: -0.04em;
-    }
-
-    .how-title {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.375rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--fg);
-      line-height: 1.2;
-    }
-
-    .how-desc {
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: var(--fg-2);
-    }
-
-    .how-step-line {
-      width: 100%;
-      height: 1px;
-      background: var(--border);
-      margin-bottom: 1.5rem;
-    }
-
-    /* ─── Score section ───────────────────────────────────────────── */
-    .score-section {
-      background: var(--dark-bg);
-      padding: 7rem 0;
-    }
-
-    .score-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .score-text { color: var(--dark-fg); }
-    .score-text .t-headline { color: var(--dark-fg); }
-
-    .score-desc {
-      margin-top: 1.25rem;
-      color: var(--dark-fg-2);
-      font-size: 1.0625rem;
-      line-height: 1.7;
-      max-width: 38ch;
-    }
-
-    .score-features {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .score-feature {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.9375rem;
-      color: var(--dark-fg-2);
-    }
-
-    .score-feature-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .score-visual {
-      display: flex;
-      justify-content: center;
-    }
-
-    /* ─── Habit section ──────────────────────────────────────────── */
-    .habit-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    .habit-features {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .habit-feature {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.9375rem;
-      color: var(--fg-2);
-    }
-
-    .habit-feature-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .habit-visual {
-      display: flex;
-      justify-content: center;
-    }
-
-    .notif-card {
-      background: color-mix(in srgb, var(--bg-card) 95%, transparent);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.875rem;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .notif-card {
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
-      }
-    }
-    :root[data-theme="dark"] .notif-card {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-    .notif-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 9px;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 1.125rem;
-    }
-
-    .notif-app {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--fg-3);
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-    }
-
-    .notif-title {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--fg);
-      margin-top: 0.125rem;
-    }
-
-    .notif-body {
-      font-size: 0.875rem;
-      color: var(--fg-2);
-      line-height: 1.4;
-      margin-top: 0.125rem;
-    }
-
-    .notif-time {
-      font-size: 0.75rem;
-      color: var(--fg-3);
-      margin-top: 0.5rem;
-    }
-
-    .notif-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 0.625rem;
-      width: 100%;
-      max-width: 320px;
-    }
-
-    .notif-card-muted {
-      opacity: 0.45;
-      transform: scale(0.96);
-      transform-origin: top center;
-    }
-
-    @media (max-width: 768px) {
-      .habit-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
-      .habit-features { align-items: center; }
-      .habit-feature { text-align: left; }
-    }
-
-    /* ─── Use cases ───────────────────────────────────────────────── */
-    .usecases-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    .usecase-item {
-      padding: 2.5rem 2.75rem;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
-    }
-
-    .usecase-item:hover { background: var(--bg-alt); }
-    .usecase-item:nth-child(2n) { border-right: none; }
-    .usecase-item:nth-last-child(-n+2) { border-bottom: none; }
-
-    .usecase-pre {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      margin-bottom: 0.625rem;
-    }
-
-    .usecase-title {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.625rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--fg);
-      margin-bottom: 0.75rem;
-      line-height: 1.2;
-    }
-
-    .usecase-body {
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: var(--fg-2);
-    }
-
-    /* ─── App screens ─────────────────────────────────────────────── */
-    .screens-section { background: var(--bg-alt); overflow: hidden; }
-
-    .screens-intro {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: end;
-      margin-bottom: 4rem;
-    }
-
-    .screens-phones {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 1.5rem;
-      padding-bottom: 2rem;
-    }
-
-    .screen-phone-sm {
-      width: 200px;
-      transform: translateY(24px);
-      opacity: 0.85;
-    }
-
-    .screen-phone-sm .phone {
-      width: 200px;
-      border-radius: 38px;
-      border-width: 7px;
-    }
-
-    .screen-phone-sm .phone-screen { border-radius: 32px; }
-    .screen-phone-sm .phone-island { width: 68px; height: 20px; top: 7px; }
-
-    /* ─── Final CTA ───────────────────────────────────────────────── */
-    .cta-section {
-      background: var(--dark-bg);
-      padding: 9rem 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-bg-text {
-      position: absolute;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: clamp(8rem, 20vw, 18rem);
-      font-weight: 400;
-      color: rgba(255,255,255,0.025);
-      letter-spacing: -0.04em;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .cta-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .cta-headline {
-      color: var(--dark-fg);
-      max-width: 16ch;
-    }
-
-    .cta-sub {
-      font-size: 1.125rem;
-      color: var(--dark-fg-2);
-    }
-
-    .cta-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 0.5rem;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .cta-pricing {
-      font-size: 0.8125rem;
-      color: var(--dark-fg-3);
-      margin-top: 0.75rem;
-      letter-spacing: 0.01em;
-    }
-
-    /* ─── Footer ──────────────────────────────────────────────────── */
-    footer {
-      padding: 4rem 0 3rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .footer-brand-name {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-      font-size: 1.25rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--fg);
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-brand-desc {
-      font-size: 0.875rem;
-      color: var(--fg-3);
-      max-width: 30ch;
-      line-height: 1.5;
-    }
-
-    .footer-links-label {
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--fg-3);
-      margin-bottom: 1rem;
-    }
-
-    .footer-links-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .footer-links-list a {
-      font-size: 0.9375rem;
-      color: var(--fg-2);
-      text-decoration: none;
-      transition: color 0.18s;
-    }
-    .footer-links-list a:hover { color: var(--fg); }
-
-    .footer-bottom {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-bottom-copy {
-      font-size: 0.8125rem;
-      color: var(--fg-3);
-    }
-
-    /* ─── Launch film ─────────────────────────────────────────────── */
-    .film {
-      background: #100F0E;
-      color: var(--dark-fg);
-      padding: 7rem 0 8rem;
-    }
-
-    .film-head {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 1.5rem 4rem;
-      align-items: end;
-      margin-bottom: 3.5rem;
-    }
-    .film-head .t-overline { grid-column: 1 / -1; }
-    .film-title { color: var(--dark-fg); font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.98; }
-    .film-title em { color: var(--accent); }
-    .film-sub {
-      font-size: 1.125rem;
-      line-height: 1.65;
-      color: var(--dark-fg-2);
-      max-width: 36ch;
-      padding-bottom: 0.5rem;
-    }
-
-    .film-frame {
-      position: relative;
-      aspect-ratio: 16 / 9;
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      background: #E8603F;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-    }
-
-    .film-poster {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: pointer;
-      color: inherit;
-    }
+    .nav-mobile a:not(.store-badge) { font-family: var(--serif); font-size: 3rem; line-height: 1.1; text-decoration: none; }
+    .nav-mobile .store-badge { align-self: flex-start; margin-top: 1.5rem; }
+
+    /* ─── Hero ───────────────────────────────────────────────────── */
+    .hero { padding: 8.5rem 0 5.5rem; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr); gap: clamp(2.5rem, 5vw, 5rem); align-items: end; }
+
+    .hero h1 { font-size: clamp(3.5rem, 8.2vw, 8rem); line-height: 0.92; letter-spacing: -0.025em; }
+    .hero h1 em { color: var(--verm); }
+    .hero-lede { margin-top: 2rem; max-width: 34rem; font-size: 1.3125rem; line-height: 1.55; color: var(--ink-2); }
+    .hero-cta { margin-top: 2.25rem; display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.5rem; }
+
+    .hero-art {
+      background: var(--verm); border-radius: 28px; color: var(--paper);
+      padding: 2.25rem 2.25rem 0; min-height: 600px;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .hero-art-line { font-family: var(--serif); font-size: clamp(2rem, 3.2vw, 2.75rem); line-height: 1.05; letter-spacing: -0.01em; }
+    .hero-art-line em { display: block; }
+    .hero-art-note { margin-top: 0.9rem; color: var(--ink); font-size: 1rem; font-weight: 500; }
+    .hero-peek { margin-top: auto; padding-top: 2.25rem; }
+    .hero-peek-crop { aspect-ratio: 359 / 300; overflow: hidden; border-radius: 28px 28px 0 0; background: #F7F5F1; }
+    .hero-peek-crop img { width: 100%; }
+
+    /* ─── Launch film ────────────────────────────────────────────── */
+    .film { background: var(--ink); color: var(--paper); padding: clamp(4.5rem, 9vw, 8rem) 0 clamp(4.5rem, 9vw, 8rem); }
+    .film-head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(2rem, 5vw, 3.75rem); }
+    .film-title { font-size: clamp(4rem, 11vw, 9.5rem); line-height: 0.88; letter-spacing: -0.03em; }
+    .film-title em { color: var(--verm); }
+    .film-sub { font-size: 1.1875rem; line-height: 1.6; color: rgba(244,238,228,0.78); max-width: 30rem; padding-bottom: 0.6rem; }
+
+    .film-frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; background: #E8603F; }
+    .film-poster { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: pointer; }
     .film-poster[aria-disabled="true"] { cursor: default; }
     .film-poster-img { width: 100%; height: 100%; object-fit: cover; object-position: center 52%; }
-
     .film-play {
-      position: absolute;
-      left: 50%;
-      top: 54%;
-      width: 96px;
-      height: 96px;
-      margin: -48px 0 0 -48px;
-      border-radius: 50%;
-      background: #fff;
-      color: #1A1210;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(60,20,10,0.35);
-      transition: transform 0.25s cubic-bezier(0.22,1,0.36,1);
+      position: absolute; left: 50%; top: 54%; width: 96px; height: 96px; margin: -48px 0 0 -48px;
+      border-radius: 50%; background: #fff; color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 30px rgba(60,20,10,0.35); transition: transform 0.25s cubic-bezier(.2,.7,.2,1);
     }
     .film-play svg { margin-left: 6px; }
     .film-poster:not([aria-disabled="true"]):hover .film-play { transform: scale(1.07); }
-    .film-poster:focus-visible { outline: 3px solid #fff; outline-offset: -6px; border-radius: var(--radius-xl); }
+    .film-poster:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+    .film-frame video, .film-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+    .film-caption { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.1rem; font-size: 0.9375rem; color: rgba(244,238,228,0.7); }
+    .film-caption-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--verm); }
 
-    .film-caption {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      margin-top: 1.25rem;
-      color: var(--dark-fg-2);
-      font-size: 0.875rem;
-      letter-spacing: 0.02em;
-    }
-    .film-caption-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    /* ─── Situations ─────────────────────────────────────────────── */
+    .situations { padding: clamp(5rem, 10vw, 9rem) 0; }
+    .sit-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: start; }
+    .sit-intro { position: sticky; top: 7rem; }
+    .sit-intro h2 { font-size: clamp(2.75rem, 5.2vw, 4.75rem); line-height: 0.98; }
+    .sit-intro p { margin-top: 1.5rem; font-size: 1.1875rem; color: var(--ink-2); max-width: 26rem; }
 
-    .film-frame video,
-    .film-frame iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #000;
-    }
+    .sit { padding: 2.25rem 0 2.5rem; border-top: 1px solid var(--line); }
+    .sit h3 { font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.05; }
+    .sit-line { margin-top: 1rem; font-family: var(--serif); font-style: italic; font-size: clamp(1.4rem, 2.2vw, 1.75rem); line-height: 1.28; color: var(--verm-dk); max-width: 34rem; }
+    .sit-meta { margin-top: 0.9rem; font-size: 0.9875rem; color: var(--ink-3); }
+    .sit-more { padding-top: 2rem; border-top: 1px solid var(--line); font-size: 1.0625rem; color: var(--ink-2); max-width: 30rem; }
 
-    @media (prefers-reduced-motion: reduce) {
-      .film-play { transition: none; }
-    }
+    /* ─── The app ────────────────────────────────────────────────── */
+    .app { background: var(--blush); padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 9vw, 8rem); overflow: hidden; }
+    .app-head { max-width: 44rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
+    .app-head h2 { font-size: clamp(2.75rem, 6vw, 5.5rem); line-height: 0.96; }
+    .app-head h2 em { color: var(--verm-dk); }
+    .app-head p { margin-top: 1.5rem; font-size: 1.1875rem; color: var(--ink-2); max-width: 32rem; }
+
+    .app-shots { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; align-items: start; }
+    .shot:nth-child(1) { grid-column: 1 / 5; margin-top: 5rem; }
+    .shot:nth-child(2) { grid-column: 5 / 9; }
+    .shot:nth-child(3) { grid-column: 9 / 13; margin-top: 8rem; }
+    .shot img { width: 100%; border-radius: 30px; border: 1px solid rgba(28,22,18,0.1); box-shadow: 0 24px 50px rgba(120,50,20,0.22); background: #F7F5F1; }
+    .shot figcaption { margin-top: 1.4rem; font-size: 1.0625rem; color: var(--ink); max-width: 20rem; }
+    .shot figcaption strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.75rem; line-height: 1.1; margin-bottom: 0.3rem; }
+
+    /* ─── Characters ─────────────────────────────────────────────── */
+    .chars { background: var(--verm); color: var(--paper); padding: clamp(5rem, 10vw, 9rem) 0; }
+    .chars-head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(3rem, 7vw, 6rem); }
+    .chars-head h2 { font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.92; letter-spacing: -0.025em; }
+    .chars-head p { color: var(--ink); font-size: 1.1875rem; max-width: 28rem; padding-bottom: 0.5rem; font-weight: 500; }
+
+    .chars-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(2rem, 7vw, 7rem); }
+    .chars-col:nth-child(2) { padding-top: clamp(2.5rem, 7vw, 6rem); }
+    .char { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+    .char h3 { font-size: clamp(3.25rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.02em; }
+    .char-role { margin-top: 0.5rem; font-weight: 600; color: var(--ink); }
+    .char-desc { margin-top: 0.25rem; color: var(--ink); max-width: 24rem; }
+
+    /* ─── Feedback ───────────────────────────────────────────────── */
+    .feedback { padding: clamp(5rem, 10vw, 9rem) 0; }
+    .fb-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2.5rem, 8vw, 8rem); align-items: center; }
+    .fb-shot img { width: 100%; max-width: 380px; border-radius: 32px; border: 1px solid rgba(28,22,18,0.1); box-shadow: 0 30px 60px rgba(60,40,20,0.2); background: #F7F5F1; }
+    .fb-text h2 { font-size: clamp(2.75rem, 5.4vw, 5rem); line-height: 0.98; }
+    .fb-text h2 em { color: var(--verm); }
+    .fb-text p { margin-top: 1.5rem; font-size: 1.1875rem; line-height: 1.6; color: var(--ink-2); max-width: 32rem; }
+    .fb-text h3 { margin-top: 3rem; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.05; }
+    .fb-text h3 + p { margin-top: 0.75rem; }
+
+    /* ─── Download ───────────────────────────────────────────────── */
+    .download { background: var(--ink); color: var(--paper); padding: clamp(5.5rem, 12vw, 11rem) 0 clamp(4.5rem, 9vw, 8rem); }
+    .download h2 { font-size: clamp(3.25rem, 9vw, 8.5rem); line-height: 0.92; letter-spacing: -0.03em; max-width: 15ch; }
+    .download h2 em { color: var(--verm); }
+    .download-row { margin-top: clamp(2.25rem, 5vw, 3.5rem); display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.75rem; }
+    .download .soon { color: rgba(244,238,228,0.65); }
+    .download-price { margin-top: 1.75rem; color: rgba(244,238,228,0.78); max-width: 34rem; }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    footer { background: var(--ink); color: var(--paper); padding: 0 0 2.5rem; }
+    .foot { border-top: 1px solid rgba(244,238,228,0.18); padding-top: 2.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
+    .foot-brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--serif); font-size: 1.75rem; line-height: 1; }
+    .foot-brand img { width: 34px; height: 34px; border-radius: 10px; }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
+    .foot-links a { text-decoration: none; color: rgba(244,238,228,0.82); }
+    .foot-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+    .foot-copy { margin-top: 2rem; font-size: 0.9375rem; color: rgba(244,238,228,0.6); }
+    .foot-copy a { color: rgba(244,238,228,0.85); text-underline-offset: 3px; }
 
     /* ─── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 960px) {
-      .chars-grid { grid-template-columns: repeat(2, 1fr); }
-      .how-grid { grid-template-columns: repeat(2, 1fr); }
-      .scenarios-grid { grid-template-columns: repeat(2, 1fr); }
-      .cat-cards-grid { grid-template-columns: repeat(2, 1fr); }
-      .screens-phones { gap: 1rem; }
-      .screen-phone-sm { width: 180px; }
-      .screen-phone-sm .phone { width: 180px; border-radius: 34px; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+
+      .hero { padding: 6.5rem 0 4rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-art { min-height: 0; padding: 1.75rem 1.75rem 0; }
+
+      .film-head, .chars-head { grid-template-columns: 1fr; }
+      .film-sub, .chars-head p { padding-bottom: 0; }
+
+      .sit-grid { grid-template-columns: 1fr; }
+      .sit-intro { position: static; }
+
+      .fb-grid { grid-template-columns: 1fr; }
+      .fb-shot img { max-width: 320px; }
     }
 
-    @media (max-width: 768px) {
-      .section { padding: 5rem 0; }
+    @media (max-width: 720px) {
+      .hero-lede { font-size: 1.1875rem; }
 
-      .film { padding: 4.5rem 0 5rem; }
-      .film-head { grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2.25rem; }
-      .film-sub { max-width: 100%; padding-bottom: 0; }
-      .film-frame { border-radius: var(--radius-lg); }
+      .film-frame { border-radius: 14px; }
       .film-play { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
       .film-play svg { width: 26px; height: 26px; margin-left: 4px; }
 
-      #nav-cta, #nav-download { display: none !important; }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        text-align: center;
+      .app-shots {
+        display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory;
+        margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 1.5rem;
+        -webkit-overflow-scrolling: touch;
       }
+      .shot, .shot:nth-child(n) { flex: 0 0 74%; margin-top: 0; scroll-snap-align: start; }
+      .shot:nth-child(2) { margin-top: 1.5rem; }
 
-      .hero-text { max-width: 100%; }
-      .hero-body { max-width: 100%; }
-      .hero-ctas { justify-content: center; }
-      .store-badges { justify-content: center; }
+      .chars-cols { grid-template-columns: 1fr; }
+      .chars-col:nth-child(2) { padding-top: 0; }
 
-      .hero-visual { order: -1; }
-
-      .hero-badge { left: 50%; transform: translateX(-50%); white-space: nowrap; }
-
-      .phone { width: 220px; border-radius: 40px; border-width: 8px; }
-      .phone-screen { border-radius: 33px; }
-      .phone-island { width: 76px; height: 23px; }
-
-      .nav-links { display: none; }
-      .nav-burger { display: flex; }
-
-      .convo-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .convo-text { order: 1; }
-      .convo-visual { order: 0; }
-
-      .score-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .score-text { order: 1; }
-      .score-visual { order: 0; }
-
-      .scenarios-header { grid-template-columns: 1fr; gap: 1.5rem; }
-      .scenarios-grid { grid-template-columns: 1fr; }
-      .cat-cards-grid { grid-template-columns: repeat(2, 1fr); }
-
-      .chars-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-      .how-grid { grid-template-columns: 1fr; gap: 2rem; }
-
-      .usecases-grid { grid-template-columns: 1fr; }
-      .usecase-item:nth-child(2n) { border-right: none; }
-      .usecase-item { border-right: none !important; }
-      .usecase-item:last-child { border-bottom: none; }
-      .usecase-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
-      .usecase-item:last-child { border-bottom: none !important; }
-
-      .screens-intro { grid-template-columns: 1fr; gap: 2rem; }
-
-      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-
-      .divider-bar { gap: 2rem; flex-wrap: wrap; }
-
-      .screens-phones { flex-wrap: nowrap; overflow-x: auto; padding: 0 1.5rem 2rem; justify-content: flex-start; }
-      .screen-phone-sm { flex-shrink: 0; }
-
-      .cta-section { padding: 6rem 0; }
-    }
-
-    @media (max-width: 480px) {
-      .t-display { font-size: clamp(2.5rem, 11vw, 3rem); }
-      .chars-grid { grid-template-columns: 1fr; }
-      .hero-badge { display: none; }
-      .screens-phones { gap: 0.75rem; }
+      .hero-art { border-radius: 22px; }
+      .hero-peek-crop { border-radius: 22px 22px 0 0; }
     }
   </style>
 </head>
 <body>
 
+<a class="skip" href="#main">Skip to content</a>
+
 <!-- ─── Navigation ──────────────────────────────────────────── -->
 <nav class="nav" id="nav" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">
-      <img src="logo.png" alt="" class="nav-logo-img" aria-hidden="true">
+  <div class="wrap nav-inner">
+    <a href="/" class="nav-logo" aria-label="Prosody home">
+      <img src="logo.png" alt="" width="34" height="34">
       Prosody
     </a>
 
-    <ul class="nav-links" role="list">
-      <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#scenarios">Scenarios</a></li>
+    <ul class="nav-links">
+      <li><a href="#situations">Situations</a></li>
+      <li><a href="#app">The app</a></li>
       <li><a href="#characters">Characters</a></li>
     </ul>
 
-    <div class="nav-right">
-      <a href="https://apps.apple.com/app/prosody" class="btn btn-primary" style="display:none" id="nav-download">Download</a>
-      <a href="https://apps.apple.com/app/prosody" class="store-badge" id="nav-cta" style="padding:0.45rem 0.875rem;" aria-label="Download on the App Store">
-        <svg width="16" height="19" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
-        <div class="store-badge-text">
-          <span class="store-badge-sub" style="font-size:0.55rem;">Download on the</span>
-          <span class="store-badge-name" style="font-size:0.875rem;">App Store</span>
-        </div>
-      </a>
-      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
+    <a href="https://apps.apple.com/app/prosody" class="store-badge sm nav-cta" aria-label="Download on the App Store">
+      <svg width="15" height="18" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+      <span class="store-badge-text"><span class="store-badge-sub">Download on the</span><span class="store-badge-name">App Store</span></span>
+    </a>
+
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<!-- Mobile nav overlay -->
-<div class="nav-mobile" id="nav-mobile" role="dialog" aria-label="Navigation menu">
-  <a href="#how-it-works">How it works</a>
-  <a href="#scenarios">Scenarios</a>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="#situations">Situations</a>
+  <a href="#app">The app</a>
   <a href="#characters">Characters</a>
   <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
-  <a href="https://apps.apple.com/app/prosody" class="store-badge" style="margin-top:1rem;" aria-label="Download on the App Store">
+  <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
     <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
-    <div class="store-badge-text">
-      <span class="store-badge-sub">Download on the</span>
-      <span class="store-badge-name">App Store</span>
-    </div>
+    <span class="store-badge-text"><span class="store-badge-sub">Download on the</span><span class="store-badge-name">App Store</span></span>
   </a>
 </div>
 
+<main id="main">
+
 <!-- ─── Hero ─────────────────────────────────────────────────── -->
 <section class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <p class="t-overline reveal">Conversation Practice</p>
-        <h1 class="t-display hero-headline reveal reveal-d1">Practice the conversation<br><em>before it happens.</em></h1>
-        <p class="t-body-lg hero-body reveal reveal-d2">Talk to AI characters in real time. Practice real situations. Get a score on how you communicate.</p>
-        <div class="hero-ctas reveal reveal-d3">
-          <div class="store-badges">
-            <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
-            <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
-              <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
-              <div class="store-badge-text">
-                <span class="store-badge-sub">Download on the</span>
-                <span class="store-badge-name">App Store</span>
-              </div>
-            </a>
-            <span class="android-soon">Android coming soon</span>
-          </div>
-          <a href="#how-it-works" class="btn btn-ghost reveal reveal-d4">
-            See how it works
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-          </a>
-        </div>
+  <div class="wrap hero-grid">
+    <div>
+      <h1 class="rv">Have the conversation <em>here first.</em></h1>
+      <p class="hero-lede rv">Prosody lets you talk out loud, in real time, to someone who answers back: a barista in a rush, a manager with ten minutes, a stranger at a bus stop. Afterwards it tells you how it went.</p>
+      <div class="hero-cta rv">
+        <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
+        <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
+          <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+          <span class="store-badge-text"><span class="store-badge-sub">Download on the</span><span class="store-badge-name">App Store</span></span>
+        </a>
+        <span class="soon">iPhone app. Android is coming.</span>
       </div>
+    </div>
 
-      <div class="hero-visual reveal reveal-d2">
-        <div class="phone-wrap">
-          <div class="hero-phone-shadow"></div>
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/home-web.png" alt="Prosody home screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-
-          <div class="hero-badge">
-            <div class="hero-badge-dot"></div>
-            <div class="hero-badge-text"><strong>50 scenarios</strong> · 57 characters</div>
-          </div>
+    <div class="hero-art rv">
+      <p class="hero-art-line">Mara's waiting for your order.<em>Say something.</em></p>
+      <p class="hero-art-note">A real screen from the app: the first line of the Coffee shop order scenario.</p>
+      <div class="hero-peek">
+        <div class="hero-peek-crop">
+          <img src="screenshots/conversation-web.png" alt="Prosody conversation screen: Mara, barista on the morning rush, says &quot;Morning! What can I get started for you?&quot;" width="359" height="780">
         </div>
       </div>
     </div>
@@ -1787,14 +365,13 @@
 <!-- ─── Launch film ───────────────────────────────────────────── -->
 <!-- Set the video URL in LAUNCH_VIDEO_URL in the script at the bottom of this file. -->
 <section class="film" id="film" aria-labelledby="film-title">
-  <div class="container">
+  <div class="wrap">
     <div class="film-head">
-      <p class="t-overline reveal">Launch Film</p>
-      <h2 class="t-headline film-title reveal reveal-d1" id="film-title">Meet<br><em>Prosody.</em></h2>
-      <p class="film-sub reveal reveal-d2">A closer look at how you can practice real conversations, build confidence, and find your voice.</p>
+      <h2 class="film-title rv" id="film-title">Meet<br><em>Prosody.</em></h2>
+      <p class="film-sub rv">A closer look at how you can practice real conversations, build confidence, and find your voice.</p>
     </div>
 
-    <div class="film-frame reveal reveal-d2" id="film-frame">
+    <div class="film-frame rv" id="film-frame">
       <button class="film-poster" id="film-play" type="button" aria-label="Play the Prosody launch film">
         <img class="film-poster-img" src="logo.webp" alt="" width="1254" height="1254" loading="lazy" decoding="async">
         <span class="film-play" aria-hidden="true">
@@ -1806,629 +383,156 @@
   </div>
 </section>
 
-<!-- ─── Stats Divider ─────────────────────────────────────────── -->
-<div class="container">
-  <div class="divider-bar reveal">
-    <div class="divider-stat">
-      <span class="divider-stat-num">50</span>
-      <span class="divider-stat-label">Scenarios to practice</span>
+<!-- ─── Situations ────────────────────────────────────────────── -->
+<section class="situations" id="situations">
+  <div class="wrap sit-grid">
+    <div class="sit-intro">
+      <h2 class="rv">Which conversation is on your mind?</h2>
+      <p class="rv">Fifty situations across nine categories. Each one puts a specific person on the other side, and they speak first.</p>
     </div>
-    <div class="divider-stat">
-      <span class="divider-stat-num">57</span>
-      <span class="divider-stat-label">Unique AI characters</span>
-    </div>
-    <div class="divider-stat">
-      <span class="divider-stat-num">9</span>
-      <span class="divider-stat-label">Practice categories</span>
-    </div>
-    <div class="divider-stat">
-      <span class="divider-stat-num">∞</span>
-      <span class="divider-stat-label">Times you can try again</span>
-    </div>
-  </div>
-</div>
 
-<!-- ─── Real Conversations ────────────────────────────────────── -->
-<section class="convo-section" id="how-it-works">
-  <div class="container">
-    <div class="convo-grid">
-      <div class="convo-text">
-        <p class="t-overline reveal">Real-Time Voice</p>
-        <h2 class="t-headline reveal reveal-d1">It's not a script.<br><em>It's a conversation.</em></h2>
-        <p class="convo-body reveal reveal-d2">The AI character responds to exactly what you say — and sounds like it. Their tone shifts with the conversation. Warmer when things are going well. More guarded when they're not. Take a pause, go off-script, push back. It adapts.</p>
-        <div class="convo-note reveal reveal-d3">
-          <p>Every conversation sounds different. You can't rehearse for that.</p>
-        </div>
-      </div>
+    <div>
+      <article class="sit rv">
+        <h3>The screening call</h3>
+        <p class="sit-line">&ldquo;Thanks for making the time. Let's start simple — walk me through what you're doing now.&rdquo;</p>
+        <p class="sit-meta">Work &middot; Piet, a recruiter running back-to-back screens</p>
+      </article>
 
-      <div class="convo-visual reveal reveal-d2">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/conversation-web.png" alt="Live conversation with Mara" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-        </div>
-      </div>
+      <article class="sit rv">
+        <h3>First date, first ten minutes</h3>
+        <p class="sit-line">&ldquo;Hi! Sorry, I think I'm early. I'm always early, it's a whole thing.&rdquo;</p>
+        <p class="sit-meta">Dating &middot; Noor, nervous in the way that shows up as talking slightly too fast</p>
+      </article>
+
+      <article class="sit rv">
+        <h3>A real apology</h3>
+        <p class="sit-line">&ldquo;It's fine, honestly. Don't worry about it. What's up?&rdquo;</p>
+        <p class="sit-meta">Difficult conversations &middot; Otis, hurt and covering it with a lightness that isn't convincing</p>
+      </article>
+
+      <article class="sit rv">
+        <h3>Saying the first word</h3>
+        <p class="sit-line">&ldquo;Hey. Bus is running late again, huh?&rdquo;</p>
+        <p class="sit-meta">Social anxiety &middot; Nell, a stranger at the bus stop who might talk, or might look at her phone</p>
+      </article>
+
+      <article class="sit rv">
+        <h3>Giving a toast</h3>
+        <p class="sit-line">&ldquo;Alright everyone, quiet down — quiet down! Right. Over to you.&rdquo;</p>
+        <p class="sit-meta">Public speaking &middot; Bram, the best man, rooting for you completely</p>
+      </article>
+
+      <article class="sit rv">
+        <h3>Fifteen seconds</h3>
+        <p class="sit-line">&ldquo;Yeah? Who's this?&rdquo;</p>
+        <p class="sit-meta">Sales &middot; Duncan, a prospect who did not ask to be called</p>
+      </article>
+
+      <p class="sit-more rv">That's six of fifty. There's also everyday life, friendships, and a Random one that drops you in with someone you haven't met.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── Scenarios ─────────────────────────────────────────────── -->
-<section class="section" id="scenarios">
-  <div class="container">
-    <div class="scenarios-header">
-      <div>
-        <p class="t-overline reveal">50 Scenarios</p>
-        <h2 class="t-headline reveal reveal-d1">There's a conversation<br><em>for that.</em></h2>
-      </div>
-      <div>
-        <p class="t-body reveal reveal-d2">Nine categories, from the easy to the impossible. Every scenario is a real situation you might actually face.</p>
-      </div>
+<!-- ─── The app ───────────────────────────────────────────────── -->
+<section class="app" id="app">
+  <div class="wrap">
+    <div class="app-head">
+      <h2 class="rv">Pick one. Speak. <em>See how it went.</em></h2>
+      <p class="rv">That's the whole app. These are the real screens.</p>
     </div>
 
-    <div class="cat-cards-grid reveal">
-      <!-- Everyday: Coffee -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#E65D3B"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M10 2v2"/>
-              <path d="M14 2v2"/>
-              <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/>
-              <path d="M6 2v2"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Everyday convos</p>
-          <p class="cat-card-desc">The small exchanges that fill your week — orders, lifts, neighbours, strangers.</p>
-        </div>
-      </div>
-      <!-- Dating: Heart -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#C25C6A"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Dating</p>
-          <p class="cat-card-desc">First dates and the conversations that decide if there's a second.</p>
-        </div>
-      </div>
-      <!-- Friendships: Users -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#D4AF37"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-              <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-              <circle cx="9" cy="7" r="4"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Friendships</p>
-          <p class="cat-card-desc">Meeting people and turning acquaintances into people you actually know.</p>
-        </div>
-      </div>
-      <!-- Work: Briefcase -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#4A7BA8"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-              <rect width="20" height="14" x="2" y="6" rx="2"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Work</p>
-          <p class="cat-card-desc">Colleagues, managers, and the conversations you can't avoid.</p>
-        </div>
-      </div>
-      <!-- Public speaking: Megaphone -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#C25C6A"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
-              <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/>
-              <path d="M8 6v8"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Public speaking</p>
-          <p class="cat-card-desc">Saying something in front of people who are all looking at you.</p>
-        </div>
-      </div>
-      <!-- Difficult convos: Handshake -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#4A8C52"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="m11 17 2 2a1 1 0 1 0 3-3"/>
-              <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/>
-              <path d="m21 3 1 11h-2"/>
-              <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/>
-              <path d="M3 4h8"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Difficult convos</p>
-          <p class="cat-card-desc">Apologies, confrontations, and the things you've been putting off.</p>
-        </div>
-      </div>
-      <!-- Social anxiety: Sprout -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#E65D3B"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/>
-              <path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/>
-              <path d="M5 21h14"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Social anxiety</p>
-          <p class="cat-card-desc">Room entries, small talk, and not knowing what to say next.</p>
-        </div>
-      </div>
-      <!-- Sales: TrendingUp -->
-      <div class="cat-card">
-        <div class="cat-face">
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="30" fill="#D4AF37"/>
-            <g transform="translate(11,11) scale(1.583)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-              <path d="M16 7h6v6"/>
-              <path d="m22 7-8.5 8.5-5-5L2 17"/>
-            </g>
-          </svg>
-        </div>
-        <div>
-          <p class="cat-card-name">Sales</p>
-          <p class="cat-card-desc">Pitching, negotiating, and asking for what you want.</p>
-        </div>
-      </div>
+    <div class="app-shots">
+      <figure class="shot rv">
+        <img src="screenshots/scenario-preview-web.png" alt="Prosody scenario screen for Coffee shop order, showing your objective and who you're talking to" width="359" height="780" loading="lazy">
+        <figcaption><strong>Know what you're walking into.</strong>Your objective and the person you're talking to, before you start.</figcaption>
+      </figure>
+      <figure class="shot rv">
+        <img src="screenshots/conversation-web.png" alt="Prosody live conversation screen with a hold to speak button" width="359" height="780" loading="lazy">
+        <figcaption><strong>Talk. Out loud.</strong>Hold to speak, or type instead. They answer to what you actually said.</figcaption>
+      </figure>
+      <figure class="shot rv">
+        <img src="screenshots/results-score.png" alt="Prosody results screen with a score of 72 out of 100 and the objective met" width="359" height="780" loading="lazy">
+        <figcaption><strong>Find out how it landed.</strong>A score and specific feedback as soon as you finish.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
 <!-- ─── Characters ────────────────────────────────────────────── -->
-<section class="section characters-section" id="characters">
-  <div class="container">
-    <div class="section-header">
-      <p class="t-overline reveal">57 Characters</p>
-      <h2 class="t-headline reveal reveal-d1">Everyone has a different<br><em>way of talking.</em></h2>
+<section class="chars" id="characters">
+  <div class="wrap">
+    <div class="chars-head">
+      <h2 class="rv">Fifty-seven people. None of them talk the same way.</h2>
+      <p class="rv">Their tone shifts as the conversation does: warmer when it's going well, more guarded when it isn't. Pause, go off-script, push back. They adapt.</p>
     </div>
 
-    <div class="chars-grid">
-      <!-- Mara: open eyes, smile, blush — sage #5E8C6E -->
-      <div class="char-card reveal">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#5E8C6E"/>
-            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Mara</p>
-          <p class="char-role">Barista · Morning Rush</p>
-        </div>
-        <p class="char-desc">Warm, quick to joke. Six people behind you and the espresso machine is on its last nerve.</p>
+    <div class="chars-cols">
+      <div class="chars-col">
+        <div class="char rv"><h3>Mara</h3><p class="char-role">Barista on the morning rush</p><p class="char-desc">Genuinely warm, but there are six people behind you and you both know it.</p></div>
+        <div class="char rv"><h3>Ellis</h3><p class="char-role">Investor who has heard this pitch before</p><p class="char-desc">Quiet, unreadable, and taking notes you cannot see.</p></div>
+        <div class="char rv"><h3>Rosalind</h3><p class="char-role">Your manager, door open</p><p class="char-desc">Direct and genuinely supportive, provided you get to the point.</p></div>
+        <div class="char rv"><h3>Noor</h3><p class="char-role">Your first date</p><p class="char-desc">Nervous in the way that shows up as talking slightly too fast.</p></div>
       </div>
-
-      <!-- Ingrid: open eyes, surprised — slate #4E6478 -->
-      <div class="char-card reveal reveal-d1">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#4E6478"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="50" cy="67" r="6" fill="#2B2118"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Ingrid</p>
-          <p class="char-role">Gate Agent · Delay</p>
-        </div>
-        <p class="char-desc">Brisk and unflappable. Delivered the same bad news forty times today and her face shows none of it.</p>
-      </div>
-
-      <!-- Ellis: open eyes, smile, no blush — indigo #4A5BA8 -->
-      <div class="char-card reveal reveal-d2">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#4A5BA8"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Ellis</p>
-          <p class="char-role">Investor · Meeting Room</p>
-        </div>
-        <p class="char-desc">Has heard this pitch before. Probably seven versions of it. Gets to the hard question before you're ready.</p>
-      </div>
-
-      <!-- Vera: wink, smile, blush — rose #C25C6A -->
-      <div class="char-card reveal reveal-d3">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#C25C6A"/>
-            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <path d="M 29 46 Q 36 40 43 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Vera</p>
-          <p class="char-role">Housemate · Living Room</p>
-        </div>
-        <p class="char-desc">About the dishes, again. Not angry exactly. More like tired. She wants this resolved today.</p>
-      </div>
-
-      <!-- Rosalind: open eyes, smile — plum #8B5A9F -->
-      <div class="char-card reveal reveal-d1">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#8B5A9F"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Rosalind</p>
-          <p class="char-role">Manager · Open Door</p>
-        </div>
-        <p class="char-desc">Fair, direct, and slightly overscheduled. Her feedback is useful if you can handle hearing it.</p>
-      </div>
-
-      <!-- Otis: open eyes, surprised — clay #B5673E -->
-      <div class="char-card reveal reveal-d2">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#B5673E"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="64" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="65.5" cy="47" r="3.6" fill="#2B2118"/>
-            <circle cx="50" cy="67" r="6" fill="#2B2118"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Otis</p>
-          <p class="char-role">Friend · You let him down</p>
-        </div>
-        <p class="char-desc">Not looking for an explanation. Looking to see if you mean it this time. You'll know when it lands.</p>
-      </div>
-
-      <!-- Noor: wink, smile, blush — rose #C25C6A -->
-      <div class="char-card reveal reveal-d3">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#C25C6A"/>
-            <ellipse cx="26" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <ellipse cx="74" cy="60" rx="6.5" ry="4" fill="rgba(255,255,255,0.4)"/>
-            <circle cx="36" cy="46" r="7.5" fill="#FFFFFF"/><circle cx="37.5" cy="47" r="3.6" fill="#2B2118"/>
-            <path d="M 57 46 Q 64 40 71 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <path d="M 34 64 Q 50 75 66 64" stroke="#2B2118" stroke-width="4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Noor</p>
-          <p class="char-role">First Date</p>
-        </div>
-        <p class="char-desc">Warm but not easy. Asking real questions, listening to the answers, deciding what she thinks of you.</p>
-      </div>
-
-      <!-- Wildcard: happy eyes, laugh — neutral #8A8580 -->
-      <div class="char-card reveal reveal-d4">
-        <div class="char-avatar">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="52" r="40" fill="#8A8580"/>
-            <path d="M 29 46 Q 36 40 43 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <path d="M 57 46 Q 64 40 71 46" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <ellipse cx="50" cy="67" rx="13" ry="9" fill="#2B2118"/>
-          </svg>
-        </div>
-        <div>
-          <p class="char-name">Wildcard</p>
-          <p class="char-role">Unknown · Random</p>
-        </div>
-        <p class="char-desc">A stranger you haven't met yet. Different every time. You won't know what you're walking into.</p>
+      <div class="chars-col">
+        <div class="char rv"><h3>Ingrid</h3><p class="char-role">Gate agent during a delay</p><p class="char-desc">Brisk and factual. She has delivered bad news forty times today.</p></div>
+        <div class="char rv"><h3>Vera</h3><p class="char-role">Housemate, about the dishes again</p><p class="char-desc">Genuinely annoyed and entirely willing to say so.</p></div>
+        <div class="char rv"><h3>Otis</h3><p class="char-role">Friend you let down</p><p class="char-desc">Hurt, and covering it with a lightness that is not convincing.</p></div>
+        <div class="char rv"><h3>Someone new</h3><p class="char-role">The Random scenario</p><p class="char-desc">A situation you haven't seen, with someone you haven't met.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── How it works ──────────────────────────────────────────── -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-header" style="max-width:480px;">
-      <p class="t-overline reveal">The Experience</p>
-      <h2 class="t-headline reveal reveal-d1">Choose. Speak. Score.<br><em>Try again.</em></h2>
+<!-- ─── Feedback & habit ──────────────────────────────────────── -->
+<section class="feedback" id="feedback">
+  <div class="wrap fb-grid">
+    <div class="fb-shot rv">
+      <img src="screenshots/progress-web.png" alt="Prosody progress screen: the Meadow map, level 1 of 50, with XP to the next level" width="359" height="780" loading="lazy">
     </div>
 
-    <div class="how-grid">
-      <div class="how-step reveal">
-        <div class="how-step-line"></div>
-        <p class="how-num">01</p>
-        <p class="how-title">Choose a situation</p>
-        <p class="how-desc">Pick a conversation you want to practice. Interview nerves, first date jitters, a difficult talk you've been putting off.</p>
-      </div>
-      <div class="how-step reveal reveal-d1">
-        <div class="how-step-line"></div>
-        <p class="how-num">02</p>
-        <p class="how-title">Have the conversation</p>
-        <p class="how-desc">Speak naturally with an AI character in real time. They respond to what you actually say, not a script.</p>
-      </div>
-      <div class="how-step reveal reveal-d2">
-        <div class="how-step-line"></div>
-        <p class="how-num">03</p>
-        <p class="how-title">Get your score</p>
-        <p class="how-desc">See how you communicated. Specific feedback on what worked and what to improve next time.</p>
-      </div>
-      <div class="how-step reveal reveal-d3">
-        <div class="how-step-line"></div>
-        <p class="how-num">04</p>
-        <p class="how-title">Try again</p>
-        <p class="how-desc">Each conversation is different. Practice until it feels natural, then take the real one with confidence.</p>
-      </div>
+    <div class="fb-text">
+      <h2 class="rv">Not a grade. <em>A map of how it went.</em></h2>
+      <p class="rv">Every session ends with a score and specific feedback on where the conversation went and how to handle it better. Run the same scenario again and it won't go the same way, because nobody on the other end is following a script.</p>
+
+      <h3 class="rv">Once a week isn't enough.</h3>
+      <p class="rv">Pick a reminder time while you set up (morning, afternoon, or evening) and Prosody nudges you once a day. Streaks keep count of how many days in a row you've shown up, and every session earns XP that moves you along the map.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── Score ─────────────────────────────────────────────────── -->
-<section class="score-section">
-  <div class="container">
-    <div class="score-grid">
-      <div class="score-text">
-        <p class="t-overline reveal" style="color:var(--accent);">Feedback</p>
-        <h2 class="t-headline reveal reveal-d1">Then see<br><em>how you did.</em></h2>
-        <p class="score-desc reveal reveal-d2">Every session ends with a score and specific feedback — not a grade, but a map of where the conversation went and how to navigate it better.</p>
-        <div class="score-features reveal reveal-d3">
-          <div class="score-feature"><div class="score-feature-dot"></div>Scored immediately after every session</div>
-          <div class="score-feature"><div class="score-feature-dot"></div>Specific, actionable feedback on what happened</div>
-          <div class="score-feature"><div class="score-feature-dot"></div>Track your progress as you improve over time</div>
-          <div class="score-feature"><div class="score-feature-dot"></div>Try the same scenario again with new insights</div>
-        </div>
-      </div>
-
-      <div class="score-visual reveal reveal-d2">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/results-score.png" alt="Prosody results screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ─── Download ──────────────────────────────────────────────── -->
+<section class="download" id="download">
+  <div class="wrap">
+    <h2 class="rv">The next one doesn't have to be your <em>first try.</em></h2>
+    <div class="download-row rv">
+      <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
+      <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
+        <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
+        <span class="store-badge-text"><span class="store-badge-sub">Download on the</span><span class="store-badge-name">App Store</span></span>
+      </a>
+      <span class="soon">Android coming soon</span>
     </div>
+    <p class="download-price rv">7-day free trial on the annual plan. $7.99 a month or $59.99 a year. Cancel anytime.</p>
   </div>
 </section>
 
-<!-- ─── Habit ───────────────────────────────────────────────────── -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="habit-grid">
-      <div>
-        <p class="t-overline reveal">Build the Habit</p>
-        <h2 class="t-headline reveal reveal-d1">Once a week<br><em>isn't enough.</em></h2>
-        <p class="t-body reveal reveal-d2" style="margin-top:1.25rem;max-width:38ch;">The conversations that matter most are the ones you haven't practiced enough. Daily reminders make sure you don't let that slide. Pick a time. Show up. Get better.</p>
-        <div class="habit-features reveal reveal-d3">
-          <div class="habit-feature"><div class="habit-feature-dot"></div>Set a reminder during onboarding — morning, afternoon, or evening</div>
-          <div class="habit-feature"><div class="habit-feature-dot"></div>A daily nudge to practice before the real thing</div>
-          <div class="habit-feature"><div class="habit-feature-dot"></div>Streak tracking keeps your momentum visible</div>
-        </div>
-      </div>
+</main>
 
-      <div class="habit-visual reveal reveal-d2">
-        <div class="notif-wrap">
-          <div class="notif-card">
-            <div class="notif-icon">🎙</div>
-            <div style="flex:1;min-width:0;">
-              <p class="notif-app">Prosody</p>
-              <p class="notif-title">Time to practice.</p>
-              <p class="notif-body">Your daily conversation is ready.</p>
-              <p class="notif-time">now</p>
-            </div>
-          </div>
-          <div class="notif-card notif-card-muted">
-            <div class="notif-icon" style="background:var(--bg-alt);">📅</div>
-            <div style="flex:1;min-width:0;">
-              <p class="notif-app">Prosody</p>
-              <p class="notif-title">3-day streak.</p>
-              <p class="notif-body">Keep it going — practice today.</p>
-              <p class="notif-time">yesterday</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── Use Cases ─────────────────────────────────────────────── -->
-<section class="section">
-  <div class="container">
-    <div class="section-header" style="max-width:560px; margin-bottom:3rem;">
-      <p class="t-overline reveal">For conversations that matter</p>
-      <h2 class="t-headline reveal reveal-d1">Practice it<br><em>before it counts.</em></h2>
-    </div>
-
-    <div class="usecases-grid reveal">
-      <div class="usecase-item">
-        <p class="usecase-pre">Before the interview</p>
-        <h3 class="usecase-title">Difficult questions don't have to catch you off guard.</h3>
-        <p class="usecase-body">Practice your answers without the stakes. Figure out what you actually want to say before you're sitting across from someone who matters.</p>
-      </div>
-
-      <div class="usecase-item">
-        <p class="usecase-pre">Before the first date</p>
-        <h3 class="usecase-title">Get comfortable talking to someone new.</h3>
-        <p class="usecase-body">Conversation is a skill. Practice the early minutes — the small talk, the questions, the silences — until they feel easy.</p>
-      </div>
-
-      <div class="usecase-item">
-        <p class="usecase-pre">Before the difficult conversation</p>
-        <h3 class="usecase-title">Find the words before you need them.</h3>
-        <p class="usecase-body">The apology, the confrontation, the thing you've been putting off. Say it out loud first. Know how it sounds before it matters.</p>
-      </div>
-
-      <div class="usecase-item">
-        <p class="usecase-pre">Before the presentation</p>
-        <h3 class="usecase-title">Practice speaking clearly when everyone's listening.</h3>
-        <p class="usecase-body">Public speaking is practiced, not innate. Rehearse in a space where it's safe to go wrong until going wrong stops happening.</p>
-      </div>
-
-      <div class="usecase-item">
-        <p class="usecase-pre">Before the sales call</p>
-        <h3 class="usecase-title">Handle the objections before they happen.</h3>
-        <p class="usecase-body">Know your pitch cold. Practice the pushback, the redirect, the close. Walk in having already heard the hard questions.</p>
-      </div>
-
-      <div class="usecase-item">
-        <p class="usecase-pre">Before anything, really</p>
-        <h3 class="usecase-title">Conversation is a skill like any other.</h3>
-        <p class="usecase-body">The more you practice, the better you get. Prosody gives you the space to practice without the pressure of the real thing.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── App Screens ────────────────────────────────────────────── -->
-<section class="section screens-section">
-  <div class="container">
-    <div class="screens-intro">
-      <div>
-        <p class="t-overline reveal">The App</p>
-        <h2 class="t-headline reveal reveal-d1">Everything in one place.<br><em>Nothing you don't need.</em></h2>
-      </div>
-      <p class="t-body-lg reveal reveal-d2" style="max-width:36ch;">Pick a scenario, speak naturally, read your feedback. Prosody gets out of the way so you can focus on the conversation.</p>
-    </div>
-
-    <!-- Three phones showing different screens -->
-    <div class="screens-phones">
-      <!-- Phone 1: Home screen -->
-      <div class="screen-phone-sm reveal reveal-d1">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/home-web.png" alt="Prosody home screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phone 2: Progress / Journey (center, larger) -->
-      <div class="reveal reveal-d2">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/progress-web.png" alt="Prosody progress screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phone 3: Practice / Categories -->
-      <div class="screen-phone-sm reveal reveal-d3">
-        <div class="phone-wrap">
-          <div class="phone">
-            <div class="phone-screen" style="padding:0;background:#F2F0EC;">
-              <img src="screenshots/practice-web.png" alt="Prosody practice screen" style="width:100%;height:auto;display:block;border-radius:inherit;">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── Final CTA ─────────────────────────────────────────────── -->
-<section class="cta-section">
-  <div class="cta-bg-text" aria-hidden="true">Practice</div>
-  <div class="container">
-    <div class="cta-inner">
-      <p class="t-overline reveal" style="color:var(--accent);">Try Free</p>
-      <h2 class="t-headline cta-headline reveal reveal-d1" style="color:var(--dark-fg);">The next conversation doesn't have to be your first try.</h2>
-      <p class="cta-sub reveal reveal-d2">Practice it with Prosody.</p>
-      <div class="cta-actions reveal reveal-d3">
-        <div class="store-badges">
-          <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
-          <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
-            <svg width="22" height="26" viewBox="0 0 22 26" fill="white" aria-hidden="true"><path d="M18.04 13.77c-.03-3.14 2.57-4.66 2.68-4.73-1.46-2.14-3.74-2.43-4.55-2.46-1.93-.2-3.78 1.14-4.76 1.14-.99 0-2.51-1.12-4.13-1.09-2.12.03-4.08 1.24-5.17 3.14-2.22 3.85-.57 9.54 1.59 12.66 1.06 1.53 2.32 3.25 3.97 3.18 1.6-.06 2.2-1.03 4.13-1.03 1.92 0 2.47 1.03 4.15.99 1.72-.03 2.81-1.56 3.86-3.1a15.6 15.6 0 0 0 1.75-3.59c-3.72-1.42-3.52-5.11-3.52-5.11zm-3.29-9.4c.88-1.07 1.47-2.55 1.31-4.03-1.27.05-2.8.85-3.71 1.9-.81.94-1.53 2.44-1.34 3.88 1.42.11 2.87-.72 3.74-1.75z"/></svg>
-            <div class="store-badge-text">
-              <span class="store-badge-sub">Download on the</span>
-              <span class="store-badge-name">App Store</span>
-            </div>
-          </a>
-          <span class="android-soon">Android coming soon</span>
-        </div>
-        <p class="cta-pricing reveal reveal-d4">7-day free trial on annual plan &middot; $7.99/month or $59.99/year &middot; cancel anytime</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── Footer ────────────────────────────────────────────────── -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
-          <img src="logo.png" alt="Prosody logo" style="width:32px;height:32px;border-radius:9px;display:block;">
-          <p class="footer-brand-name" style="margin-bottom:0;">Prosody</p>
-        </div>
-        <p class="footer-brand-desc">Practice conversations before they happen. Real-time AI conversation practice for iOS.</p>
-      </div>
-
-      <div>
-        <p class="footer-links-label">Navigate</p>
-        <ul class="footer-links-list" role="list">
-          <li><a href="/">Home</a></li>
-          <li><a href="#scenarios">Scenarios</a></li>
-          <li><a href="#characters">Characters</a></li>
-          <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
-          <li><a href="https://apps.apple.com/app/prosody">App Store</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <p class="footer-links-label">Legal</p>
-        <ul class="footer-links-list" role="list">
-          <li><a href="/privacy.html">Privacy</a></li>
-          <li><a href="/terms.html">Terms</a></li>
-          <li><a href="mailto:help@getprosody.com">Contact</a></li>
-        </ul>
-      </div>
+  <div class="wrap">
+    <div class="foot">
+      <div class="foot-brand"><img src="logo.png" alt="" width="34" height="34">Prosody</div>
+      <ul class="foot-links">
+        <li><a href="#situations">Situations</a></li>
+        <li><a href="#characters">Characters</a></li>
+        <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
+        <li><a href="https://apps.apple.com/app/prosody">App Store</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="mailto:help@getprosody.com">Contact</a></li>
+      </ul>
     </div>
-
-    <div class="footer-bottom">
-      <p class="footer-bottom-copy">© 2024 Prosody. Made by <a href="mailto:help@getprosody.com" style="color:var(--fg-2);text-decoration:underline;text-underline-offset:3px;">Lucas Whittle</a>.</p>
-      <p class="footer-bottom-copy">iOS app for conversation practice.</p>
-    </div>
+    <p class="foot-copy">&copy; 2026 Prosody. Made by <a href="mailto:help@getprosody.com">Lucas Whittle</a>.</p>
   </div>
 </footer>
 
@@ -2498,114 +602,39 @@
     });
   })();
 
-  // ─── Scroll reveal ──────────────────────────────────────────
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0 });
+  // ─── Reveal on scroll ───────────────────────────────────────
+  (function () {
+    const els = document.querySelectorAll('.rv');
+    const showAll = () => els.forEach(el => el.classList.add('in'));
+    if (!('IntersectionObserver' in window)) { showAll(); return; }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    els.forEach(el => io.observe(el));
+    setTimeout(showAll, 4000);
+  })();
 
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-  // Reveal every .reveal element whose top is within (or above) the current
-  // viewport. Pass fast=true to use a shorter transition for above-fold content.
-  function revealVisible(fast) {
-    document.querySelectorAll('.reveal:not(.in)').forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) {
-        if (fast) el.style.transitionDuration = '0.4s';
-        el.classList.add('in');
-      }
-    });
-  }
-
-  // Two rAFs let the browser finish scrolling to any hash in the URL before
-  // we measure positions — without this, a fresh load of /#scenarios sees
-  // all elements at their un-scrolled positions and leaves them invisible.
-  requestAnimationFrame(() => requestAnimationFrame(() => revealVisible(true)));
-
-  // Re-run when the hash changes (back/forward, external deep-links).
-  window.addEventListener('hashchange', () => setTimeout(revealVisible, 150));
-
-  // ─── Nav scroll state ────────────────────────────────────────
+  // ─── Nav ────────────────────────────────────────────────────
   const nav = document.getElementById('nav');
-  const navCta = document.getElementById('nav-cta');
-  const navDownload = document.getElementById('nav-download');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      nav.classList.add('scrolled');
-      navCta.style.display = 'none';
-      navDownload.style.display = 'inline-flex';
-    } else {
-      nav.classList.remove('scrolled');
-      navCta.style.display = '';
-      navDownload.style.display = 'none';
-    }
-  }, { passive: true });
-
-  // ─── Mobile nav ─────────────────────────────────────────────
   const burger = document.getElementById('nav-burger');
   const mobileNav = document.getElementById('nav-mobile');
 
-  function openMobileNav() {
-    mobileNav.classList.add('open');
-    burger.classList.add('open');
-    burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', 'Close menu');
-    document.body.style.overflow = 'hidden';
+  function setMenu(open) {
+    mobileNav.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.style.overflow = open ? 'hidden' : '';
   }
-
-  function closeMobileNav() {
-    mobileNav.classList.remove('open');
-    burger.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Open menu');
-    document.body.style.overflow = '';
-  }
-
-  burger.addEventListener('click', () => {
-    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
-  });
-  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
-
-  // ─── Scenario filter ─────────────────────────────────────────
-  const catBtns = document.querySelectorAll('.cat-btn');
-  const scenarioCards = document.querySelectorAll('.scenario-card');
-
-  catBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      catBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const cat = btn.dataset.cat;
-      scenarioCards.forEach(card => {
-        if (cat === 'all' || card.dataset.cat === cat) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // ─── Smooth anchor scroll with offset ───────────────────────
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const id = a.getAttribute('href').slice(1);
-      const target = document.getElementById(id);
-      if (!target) return;
-      e.preventDefault();
-      const offset = 80;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-      // Reveal elements that scroll into view during the smooth scroll.
-      setTimeout(revealVisible, 700);
-    });
-  });
+  burger.addEventListener('click', () => setMenu(!mobileNav.classList.contains('open')));
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 </script>
 
 </body>
