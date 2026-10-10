@@ -19,7 +19,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
 
   <script>document.documentElement.classList.add('js');</script>
 
@@ -37,7 +37,7 @@
       --verm-dk: #C4431D;
       --line:    rgba(28,22,18,0.16);
 
-      --serif: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+      --display: "Fredoka", "Nunito", "Arial Rounded MT Bold", system-ui, sans-serif;
       --sans:  "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
       --r: 20px;
@@ -73,8 +73,8 @@
 
     .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
-    h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.015em; text-wrap: balance; }
-    em { font-style: italic; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
+    em { font-style: normal; }
 
     /* Reveal — content is always visible without JS */
     .js .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
@@ -113,7 +113,7 @@
     .nav.scrolled { background: var(--paper); border-color: var(--line); padding: 0.7rem 0; }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 
-    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; font-family: var(--serif); font-size: 1.75rem; line-height: 1; letter-spacing: -0.01em; }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; font-family: var(--display); font-weight: 600; font-size: 1.5rem; line-height: 1; letter-spacing: -0.01em; }
     .nav-logo img { width: 34px; height: 34px; border-radius: 10px; }
 
     .nav-links { display: flex; align-items: center; gap: 2.25rem; margin-left: auto; margin-right: 2rem; }
@@ -131,14 +131,14 @@
       flex-direction: column; justify-content: center; gap: 1.25rem; padding: 6rem var(--gutter) 3rem;
     }
     .nav-mobile.open { display: flex; }
-    .nav-mobile a:not(.store-badge) { font-family: var(--serif); font-size: 3rem; line-height: 1.1; text-decoration: none; }
+    .nav-mobile a:not(.store-badge) { font-family: var(--display); font-weight: 500; font-size: 2.5rem; line-height: 1.15; text-decoration: none; }
     .nav-mobile .store-badge { align-self: flex-start; margin-top: 1.5rem; }
 
     /* ─── Hero ───────────────────────────────────────────────────── */
     .hero { padding: 8.5rem 0 5.5rem; }
     .hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.85fr); gap: clamp(2.5rem, 5vw, 5rem); align-items: end; }
 
-    .hero h1 { font-size: clamp(3.5rem, 8.2vw, 8rem); line-height: 0.92; letter-spacing: -0.025em; }
+    .hero h1 { font-size: clamp(2.9rem, 6.2vw, 6rem); line-height: 1.02; letter-spacing: -0.02em; font-weight: 600; }
     .hero h1 em { color: var(--verm); }
     .hero-lede { margin-top: 2rem; max-width: 34rem; font-size: 1.3125rem; line-height: 1.55; color: var(--ink-2); }
     .hero-cta { margin-top: 2.25rem; display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.5rem; }
@@ -148,7 +148,7 @@
       padding: 2.25rem 2.25rem 0; min-height: 600px;
       display: flex; flex-direction: column; overflow: hidden;
     }
-    .hero-art-line { font-family: var(--serif); font-size: clamp(2rem, 3.2vw, 2.75rem); line-height: 1.05; letter-spacing: -0.01em; }
+    .hero-art-line { font-family: var(--display); font-weight: 500; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.12; letter-spacing: -0.01em; }
     .hero-art-line em { display: block; }
     .hero-art-note { margin-top: 0.9rem; color: var(--ink); font-size: 1rem; font-weight: 500; }
     .hero-peek { margin-top: auto; padding-top: 2.25rem; }
@@ -158,7 +158,7 @@
     /* ─── Launch film ────────────────────────────────────────────── */
     .film { background: var(--ink); color: var(--paper); padding: clamp(4.5rem, 9vw, 8rem) 0 clamp(4.5rem, 9vw, 8rem); }
     .film-head { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(2rem, 5vw, 3.75rem); }
-    .film-title { font-size: clamp(4rem, 11vw, 9.5rem); line-height: 0.88; letter-spacing: -0.03em; }
+    .film-title { font-size: clamp(3.25rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -0.02em; font-weight: 600; }
     .film-title em { color: var(--verm); }
     .film-sub { font-size: 1.1875rem; line-height: 1.6; color: rgba(244,238,228,0.78); max-width: 30rem; padding-bottom: 0.6rem; }
 
@@ -183,19 +183,19 @@
     .situations { padding: clamp(5rem, 10vw, 9rem) 0; }
     .sit-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: start; }
     .sit-intro { position: sticky; top: 7rem; }
-    .sit-intro h2 { font-size: clamp(2.75rem, 5.2vw, 4.75rem); line-height: 0.98; }
+    .sit-intro h2 { font-size: clamp(2.25rem, 4.4vw, 3.75rem); line-height: 1.06; }
     .sit-intro p { margin-top: 1.5rem; font-size: 1.1875rem; color: var(--ink-2); max-width: 26rem; }
 
     .sit { padding: 2.25rem 0 2.5rem; border-top: 1px solid var(--line); }
-    .sit h3 { font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.05; }
-    .sit-line { margin-top: 1rem; font-family: var(--serif); font-style: italic; font-size: clamp(1.4rem, 2.2vw, 1.75rem); line-height: 1.28; color: var(--verm-dk); max-width: 34rem; }
+    .sit h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.12; }
+    .sit-line { margin-top: 1rem; font-family: var(--display); font-weight: 500; font-size: clamp(1.2rem, 1.9vw, 1.45rem); line-height: 1.35; color: var(--verm-dk); max-width: 34rem; }
     .sit-meta { margin-top: 0.9rem; font-size: 0.9875rem; color: var(--ink-3); }
     .sit-more { padding-top: 2rem; border-top: 1px solid var(--line); font-size: 1.0625rem; color: var(--ink-2); max-width: 30rem; }
 
     /* ─── The app ────────────────────────────────────────────────── */
     .app { background: var(--blush); padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 9vw, 8rem); overflow: hidden; }
     .app-head { max-width: 44rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
-    .app-head h2 { font-size: clamp(2.75rem, 6vw, 5.5rem); line-height: 0.96; }
+    .app-head h2 { font-size: clamp(2.25rem, 4.8vw, 4.25rem); line-height: 1.06; }
     .app-head h2 em { color: var(--verm-dk); }
     .app-head p { margin-top: 1.5rem; font-size: 1.1875rem; color: var(--ink-2); max-width: 32rem; }
 
@@ -205,18 +205,18 @@
     .shot:nth-child(3) { grid-column: 9 / 13; margin-top: 8rem; }
     .shot img { width: 100%; border-radius: 30px; border: 1px solid rgba(28,22,18,0.1); box-shadow: 0 24px 50px rgba(120,50,20,0.22); background: #F7F5F1; }
     .shot figcaption { margin-top: 1.4rem; font-size: 1.0625rem; color: var(--ink); max-width: 20rem; }
-    .shot figcaption strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.75rem; line-height: 1.1; margin-bottom: 0.3rem; }
+    .shot figcaption strong { display: block; font-family: var(--display); font-weight: 500; font-size: 1.4rem; line-height: 1.15; margin-bottom: 0.3rem; }
 
     /* ─── Characters ─────────────────────────────────────────────── */
     .chars { background: var(--verm); color: var(--paper); padding: clamp(5rem, 10vw, 9rem) 0; }
     .chars-head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(3rem, 7vw, 6rem); }
-    .chars-head h2 { font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.92; letter-spacing: -0.025em; }
+    .chars-head h2 { font-size: clamp(2.4rem, 5.4vw, 4.75rem); line-height: 1.04; letter-spacing: -0.02em; font-weight: 600; }
     .chars-head p { color: var(--ink); font-size: 1.1875rem; max-width: 28rem; padding-bottom: 0.5rem; font-weight: 500; }
 
     .chars-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(2rem, 7vw, 7rem); }
     .chars-col:nth-child(2) { padding-top: clamp(2.5rem, 7vw, 6rem); }
     .char { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
-    .char h3 { font-size: clamp(3.25rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.02em; }
+    .char h3 { font-size: clamp(2.75rem, 5vw, 4.5rem); line-height: 1.02; letter-spacing: -0.01em; font-weight: 600; }
     .char-role { margin-top: 0.5rem; font-weight: 600; color: var(--ink); }
     .char-desc { margin-top: 0.25rem; color: var(--ink); max-width: 24rem; }
 
@@ -224,15 +224,15 @@
     .feedback { padding: clamp(5rem, 10vw, 9rem) 0; }
     .fb-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2.5rem, 8vw, 8rem); align-items: center; }
     .fb-shot img { width: 100%; max-width: 380px; border-radius: 32px; border: 1px solid rgba(28,22,18,0.1); box-shadow: 0 30px 60px rgba(60,40,20,0.2); background: #F7F5F1; }
-    .fb-text h2 { font-size: clamp(2.75rem, 5.4vw, 5rem); line-height: 0.98; }
+    .fb-text h2 { font-size: clamp(2.25rem, 4.4vw, 3.75rem); line-height: 1.06; }
     .fb-text h2 em { color: var(--verm); }
     .fb-text p { margin-top: 1.5rem; font-size: 1.1875rem; line-height: 1.6; color: var(--ink-2); max-width: 32rem; }
-    .fb-text h3 { margin-top: 3rem; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1.05; }
+    .fb-text h3 { margin-top: 3rem; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.12; }
     .fb-text h3 + p { margin-top: 0.75rem; }
 
     /* ─── Download ───────────────────────────────────────────────── */
     .download { background: var(--ink); color: var(--paper); padding: clamp(5.5rem, 12vw, 11rem) 0 clamp(4.5rem, 9vw, 8rem); }
-    .download h2 { font-size: clamp(3.25rem, 9vw, 8.5rem); line-height: 0.92; letter-spacing: -0.03em; max-width: 15ch; }
+    .download h2 { font-size: clamp(2.6rem, 7vw, 6.25rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 16ch; font-weight: 600; }
     .download h2 em { color: var(--verm); }
     .download-row { margin-top: clamp(2.25rem, 5vw, 3.5rem); display: flex; align-items: center; flex-wrap: wrap; gap: 1.25rem 1.75rem; }
     .download .soon { color: rgba(244,238,228,0.65); }
@@ -241,7 +241,7 @@
     /* ─── Footer ─────────────────────────────────────────────────── */
     footer { background: var(--ink); color: var(--paper); padding: 0 0 2.5rem; }
     .foot { border-top: 1px solid rgba(244,238,228,0.18); padding-top: 2.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
-    .foot-brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--serif); font-size: 1.75rem; line-height: 1; }
+    .foot-brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--display); font-weight: 600; font-size: 1.5rem; line-height: 1; }
     .foot-brand img { width: 34px; height: 34px; border-radius: 10px; }
     .foot-links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
     .foot-links a { text-decoration: none; color: rgba(244,238,228,0.82); }
@@ -280,12 +280,12 @@
         transition: transform 0.3s cubic-bezier(.2,.7,.2,1), visibility 0.3s;
       }
       .dock.show { transform: none; visibility: visible; }
-      .dock-text { font-family: var(--serif); font-size: 1.5rem; line-height: 1; letter-spacing: -0.01em; }
+      .dock-text { font-family: var(--display); font-weight: 600; font-size: 1.25rem; line-height: 1; }
     }
 
     @media (max-width: 720px) {
       .hero { padding-top: 6rem; }
-      .hero h1 { font-size: clamp(3.4rem, 18vw, 5.25rem); }
+      .hero h1 { font-size: clamp(2.7rem, 12.5vw, 4.5rem); }
       .hero-lede { font-size: 1.1875rem; margin-top: 1.5rem; }
       .hero-cta { margin-top: 1.75rem; }
       .hero-art-note { display: none; }
