@@ -241,13 +241,26 @@
     .chars-head h2 { font-size: clamp(2rem, 4.5vw, 4rem); line-height: 1.04; letter-spacing: 0.005em; }
     .chars-head p { color: var(--ink); font-size: 1.1875rem; max-width: 28rem; padding-bottom: 0.5rem; font-weight: 500; }
 
-    .chars-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(2rem, 7vw, 7rem); }
-    .chars-col:nth-child(2) { padding-top: clamp(2.5rem, 7vw, 6rem); }
-    .char { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
-    .char h3 { transform-origin: 0 100%; display: inline-block; font-size: clamp(2.4rem, 4.4vw, 3.9rem); line-height: 1.02; letter-spacing: 0.005em; }
-    @media (hover: hover) { .char:hover h3 { animation: wiggle 0.6s; } }
-    .char-role { margin-top: 0.5rem; font-weight: 600; color: var(--ink); }
-    .char-desc { margin-top: 0.25rem; color: var(--ink); max-width: 24rem; }
+
+    /* ─── Characters carousel ────────────────────────────────────── */
+    .chars-ui { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+    .chars-hint { color: var(--ink); font-weight: 600; }
+    .chars-nav { display: flex; gap: 0.75rem; }
+    .chars-btn { width: 52px; height: 52px; border-radius: 50%; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-bottom-width: 6px; display: flex; align-items: center; justify-content: center; transition: transform 0.12s; }
+    .chars-btn:hover { transform: translateY(-2px); }
+    .chars-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
+    .chars-btn:focus-visible { outline-color: var(--paper); }
+    .chars-track { display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter))); padding: 0.5rem max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter))) 1.75rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
+    .chars-track::-webkit-scrollbar { display: none; }
+    .chars-track.drag { cursor: grabbing; scroll-snap-type: none; }
+    .chars-track:focus-visible { outline: 3px solid var(--paper); outline-offset: -6px; border-radius: 12px; }
+    .char-card { flex: 0 0 min(340px, 80vw); scroll-snap-align: start; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-bottom-width: 9px; border-radius: 30px; padding: 1.75rem 1.75rem 2rem; user-select: none; }
+    .char-face { width: 150px; height: 150px; margin-bottom: 1.25rem; }
+    .char-face svg { width: 100%; height: 100%; display: block; border-radius: 50%; }
+    .char-card h3 { font-size: clamp(2.1rem, 3.2vw, 2.75rem); line-height: 1.05; letter-spacing: 0.01em; text-transform: uppercase; }
+    .char-role { margin-top: 0.5rem; font-weight: 700; color: var(--verm-dk); line-height: 1.35; }
+    .char-desc { margin-top: 0.6rem; color: var(--ink-2); }
+    @media (hover: hover) { .char-card:hover .char-face { animation: wiggle 0.6s; } }
 
     /* ─── More ways to practice ──────────────────────────────────── */
     .more { padding: clamp(4rem, 8vw, 7rem) 0 0; }
@@ -340,8 +353,7 @@
       .film, .situations, .app, .chars, .feedback, .habit { padding-top: 4rem; padding-bottom: 4rem; }
       .download { padding-top: 4.5rem; padding-bottom: 3.5rem; }
       .sit { padding: 1.75rem 0 2rem; }
-      .char { padding-bottom: 2.25rem; }
-      .chars-head { margin-bottom: 2.5rem; }
+      .chars-head { margin-bottom: 2rem; }
       .foot-links a { display: inline-block; padding: 0.35rem 0; }
       .foot-links { gap: 0.25rem 1.75rem; }
 
@@ -360,8 +372,6 @@
 
       .more-list { grid-template-columns: 1fr; }
       .more { padding-top: 4rem; }
-      .chars-cols { grid-template-columns: 1fr; }
-      .chars-col:nth-child(2) { padding-top: 0; }
 
       .hero-art { border-radius: 22px; }
       .hero-peek-crop { border-radius: 22px 22px 0 0; }
@@ -546,21 +556,17 @@
       <p class="rv">Each one has their own voice and personality, and they don't just praise everything you say. They reply in short, reactive lines like a real call, and you can hold the mic to jump in and interrupt.</p>
     </div>
 
-    <div class="chars-cols">
-      <div class="chars-col">
-        <div class="char rv"><h3>Mara</h3><p class="char-role">Barista on the morning rush</p><p class="char-desc">Genuinely warm, but there are six people behind you and you both know it.</p></div>
-        <div class="char rv"><h3>Ellis</h3><p class="char-role">Investor who has heard this pitch before</p><p class="char-desc">Quiet, unreadable, and taking notes you cannot see.</p></div>
-        <div class="char rv"><h3>Rosalind</h3><p class="char-role">Your manager, door open</p><p class="char-desc">Direct and genuinely supportive, provided you get to the point.</p></div>
-        <div class="char rv"><h3>Noor</h3><p class="char-role">Your first date</p><p class="char-desc">Nervous in the way that shows up as talking slightly too fast.</p></div>
-      </div>
-      <div class="chars-col">
-        <div class="char rv"><h3>Ingrid</h3><p class="char-role">Gate agent during a delay</p><p class="char-desc">Brisk and factual. She has delivered bad news forty times today.</p></div>
-        <div class="char rv"><h3>Vera</h3><p class="char-role">Housemate, about the dishes again</p><p class="char-desc">Genuinely annoyed and entirely willing to say so.</p></div>
-        <div class="char rv"><h3>Otis</h3><p class="char-role">Friend you let down</p><p class="char-desc">Hurt, and covering it with a lightness that is not convincing.</p></div>
-        <div class="char rv"><h3>Someone new</h3><p class="char-role">The Random scenario</p><p class="char-desc">A situation you haven't seen, with someone you haven't met.</p></div>
+    <div class="chars-ui">
+      <p class="chars-hint rv">Swipe to meet them all</p>
+      <div class="chars-nav">
+        <button class="chars-btn" id="chars-prev" type="button" aria-label="Previous characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="chars-btn" id="chars-next" type="button" aria-label="Next characters"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
   </div>
+
+  <div class="chars-track" id="chars-track" role="region" aria-label="Prosody characters" tabindex="0"></div>
+  <script type="application/json" id="chars-data">[{"id":"mara","n":"Mara","r":"Barista on the morning rush","p":"Genuinely warm, but there are six people behind you and you both know it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"ingrid","n":"Ingrid","r":"Gate agent during a delay","p":"Brisk and factual. She has delivered bad news forty times today.","t":"#FAE8E2","c":"#E65D3B"},{"id":"ellis","n":"Ellis","r":"Investor who has heard this pitch before","p":"Quiet, unreadable, and taking notes you cannot see.","t":"#FAE8E2","c":"#E65D3B"},{"id":"vera","n":"Vera","r":"Housemate about the dishes, again","p":"Genuinely annoyed and entirely willing to say so.","t":"#DFF0CC","c":"#2D5016"},{"id":"rosalind","n":"Rosalind","r":"Your manager, door open","p":"Direct and genuinely supportive, provided you get to the point.","t":"#FCDDE9","c":"#F0508B"},{"id":"otis","n":"Otis","r":"Friend you let down","p":"Hurt, and covering it with a lightness that is not convincing.","t":"#DFF0CC","c":"#2D5016"},{"id":"noor","n":"Noor","r":"Your first date","p":"Nervous in the way that shows up as talking slightly too fast.","t":"#FAE8E2","c":"#E65D3B"},{"id":"piet","n":"Piet","r":"Recruiter running back-to-back screens","p":"Efficient and neutral. You get twenty minutes and he is taking notes.","t":"#FCDDE9","c":"#F0508B"},{"id":"nell","n":"Nell","r":"Stranger at the bus stop","p":"Neutral. Might talk, might look at her phone. Genuinely up to you.","t":"#FAE8E2","c":"#E65D3B"},{"id":"duncan","n":"Duncan","r":"Prospect who did not ask to be called","p":"Guarded and short. You have about fifteen seconds.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"bram","n":"Bram","r":"Best man watching you give a toast","p":"Rooting for you completely. The room takes its cue from him.","t":"#FAE8E2","c":"#E65D3B"},{"id":"tomas","n":"Tomás","r":"Server working a full section","p":"Professional and attentive, though he is clearly tracking four other tables.","t":"#FAE8E2","c":"#E65D3B"},{"id":"dev","n":"Dev","r":"Shop assistant who loves the product","p":"Will happily talk for ten minutes about stitching if you let him.","t":"#FAE8E2","c":"#E65D3B"},{"id":"kofi","n":"Kofi","r":"Gym regular between sets","p":"Relaxed and encouraging. Happy to chat, equally happy to train in silence.","t":"#FAE8E2","c":"#E65D3B"},{"id":"odile","n":"Odile","r":"Neighbour who just moved in","p":"Friendly but slightly guarded — she is still deciding who everyone is.","t":"#FAE8E2","c":"#E65D3B"},{"id":"rashid","n":"Rashid","r":"Driver on a long airport run","p":"Twenty-five minutes in the car and he would rather talk than not.","t":"#FAE8E2","c":"#E65D3B"},{"id":"lindqvist","n":"Dr. Lindqvist","r":"Physician with a full waiting room","p":"Calm and precise. Asks a question, then genuinely waits for the answer.","t":"#FAE8E2","c":"#E65D3B"},{"id":"yuki","n":"Yuki","r":"Barber mid-cut","p":"The chair conversation is part of the service and they are very good at it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"priya","n":"Priya","r":"Food truck owner with a queue","p":"Fast, funny, and completely unbothered. Order or get out of the way.","t":"#FAE8E2","c":"#E65D3B"},{"id":"cass","n":"Cass","r":"Someone you got talking to at the bar","p":"Playful and quick. Teases to see whether you can keep up.","t":"#FAE8E2","c":"#E65D3B"},{"id":"wes","n":"Wes","r":"Classmate you have been circling for weeks","p":"Friendly and a little oblivious. Will not pick up a hint under a brick.","t":"#FAE8E2","c":"#E65D3B"},{"id":"june","n":"June","r":"Someone who is about to say no","p":"Kind but clear. She is not going to soften it into a maybe.","t":"#FAE8E2","c":"#E65D3B"},{"id":"elena","n":"Elena","r":"Third date, past the small talk","p":"Wants the real conversation and will follow you wherever you take it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"gordon","n":"Gordon","r":"Your partner's father","p":"Reserved and evaluating. Warmth has to be earned, but it is available.","t":"#FAE8E2","c":"#E65D3B"},{"id":"sam","n":"Sam","r":"New coworker eating lunch alone","p":"Open to company but will not make the first move.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"bex","n":"Bex","r":"Mid-conversation in a group of three","p":"Animated storyteller. There is a gap to step into, if you find it.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"marco","n":"Marco","r":"Host circulating at his own party","p":"Generous with attention but will move on in ninety seconds.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"hana","n":"Hana","r":"Acquaintance who gives short answers","p":"Not unfriendly, just not going to carry it. The work is yours.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"theo","n":"Theo","r":"The loudest person in the group","p":"Dominates by default, not by malice. Responds well to being matched.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"amara","n":"Amara","r":"Someone worth knowing, at a conference","p":"Sharp and time-poor. Give her a reason and she is fully present.","t":"#FCDDE9","c":"#F0508B"},{"id":"jonas","n":"Jonas","r":"Colleague who talks over people","p":"Not hostile — he simply fills every silence before you reach it.","t":"#FCDDE9","c":"#F0508B"},{"id":"nadia","n":"Nadia","r":"Manager running your review","p":"Fair and thorough. Praise first, then the part that matters.","t":"#FCDDE9","c":"#F0508B"},{"id":"curtis","n":"Curtis","r":"Stakeholder with pointed questions","p":"Listens carefully, then asks the one thing you hoped he would not.","t":"#FCDDE9","c":"#F0508B"},{"id":"fen","n":"Fen","r":"Compensation lead","p":"Pleasant, immovable, and comfortable with long silences.","t":"#FCDDE9","c":"#F0508B"},{"id":"lucia","n":"Lucia","r":"Audience member in row three","p":"Engaged and nodding, right up until she raises her hand.","t":"#FAE8E2","c":"#E65D3B"},{"id":"sadia","n":"Sadia","r":"Conference moderator keeping time","p":"Warm on stage, ruthless about the clock.","t":"#FAE8E2","c":"#E65D3B"},{"id":"kwame","n":"Kwame","r":"Student who is lost but embarrassed","p":"Says he follows. He does not follow. You have to notice.","t":"#FAE8E2","c":"#E65D3B"},{"id":"halvard","n":"Halvard","r":"Supplier who will not move on price","p":"Friendly, experienced, and has run this negotiation a hundred times.","t":"#DFF0CC","c":"#2D5016"},{"id":"imani","n":"Imani","r":"Someone you manage, missing the mark","p":"Eager and defensive in equal measure. Wants to be told, and dreads it.","t":"#DFF0CC","c":"#2D5016"},{"id":"beatriz","n":"Beatriz","r":"Mentor with something hard to say","p":"Says the difficult thing plainly because she thinks you can take it.","t":"#DFF0CC","c":"#2D5016"},{"id":"soren","n":"Soren","r":"Teammate about to hear bad news","p":"Cheerful walking in, which makes the next two minutes harder.","t":"#DFF0CC","c":"#2D5016"},{"id":"arjun","n":"Arjun","r":"First person you meet at an event","p":"Also here alone, also slightly relieved someone spoke first.","t":"#FAE8E2","c":"#E65D3B"},{"id":"greta","n":"Greta","r":"Neighbour in a slow elevator","p":"Eleven floors. Pleasant, and not going to start it herself.","t":"#FAE8E2","c":"#E65D3B"},{"id":"paulo","n":"Paulo","r":"Receptionist on the other end of the line","p":"Efficient and slightly rushed. No visual cues to help you.","t":"#FAE8E2","c":"#E65D3B"},{"id":"mira","n":"Mira","r":"Someone easy to practise on","p":"Patient and encouraging. There is no wrong answer here, and she means it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"leila","n":"Leila","r":"Prospect with a real problem","p":"Interested and forthcoming, if you ask rather than pitch.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"anders","n":"Anders","r":"Buyer hovering over the decision","p":"Wants to say yes and keeps finding one more reason to wait.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"tabitha","n":"Tabitha","r":"Customer on her third contact","p":"Angry, and correct to be. Repeating herself is the part that stings.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"rune","n":"Rune","r":"Buyer with a list of objections","p":"Tests every claim. Respects a straight answer more than a smooth one.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"wildcard","n":"Someone new","r":"A stranger you have not met yet","p":"Generated fresh each time. You will not know who until you begin.","t":"#E8E5E1","c":"#666666"},{"id":"kian","n":"Kian","r":"Your first date","p":"Nervous in the way that shows up as talking slightly too fast.","t":"#FAE8E2","c":"#E65D3B"},{"id":"zara","n":"Zara","r":"Someone you got talking to at the bar","p":"Playful and quick. Teases to see whether you can keep up.","t":"#FAE8E2","c":"#E65D3B"},{"id":"ravi","n":"Ravi","r":"Someone you got talking to at the bar","p":"Playful and quick. Teases to see whether you can keep up.","t":"#FAE8E2","c":"#E65D3B"},{"id":"freya","n":"Freya","r":"Classmate you have been circling for weeks","p":"Friendly and a little oblivious. Will not pick up a hint under a brick.","t":"#FAE8E2","c":"#E65D3B"},{"id":"idris","n":"Idris","r":"Someone who is about to say no","p":"Kind but clear. He is not going to soften it into a maybe.","t":"#FAE8E2","c":"#E65D3B"},{"id":"mateo","n":"Mateo","r":"Third date, past the small talk","p":"Wants the real conversation and will follow you wherever you take it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"colette","n":"Colette","r":"Your partner's mother","p":"Reserved and evaluating. Warmth has to be earned, but it is available.","t":"#FAE8E2","c":"#E65D3B"}]</script>
 </section>
 
 <!-- ─── More ways to practice ─────────────────────────────────── -->
@@ -735,6 +741,90 @@
     }, { rootMargin: '0px 0px -6% 0px' });
     els.forEach(el => io.observe(el));
     setTimeout(showAll, 4000);
+  })();
+
+  // ─── Characters carousel ────────────────────────────────────
+  (function () {
+    const track = document.getElementById('chars-track');
+    const dataEl = document.getElementById('chars-data');
+    if (!track || !dataEl) return;
+    const chars = JSON.parse(dataEl.textContent);
+    const NS = 'http://www.w3.org/2000/svg';
+    const INK = '#2B2118';
+
+    function hash(seed) {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+      return h >>> 0;
+    }
+    function darken(hex, a) {
+      const n = parseInt(hex.slice(1), 16);
+      const ch = sh => Math.round(((n >> sh) & 255) * (1 - a)).toString(16).padStart(2, '0');
+      return '#' + ch(16) + ch(8) + ch(0);
+    }
+    function el(tag, attrs) {
+      const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]);
+      return e;
+    }
+    function eye(svg, cx, cy) {
+      svg.append(el('circle', { cx, cy, r: 12.5, fill: '#fff' }), el('circle', { cx, cy: cy + 1.5, r: 7, fill: INK }), el('circle', { cx: cx + 2.5, cy: cy - 1, r: 2.4, fill: '#fff' }));
+    }
+    function face(c) {
+      const h = hash(c.id);
+      const eyes = ['open', 'happy', 'wink'][h % 3];
+      const mouth = ['smile', 'laugh', 'surprised'][Math.floor(h / 3) % 3];
+      const blush = Math.floor(h / 7) % 2 === 0;
+      const svg = el('svg', { viewBox: '0 0 100 100', 'aria-hidden': 'true' });
+      svg.append(el('rect', { width: 100, height: 100, fill: c.t }));
+      svg.append(el('circle', { cx: 50, cy: 56, r: 42, fill: darken(c.c, 0.18) }), el('circle', { cx: 50, cy: 51, r: 42, fill: c.c }));
+      if (blush) svg.append(el('circle', { cx: 21, cy: 62, r: 7, fill: '#fff', opacity: 0.35 }), el('circle', { cx: 79, cy: 62, r: 7, fill: '#fff', opacity: 0.35 }));
+      const stroke = { stroke: INK, 'stroke-width': 6, 'stroke-linecap': 'round', fill: 'none' };
+      if (eyes === 'open') { eye(svg, 35, 44); eye(svg, 65, 44); }
+      else if (eyes === 'wink') { svg.append(el('path', Object.assign({ d: 'M 24 46 Q 35 34 46 46' }, stroke))); eye(svg, 65, 44); }
+      else { svg.append(el('path', Object.assign({ d: 'M 24 46 Q 35 34 46 46' }, stroke)), el('path', Object.assign({ d: 'M 54 46 Q 65 34 76 46' }, stroke))); }
+      if (mouth === 'smile') svg.append(el('path', Object.assign({ d: 'M 38 64 Q 50 76 62 64' }, stroke)));
+      else if (mouth === 'laugh') svg.append(el('path', { d: 'M 34 62 L 66 62 Q 66 82 50 82 Q 34 82 34 62 Z', fill: INK, 'stroke-linejoin': 'round' }), el('ellipse', { cx: 50, cy: 77, rx: 8, ry: 4.5, fill: '#FF6B81' }));
+      else svg.append(el('ellipse', { cx: 50, cy: 70, rx: 7, ry: 9, fill: INK }));
+      return svg;
+    }
+
+    const frag = document.createDocumentFragment();
+    chars.forEach((c, i) => {
+      const card = document.createElement('article');
+      card.className = 'char-card';
+      card.setAttribute('aria-label', c.n + ', ' + (i + 1) + ' of ' + chars.length);
+      const fw = document.createElement('div'); fw.className = 'char-face'; fw.append(face(c));
+      const h = document.createElement('h3'); h.textContent = c.n;
+      const r = document.createElement('p'); r.className = 'char-role'; r.textContent = c.r;
+      const d = document.createElement('p'); d.className = 'char-desc'; d.textContent = c.p;
+      card.append(fw, h, r, d);
+      frag.append(card);
+    });
+    track.append(frag);
+
+    const step = () => Math.max(track.clientWidth * 0.8, 280);
+    const by = dir => track.scrollBy({ left: dir * step(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    document.getElementById('chars-prev').addEventListener('click', () => by(-1));
+    document.getElementById('chars-next').addEventListener('click', () => by(1));
+
+    // Drag to scroll with a mouse; touch uses native swiping.
+    let down = false, startX = 0, startLeft = 0, moved = false;
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse') return;
+      down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+    });
+    window.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) { moved = true; track.classList.add('drag'); }
+      track.scrollLeft = startLeft - dx;
+    });
+    window.addEventListener('pointerup', () => {
+      if (!down) return;
+      down = false;
+      track.classList.remove('drag');
+    });
   })();
 
   // ─── Mobile download dock ───────────────────────────────────
