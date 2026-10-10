@@ -258,7 +258,7 @@
     .char-face { width: 150px; height: 150px; margin-bottom: 1.25rem; }
     .char-face svg { width: 100%; height: 100%; display: block; border-radius: 50%; }
     .char-card h3 { font-size: clamp(2.1rem, 3.2vw, 2.75rem); line-height: 1.05; letter-spacing: 0.01em; text-transform: uppercase; }
-    .char-role { margin-top: 0.5rem; font-weight: 700; color: var(--verm-dk); line-height: 1.35; }
+    .char-role { margin-top: 0.5rem; font-weight: 700; color: var(--k, var(--verm-dk)); line-height: 1.35; }
     .char-desc { margin-top: 0.6rem; color: var(--ink-2); }
     @media (hover: hover) { .char-card:hover .char-face { animation: wiggle 0.6s; } }
 
@@ -566,7 +566,7 @@
   </div>
 
   <div class="chars-track" id="chars-track" role="region" aria-label="Prosody characters" tabindex="0"></div>
-  <script type="application/json" id="chars-data">[{"id":"mara","n":"Mara","r":"Barista on the morning rush","p":"Genuinely warm, but there are six people behind you and you both know it.","t":"#FAE8E2","c":"#E65D3B"},{"id":"noor","n":"Noor","r":"Your first date","p":"Nervous in the way that shows up as talking slightly too fast.","t":"#FAE8E2","c":"#E65D3B"},{"id":"sam","n":"Sam","r":"New coworker eating lunch alone","p":"Open to company but will not make the first move.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"rosalind","n":"Rosalind","r":"Your manager, door open","p":"Direct and genuinely supportive, provided you get to the point.","t":"#FCDDE9","c":"#F0508B"},{"id":"bram","n":"Bram","r":"Best man watching you give a toast","p":"Rooting for you completely. The room takes its cue from him.","t":"#FAE8E2","c":"#E65D3B"},{"id":"otis","n":"Otis","r":"Friend you let down","p":"Hurt, and covering it with a lightness that is not convincing.","t":"#DFF0CC","c":"#2D5016"},{"id":"nell","n":"Nell","r":"Stranger at the bus stop","p":"Neutral. Might talk, might look at her phone. Genuinely up to you.","t":"#FAE8E2","c":"#E65D3B"},{"id":"duncan","n":"Duncan","r":"Prospect who did not ask to be called","p":"Guarded and short. You have about fifteen seconds.","t":"#D6EAFB","c":"#3B9AE8"},{"id":"wildcard","n":"Someone new","r":"A stranger you have not met yet","p":"Generated fresh each time. You will not know who until you begin.","t":"#E8E5E1","c":"#666666"}]</script>
+  <script type="application/json" id="chars-data">[{"id":"mara","n":"Mara","r":"Barista on the morning rush","p":"Genuinely warm, but there are six people behind you and you both know it.","t":"#FAE8E2","c":"#E65D3B","k":"#B73D1D"},{"id":"noor","n":"Noor","r":"Your first date","p":"Nervous in the way that shows up as talking slightly too fast.","t":"#FCDDE9","c":"#F0508B","k":"#B71F5C"},{"id":"sam","n":"Sam","r":"New coworker eating lunch alone","p":"Open to company but will not make the first move.","t":"#D6EAFB","c":"#3B9AE8","k":"#1B6AB3"},{"id":"rosalind","n":"Rosalind","r":"Your manager, door open","p":"Direct and genuinely supportive, provided you get to the point.","t":"#EBDDF2","c":"#8B5A9F","k":"#6A3B7E"},{"id":"bram","n":"Bram","r":"Best man watching you give a toast","p":"Rooting for you completely. The room takes its cue from him.","t":"#FDEFC4","c":"#F0AE28","k":"#8A5F00"},{"id":"otis","n":"Otis","r":"Friend you let down","p":"Hurt, and covering it with a lightness that is not convincing.","t":"#DFF0CC","c":"#5BA544","k":"#38751F"},{"id":"nell","n":"Nell","r":"Stranger at the bus stop","p":"Neutral. Might talk, might look at her phone. Genuinely up to you.","t":"#D2F1EC","c":"#27B3A3","k":"#127A6D"},{"id":"duncan","n":"Duncan","r":"Prospect who did not ask to be called","p":"Guarded and short. You have about fifteen seconds.","t":"#F3DCCD","c":"#B5673E","k":"#8A4521"},{"id":"wildcard","n":"Someone new","r":"A stranger you have not met yet","p":"Generated fresh each time. You will not know who until you begin.","t":"#DDE1F5","c":"#4A5BA8","k":"#34428A"}]</script>
 </section>
 
 <!-- ─── More ways to practice ─────────────────────────────────── -->
@@ -793,6 +793,7 @@
     chars.forEach((c, i) => {
       const card = document.createElement('article');
       card.className = 'char-card';
+      card.style.setProperty('--k', c.k);
       card.setAttribute('aria-label', c.n + ', ' + (i + 1) + ' of ' + chars.length);
       const fw = document.createElement('div'); fw.className = 'char-face'; fw.append(face(c));
       const h = document.createElement('h3'); h.textContent = c.n;
