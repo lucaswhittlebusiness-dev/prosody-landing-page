@@ -664,7 +664,7 @@
   // Paste your video URL here. Accepts a hosted file (.mp4 / .webm / .mov),
   // a YouTube or Vimeo link, or any other https embed URL.
   // Leave empty to show the "coming soon" poster.
-  const LAUNCH_VIDEO_URL = '';
+  const LAUNCH_VIDEO_URL = 'video/prosody-launch.mp4';
 
   (function () {
     const btn = document.getElementById('film-play');
@@ -709,6 +709,7 @@
         el.autoplay = true;
         el.playsInline = true;
         el.preload = 'auto';
+        el.poster = 'logo-poster.jpg';
         el.src = source.src;
       } else {
         el = document.createElement('iframe');
