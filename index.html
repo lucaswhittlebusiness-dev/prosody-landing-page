@@ -173,7 +173,6 @@
     }
     .hero-art-line { font-family: var(--display); font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.8rem); letter-spacing: 0.02em; line-height: 1.12; letter-spacing: -0.01em; }
     .hero-art-line em { display: block; }
-    .hero-art-note { margin-top: 0.9rem; color: var(--ink); font-size: 1rem; font-weight: 500; }
     .hero-peek { margin-top: auto; padding-top: 2.25rem; }
     .hero-peek-crop { aspect-ratio: 359 / 300; overflow: hidden; border-radius: 28px 28px 0 0; background: #F7F5F1; }
     .hero-peek-crop img { width: 100%; animation: bob 5s ease-in-out infinite; }
@@ -215,7 +214,7 @@
     .sit h3 { font-size: clamp(1.3rem, 2.1vw, 1.75rem); line-height: 1.12; }
     .sit-line { margin-top: 1rem; font-family: var(--display); font-weight: 400; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: 0.02em; color: var(--verm-dk); max-width: 34rem; }
     .sit-meta { margin-top: 0.9rem; font-size: 0.9875rem; color: var(--ink-3); }
-    .sit-more { padding-top: 2rem; border-top: 1px solid var(--line); font-size: 1.0625rem; color: var(--ink-2); max-width: 30rem; }
+    .sit:last-child { border-bottom: 1px solid var(--line); }
 
     /* ─── The app ────────────────────────────────────────────────── */
     .app { background: var(--blush); padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 9vw, 8rem); overflow: hidden; }
@@ -347,8 +346,7 @@
       .hero h1 { font-size: clamp(2.3rem, 10.5vw, 4rem); }
       .hero-lede { font-size: 1.1875rem; margin-top: 1.5rem; }
       .hero-cta { margin-top: 1.75rem; }
-      .hero-art-note { display: none; }
-      .hero-art { padding-top: 1.75rem; }
+        .hero-art { padding-top: 1.75rem; }
       .hero-peek { padding-top: 1.5rem; }
 
       .film, .situations, .app, .chars, .feedback, .habit { padding-top: 4rem; padding-bottom: 4rem; }
@@ -428,7 +426,7 @@
   <div class="wrap hero-grid">
     <div>
       <h1 class="rv">Have the conversation <em>here first.</em></h1>
-      <p class="hero-lede rv">Prosody is a voice-first app for rehearsing the conversations that make you nervous: job interviews, first dates, asking for a raise, difficult talks. You talk to a character who sounds and reacts like a real person on a phone call, then get clear feedback on how you did.</p>
+      <p class="hero-lede rv">Rehearse the conversations that make you nervous. Talk out loud to someone who talks back, then see how you did.</p>
       <div class="hero-cta rv">
         <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
         <a href="https://apps.apple.com/app/prosody" class="store-badge" aria-label="Download on the App Store">
@@ -441,7 +439,6 @@
 
     <div class="hero-art rv">
       <p class="hero-art-line">Mara's waiting for your order.<em>Say something.</em></p>
-      <p class="hero-art-note">A real screen from the app: the first line of the Coffee shop order scenario.</p>
       <div class="hero-peek">
         <div class="hero-peek-crop">
           <img src="screenshots/conversation-web.jpg" alt="Prosody conversation screen: Mara, barista on the morning rush, says &quot;Morning! What can I get started for you?&quot;" width="359" height="780">
@@ -459,7 +456,7 @@
   <div class="wrap">
     <div class="film-head">
       <h2 class="film-title rv" id="film-title">Meet<br><em>Prosody.</em></h2>
-      <p class="film-sub rv">A closer look at how you can practice real conversations, build confidence, and find your voice.</p>
+      <p class="film-sub rv">Practice real conversations. Find your voice.</p>
     </div>
 
     <div class="film-frame rv" id="film-frame">
@@ -479,47 +476,35 @@
   <div class="wrap sit-grid">
     <div class="sit-intro">
       <h2 class="rv">Which conversation is on your mind?</h2>
-      <p class="rv">Fifty situations across nine categories. Each one puts a specific person on the other side, and they speak first. Harder, higher-pressure ones unlock as you progress.</p>
+      <p class="rv">Fifty situations. They always speak first.</p>
     </div>
 
     <div>
       <article class="sit rv">
         <h3>The screening call</h3>
         <p class="sit-line">&ldquo;Thanks for making the time. Let's start simple — walk me through what you're doing now.&rdquo;</p>
-        <p class="sit-meta">Work &middot; Piet, a recruiter running back-to-back screens</p>
+        <p class="sit-meta">Work &middot; Piet</p>
       </article>
 
       <article class="sit rv">
         <h3>First date, first ten minutes</h3>
         <p class="sit-line">&ldquo;Hi! Sorry, I think I'm early. I'm always early, it's a whole thing.&rdquo;</p>
-        <p class="sit-meta">Dating &middot; Noor, nervous in the way that shows up as talking slightly too fast</p>
+        <p class="sit-meta">Dating &middot; Noor</p>
       </article>
 
-      <article class="sit rv">
-        <h3>A real apology</h3>
-        <p class="sit-line">&ldquo;It's fine, honestly. Don't worry about it. What's up?&rdquo;</p>
-        <p class="sit-meta">Difficult conversations &middot; Otis, hurt and covering it with a lightness that isn't convincing</p>
-      </article>
-
+      
       <article class="sit rv">
         <h3>Saying the first word</h3>
         <p class="sit-line">&ldquo;Hey. Bus is running late again, huh?&rdquo;</p>
-        <p class="sit-meta">Social anxiety &middot; Nell, a stranger at the bus stop who might talk, or might look at her phone</p>
+        <p class="sit-meta">Social anxiety &middot; Nell</p>
       </article>
 
-      <article class="sit rv">
-        <h3>Giving a toast</h3>
-        <p class="sit-line">&ldquo;Alright everyone, quiet down — quiet down! Right. Over to you.&rdquo;</p>
-        <p class="sit-meta">Public speaking &middot; Bram, the best man, rooting for you completely</p>
-      </article>
-
+      
       <article class="sit rv">
         <h3>Fifteen seconds</h3>
         <p class="sit-line">&ldquo;Yeah? Who's this?&rdquo;</p>
-        <p class="sit-meta">Sales &middot; Duncan, a prospect who did not ask to be called</p>
+        <p class="sit-meta">Sales &middot; Duncan</p>
       </article>
-
-      <p class="sit-more rv">That's six of fifty. There's also everyday life, friendships, and a Random one that drops you in with someone you haven't met.</p>
     </div>
   </div>
 </section>
@@ -529,21 +514,20 @@
   <div class="wrap">
     <div class="app-head">
       <h2 class="rv">Pick one. Speak. <em>See how it went.</em></h2>
-      <p class="rv">That's the whole app. These are the real screens.</p>
-    </div>
+          </div>
 
     <div class="app-shots">
       <figure class="shot rv">
         <img src="screenshots/scenario-preview-web.jpg" alt="Prosody scenario screen for Coffee shop order, showing your objective and who you're talking to" width="359" height="780" loading="lazy">
-        <figcaption><strong>Know what you're walking into.</strong>Your objective and the person you're talking to, before you start.</figcaption>
+        <figcaption><strong>Pick a situation.</strong></figcaption>
       </figure>
       <figure class="shot rv">
         <img src="screenshots/conversation-web.jpg" alt="Prosody live conversation screen with a hold to speak button" width="359" height="780" loading="lazy">
-        <figcaption><strong>Talk. Out loud.</strong>Hold to speak, or type instead. They answer to what you actually said.</figcaption>
+        <figcaption><strong>Talk out loud.</strong></figcaption>
       </figure>
       <figure class="shot rv">
         <img src="screenshots/results-score.jpg" alt="Prosody results screen with a score of 78 out of 100 and the objective met" width="359" height="780" loading="lazy">
-        <figcaption><strong>Find out how it landed.</strong>A score and specific feedback as soon as you finish.</figcaption>
+        <figcaption><strong>See how it went.</strong></figcaption>
       </figure>
     </div>
   </div>
@@ -554,7 +538,7 @@
   <div class="wrap">
     <div class="chars-head">
       <h2 class="rv">Fifty-seven people. None of them talk the same way.</h2>
-      <p class="rv">Each one has their own voice and personality, and they don't just praise everything you say. They reply in short, reactive lines like a real call, and you can hold the mic to jump in and interrupt.</p>
+      <p class="rv">Each has their own voice and personality. They won't just praise everything you say.</p>
     </div>
 
     <p class="chars-hint rv">Swipe to meet them</p>
@@ -576,11 +560,11 @@
   <div class="wrap">
     <h2 class="more-title rv">Practice it your way.</h2>
     <div class="more-list">
-      <div class="more-item rv"><h3>Custom practice</h3><p>Describe any situation, like &ldquo;asking my manager for a pay rise,&rdquo; and pick a practice partner to play it out.</p></div>
-      <div class="more-item rv"><h3>Solo practice</h3><p>Work on your delivery on your own, with no one on the other end.</p></div>
-      <div class="more-item rv"><h3>Drills</h3><p>Short, focused exercises for clarity and pronunciation.</p></div>
-      <div class="more-item rv"><h3>Lessons</h3><p>Short lessons with practice built in, from beginner to advanced.</p></div>
-      <div class="more-item rv"><h3>7-day programs</h3><p>Guided paths for real improvement, one day at a time.</p></div>
+      <div class="more-item rv"><h3>Custom practice</h3><p>Describe any situation and play it out.</p></div>
+      <div class="more-item rv"><h3>Solo practice</h3><p>Work on your delivery on your own.</p></div>
+      <div class="more-item rv"><h3>Drills</h3><p>Quick exercises for clarity and pronunciation.</p></div>
+      <div class="more-item rv"><h3>Lessons</h3><p>Short lessons, beginner to advanced.</p></div>
+      <div class="more-item rv"><h3>7-day programs</h3><p>Guided paths, one day at a time.</p></div>
     </div>
   </div>
 </section>
@@ -590,7 +574,7 @@
   <div class="wrap fb-grid">
     <div class="fb-text">
       <h2 class="rv">Not a grade. <em>A map of how it went.</em></h2>
-      <p class="rv">After every conversation you get scores for the things that matter, what you did well, what to improve with a concrete rewrite, and one thing to try next time. Run the same scenario again and it won't go the same way, because nobody on the other end is following a script.</p>
+      <p class="rv">Scores for pace, clarity and confidence, plus one thing to try next time.</p>
     </div>
     <ul class="fb-scores">
       <li class="rv">Pace</li>
@@ -608,8 +592,7 @@
     </div>
     <div class="fb-text">
       <h2 class="rv">Once a week isn't enough.</h2>
-      <p class="rv">Earn XP, build daily streaks, finish daily quests and level up along the map, unlocking new areas as you go. Compete with friends on the leaderboard if you like.</p>
-      <p class="rv">Pick a reminder time while you set up (morning, afternoon, or evening) and Prosody nudges you once a day.</p>
+      <p class="rv">Earn XP, keep your streak, and level up.</p>
     </div>
   </div>
 </section>
