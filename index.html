@@ -233,15 +233,16 @@
 
     .sit-list { display: flex; flex-direction: column; gap: 1.25rem; }
     .sit {
+      display: flex; gap: 1.25rem; align-items: flex-start;
       padding: 1.75rem 2rem 1.9rem; border-radius: 28px;
       background: rgba(255,255,255,0.62);
       -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
       border: 1px solid rgba(255,255,255,0.9);
       box-shadow: 0 1px 0 #fff inset, 0 16px 40px rgba(30,90,190,0.1);
     }
+    .sit-num { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--verm); color: #fff; font-family: var(--display); font-size: 1.5rem; line-height: 46px; text-align: center; box-shadow: 0 8px 18px rgba(228,87,46,0.35), inset 0 1px 0 rgba(255,255,255,0.35); }
     .sit h3 { font-size: clamp(1.3rem, 2.1vw, 1.75rem); line-height: 1.12; }
-    .sit-line { margin-top: 0.9rem; font-family: var(--display); text-transform: uppercase; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.4; letter-spacing: 0.02em; color: var(--verm-dk); max-width: 34rem; }
-    .sit-meta { margin-top: 0.9rem; font-size: 0.9375rem; color: var(--ink-3); }
+    .sit p { margin-top: 0.6rem; font-size: 1.0625rem; color: var(--ink-2); max-width: 32rem; }
 
     /* ─── The app ────────────────────────────────────────────────── */
     .app { background: linear-gradient(180deg, var(--paper-2) 0%, #A9D4F5 45%, #5AA6EC 100%); padding: clamp(5rem, 10vw, 9rem) 0 clamp(5rem, 9vw, 8rem); overflow: hidden; }
@@ -411,7 +412,8 @@
       .download { padding-top: 5rem; padding-bottom: 5rem; }
       .finale .hills img { height: clamp(460px, 130vw, 640px); }
       .finale::after { height: 440px; background: linear-gradient(transparent, rgba(6,28,12,0.78)); }
-      .sit { padding: 1.4rem 1.4rem 1.5rem; border-radius: 24px; }
+      .sit { padding: 1.4rem 1.4rem 1.5rem; border-radius: 24px; gap: 1rem; }
+      .sit-num { width: 40px; height: 40px; line-height: 40px; font-size: 1.3rem; }
       .chars-head { margin-bottom: 2rem; }
       .foot-links a { display: inline-block; padding: 0.35rem 0; }
       .foot-links { gap: 0.25rem 1.75rem; }
@@ -449,7 +451,7 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="#situations">Situations</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
       <li><a href="#app">The app</a></li>
       <li><a href="#characters">Characters</a></li>
     </ul>
@@ -464,7 +466,7 @@
 </nav>
 
 <div class="nav-mobile" id="nav-mobile">
-  <a href="#situations">Situations</a>
+  <a href="#how-it-works">How it works</a>
   <a href="#app">The app</a>
   <a href="#characters">Characters</a>
   <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
@@ -526,39 +528,37 @@
   </div>
 </section>
 
-<!-- ─── Situations ────────────────────────────────────────────── -->
-<section class="situations" id="situations">
+<!-- ─── How it works ──────────────────────────────────────────── -->
+<section class="situations" id="how-it-works">
   <div class="wrap sit-grid">
     <div class="sit-intro">
-      <h2 class="rv">Which conversation is on your mind?</h2>
-      <p class="rv">Fifty situations. They always speak first.</p>
+      <h2 class="rv">Like a phone call. <em>It just doesn't count.</em></h2>
+      <p class="rv">Prosody is a voice-first app for rehearsing the conversations that make you nervous.</p>
     </div>
 
     <div class="sit-list">
       <article class="sit rv">
-        <h3>The screening call</h3>
-        <p class="sit-line">&ldquo;Thanks for making the time. Let's start simple — walk me through what you're doing now.&rdquo;</p>
-        <p class="sit-meta">Work &middot; Piet</p>
+        <span class="sit-num" aria-hidden="true">1</span>
+        <div>
+          <h3>Pick a situation</h3>
+          <p>A job interview, a first date, a hard talk. Fifty to choose from, each with a character who speaks first.</p>
+        </div>
       </article>
 
       <article class="sit rv">
-        <h3>First date, first ten minutes</h3>
-        <p class="sit-line">&ldquo;Hi! Sorry, I think I'm early. I'm always early, it's a whole thing.&rdquo;</p>
-        <p class="sit-meta">Dating &middot; Noor</p>
+        <span class="sit-num" aria-hidden="true">2</span>
+        <div>
+          <h3>Talk out loud</h3>
+          <p>They answer in real time, like a real call. Hold the mic to jump in and interrupt.</p>
+        </div>
       </article>
 
-      
       <article class="sit rv">
-        <h3>Saying the first word</h3>
-        <p class="sit-line">&ldquo;Hey. Bus is running late again, huh?&rdquo;</p>
-        <p class="sit-meta">Social anxiety &middot; Nell</p>
-      </article>
-
-      
-      <article class="sit rv">
-        <h3>Fifteen seconds</h3>
-        <p class="sit-line">&ldquo;Yeah? Who's this?&rdquo;</p>
-        <p class="sit-meta">Sales &middot; Duncan</p>
+        <span class="sit-num" aria-hidden="true">3</span>
+        <div>
+          <h3>See how it went</h3>
+          <p>Scores for pace, clarity and confidence, plus one thing to try next time. Then go again.</p>
+        </div>
       </article>
     </div>
   </div>
@@ -568,7 +568,7 @@
 <section class="app" id="app">
   <div class="wrap">
     <div class="app-head">
-      <h2 class="rv">Pick one. Speak. <em>See how it went.</em></h2>
+      <h2 class="rv">Here's what it <em>looks like.</em></h2>
           </div>
 
     <div class="app-shots">
@@ -681,7 +681,7 @@
     <div class="foot">
       <div class="foot-brand"><img src="logo-96.png" alt="" width="34" height="34">Prosody</div>
       <ul class="foot-links">
-        <li><a href="#situations">Situations</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
         <li><a href="#characters">Characters</a></li>
         <!-- TODO: Replace href with real App Store URL once approved: https://apps.apple.com/app/id<NUMERIC_ID> -->
         <li><a href="https://apps.apple.com/app/prosody">App Store</a></li>
