@@ -305,9 +305,10 @@
     @media (hover: hover) { .char-card:hover .char-face { animation: wiggle 0.6s; } }
 
     /* ─── More ways to practice ──────────────────────────────────── */
-    .more { position: relative; z-index: 1; background: var(--paper); border-radius: 44px 44px 0 0; margin-top: -44px; padding: clamp(4.5rem, 8vw, 7.5rem) 0 0; }
+    .more { position: relative; z-index: 1; background: var(--paper); border-radius: 44px 44px 0 0; margin-top: -44px; padding: clamp(4.5rem, 8vw, 7.5rem) 0 clamp(2rem, 4vw, 3rem); }
+    .more-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
     .more-title { font-size: clamp(1.9rem, 3.8vw, 3.25rem); line-height: 1.06; max-width: 16ch; }
-    .more-list { margin-top: clamp(2rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(1.5rem, 4vw, 3.5rem); }
+    .more-list { margin-top: clamp(2rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 clamp(1.5rem, 4vw, 3.5rem); }
     .more-item { padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); }
     .more-item h3 { font-size: clamp(1.25rem, 1.8vw, 1.5rem); line-height: 1.15; letter-spacing: 0.02em; }
     .more-item p { margin-top: 0.6rem; color: var(--ink-2); max-width: 24rem; }
@@ -400,6 +401,7 @@
 
       .sit-grid { grid-template-columns: 1fr; }
       .sit-intro { position: static; }
+      .more-grid { grid-template-columns: 1fr; }
       .more-list { grid-template-columns: 1fr 1fr; }
 
       .fb-grid { grid-template-columns: 1fr; }
@@ -537,7 +539,7 @@
 
   <div class="hero-card glass rv">
     <div class="hero-peek-crop">
-      <img src="screenshots/conversation-web.jpg" alt="Prosody conversation screen: Mara, barista on the morning rush, says &quot;Morning! What can I get started for you?&quot;" width="736" height="1600">
+      <img src="screenshots/home-app.jpg" alt="Prosody home screen: a sunset greeting card with a streak, this week's practice days and minutes left" width="736" height="1600">
     </div>
   </div>
 </section>
@@ -578,7 +580,7 @@
         <span class="sit-num" aria-hidden="true">1</span>
         <div>
           <h3>Pick a situation</h3>
-          <p>A job interview, a first date, a hard talk. Fifty to choose from, each with a character who speaks first.</p>
+          <p>A job interview, a first date, a hard talk. More than a hundred to choose from, each with a character who speaks first.</p>
         </div>
       </article>
 
@@ -629,7 +631,7 @@
 <section class="chars" id="characters">
   <div class="wrap">
     <div class="chars-head">
-      <h2 class="rv">Fifty-seven people. None of them talk the same way.</h2>
+      <h2 class="rv">130 people. None of them talk the same way.</h2>
       <p class="rv">Each has their own voice and personality. They won't just praise everything you say.</p>
     </div>
 
@@ -649,14 +651,21 @@
 
 <!-- ─── More ways to practice ─────────────────────────────────── -->
 <section class="more" id="more">
-  <div class="wrap">
-    <h2 class="more-title rv">Practice it your way.</h2>
-    <div class="more-list">
-      <div class="more-item rv"><h3>Custom practice</h3><p>Describe any situation, like &ldquo;asking my manager for a pay rise,&rdquo; and play it out.</p></div>
+  <div class="wrap more-grid">
+    <div>
+      <h2 class="more-title rv">Practice it your way.</h2>
+      <div class="more-list">
+      <div class="more-item rv"><h3>Custom practice</h3><p>Describe any situation, like &ldquo;asking my manager for a pay raise,&rdquo; then pick their look, name and voice.</p></div>
       <div class="more-item rv"><h3>Solo practice</h3><p>Work on your delivery on your own.</p></div>
       <div class="more-item rv"><h3>Drills</h3><p>Quick exercises for clarity and pronunciation.</p></div>
       <div class="more-item rv"><h3>Lessons</h3><p>Short lessons, beginner to advanced.</p></div>
       <div class="more-item rv"><h3>7-day programs</h3><p>Guided paths, one day at a time.</p></div>
+      </div>
+    </div>
+    <div class="fb-shot more-shot rv">
+      <img src="screenshots/custom-practice.jpg" alt="Prosody custom practice screen: describe what you want to practice, with example prompts to tap" width="736" height="1600" loading="lazy">
+      <span class="chip chip-a" style="--c:#8B5A9F"><i class="chip-dot"></i>Any situation</span>
+      <span class="chip chip-c" style="--c:#E4572E;bottom:1%;left:auto;right:-14%"><i class="chip-dot"></i>Pick their look</span>
     </div>
   </div>
 </section>
@@ -721,7 +730,7 @@
       </a>
       <span class="soon">Android coming soon</span>
     </div>
-    <p class="download-price rv">7-day free trial on the annual plan. Cancel anytime.</p>
+    <p class="download-price rv">Start with 10 free minutes. Cancel anytime.</p>
   </div>
 </section>
 
